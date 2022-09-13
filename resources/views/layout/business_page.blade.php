@@ -18,12 +18,12 @@ $total_given_amount = $total_got_amount = 0;
 		<p>Click on the buttons inside the tabbed menu:</p> --}}
 
 		<div class="tab">
-			<button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">Retail</button>
+			<button class="tablinks" onclick="openCity(event, 'Main')" id="defaultOpen">Retail</button>
 			<button class="tablinks" onclick="openCity(event, 'Paris')">Stock Book</button>
-			<button class="tablinks" onclick="openCity(event, 'Tokyo')">Bill book</button>
+			<button class="tablinks" onclick="openCity(event, 'Billbook')">Bill book</button>
 		</div>
 
-		<div id="London" class="tabcontent">
+		<div id="Main" class="tabcontent">
 			<div class="row">
 				<div class="col-sm-3 main_div">
 					<div class="background-dark header-issue  p-3">
@@ -250,7 +250,7 @@ $total_given_amount = $total_got_amount = 0;
             <p>Paris is the capital of France.</p> 
 		</div>
 
-		<div id="Tokyo" class="tabcontent">
+		<div id="Billbook" class="tabcontent">
             <div class="row">
                 <div class="col-sm-3 main_div">
                     <div class="background-dark header-issue  p-3">
@@ -317,76 +317,50 @@ $total_given_amount = $total_got_amount = 0;
                             <a href="{{ route('view_report', ['id' => $b]) }}" class="btn view_report text-uppercase">View Report
                                 &nbsp;<i class="fa-solid fa-angle-right"></i></a>
                         </div>
+                    </div>--}}
+                    <!-- Buttons Main -->
+                    <div class="row m-2 mt-3">
+                        @if (!empty($bills))
+                        <h3>Rs. {{ count($bills) }}</h3>
+                        @endif
+                        
+                        <h6>Total Sale for {{ Carbon::now()->month; }}</h6>
                     </div>
+                    <!--End Buttons Main -->
+                   <!-- Create New Bill Start -->
+                   <div class="row m-2 mt-3">
+                        <button class="btn background-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Create New Bill</button>
+                    </div>
+                   <!-- Create New Bill End -->
                     <!-- Search Bar -->
                     <div class="row bg-light p-2 m-0">
                         <div class="col">
                             <input type="text" class="form-control rounded-pill search_bar" name="search"
                                 placeholder="Search Here">
                         </div>
-                    </div> --}}
-                    
-                    
-
-                    <!-- Buttons Main -->
-                    <div class="row m-2 mt-3">
-                        <h3>{{ count($bills) }}</h3>
-                        <h6>Total Sale for {{ Carbon::now()->month; }}</h6>
-                    </div>
-                    <!--End Buttons Main -->
-                    
-                    <div class="row m-0" id="">
-                        <div class="col-2 py-2 pr-0 pl-3 text-center my-auto"><span class="m-0 client-name-circle color-grey">2</span></div>
-                        <div class="col-10 pr-0 py-2 mt-1 pr-3">
-                        <div class="row">
-                            <div class="col-6 text-left my-auto">
-                                <p class="font-18 font-18-less color-dark-black h-auto m-0"><b> Bill # 2</b></p>
-                                <p class="font-10 list-font-color m-0">Tue, 13 Sep 22 . 9:29 AM</p> <span class="d-flex mt-1"><div class="flex-display"> <p class="partyName-in-cashRegister py-1 mb-0">
-                                <svg version="1.1" width="11" height="13" x="0" y="0" viewBox="0 0 415.744 415.744" style="enable-background:new 0 0 512 512" xml:space="preserve" class="float-left mr-2"><g>
-                                <g xmlns="http://www.w3.org/2000/svg">
-                                <g>
-                                <path d="M207.872,0c-53.76,0-97.28,43.52-97.28,97.28s43.52,97.28,97.28,97.28s97.28-43.52,97.28-97.28S261.632,0,207.872,0z" fill="#a6a8ab" data-original="#000000" style="" class=""></path>
-                                </g>
-                                </g>
-                                <g xmlns="http://www.w3.org/2000/svg">
-                                <g>
-                                <path d="M245.76,205.824h-75.776c-76.288,0-138.24,61.952-138.24,138.24v56.32c0,8.704,6.656,15.36,15.36,15.36H368.64    c8.704,0,15.36-6.656,15.36-15.36v-56.32C384,267.776,322.048,205.824,245.76,205.824z" fill="#a6a8ab" data-original="#000000" style="" class=""></path>
-                                </g>
-                                </g>
-                                </g></svg>
-                                Naveed Hafeez</p></div></span></div>
-                                        <div class="col-6 text-right my-auto">
-                                        <p class="font-18 font-18-less quickSand-urdu color-red m-0"><span class="font-family-serif">  Rs </span> 65,000</p>
+                    </div> 
+                    @forelse($bills as  $index => $item)
+                        <div class="profile-span mb-1">
+                            <a data-toggle="tab" href="#tab-{{ $item->id }}" type="button"
+                                class="btn btn-div mb-2">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <div class="" style="border-radius: 50%; width: 50px; height: 50px; background-color: white; padding: 6px;">
+                                            <h3> {{$loop->iteration}}</h3>
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
+                                        <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h6>Rs. {{ $item->amount }}</h6>
+                                        <span style="font-size: 1rem !important;">{{$item->method}}</span>
+                                    </div>
                                 </div>
-                    </div>
 
-                    @forelse($bills as  $index => $item)
-                        <a class="row mb-2 mt-2 pt-1 pb-2" style="background-color: aqua;">
-                            <div class="col-sm-2">
-                                <div class="" style="border-radius: 50%; width: 50px; height: 50px; background-color: white;">
-                                    <h3> {{$loop->iteration}}</h3>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
-                                <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
-                            </div>
-                            <div class="col-sm-4">
-                                <h6>Rs. {{ $item->amount }}</h6>
-                            </div>
-                        </a>
-                        {{-- <a href="{{ route('customer', ['id' => $item->id, 'business_id' => $b]) }}" type="button"
-                            class="btn btn-div mb-2">
-                            <div class="mb-1 mt-1 profile-image-div">
-                                <div class="" style="border-radius: 50%; width: 50px; height: 50px; padding: 6px; background-color: white;">
-                                    <h3> {{$loop->iteration}}</h3>
-                                </div>
-                                <span class="business-name"><h3 class="font-weight-bold">Bill# {{$loop->iteration}}</h3></span>
-                                <h6 class="font-weight-bold">{{$item->created_at}}</h6>
-                            </div>
-                        </a> --}}
+                            </a>
+                        </div>
                     @empty
                     @endforelse
                     <div class="text-center buttons">
@@ -397,7 +371,7 @@ $total_given_amount = $total_got_amount = 0;
                         </button>
                     </div>
                 </div>
-                {{-- <div class="col-sm-9 second-div">
+                <div class="col-sm-9 second-div">
                     <div class="bg-light bg-gradient header-info p-0">
                         <div class="header-profile">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Userimage.png" width="40"
@@ -407,6 +381,13 @@ $total_given_amount = $total_got_amount = 0;
                                 <small>{{ $customer['phone_number'] }}</small>
                             </span>
                         </div>
+                        <div style="margin-top: 15%"  class="tab-content">
+                            @foreach($bills as $queue)
+                                <div id="tab-{{ $queue->id }}" class="tab-pane fade">
+                                    <p>{{ $queue->amount }}</p>
+                                </div>
+                           @endforeach
+                       </div>
                         @if (sizeof($payment) != 0)
                             <div class="header-amount">
                                 <span class="">
@@ -466,12 +447,12 @@ $total_given_amount = $total_got_amount = 0;
                                 <div class="col">ENTRIES<br>
                                     ({{ sizeof($payment) }})
                                 </div>
-                                <div class="col">DETAIL</div>
-                                <div class="col">YOU GAVE<br><small style="color:red">Rs {{ $total_given_amount }}</small>
+                                <div class="col">Item</div>
+                                <div class="col">Quantity<br><small style="color:red">Rs {{ $total_given_amount }}</small>
                                 </div>
-                                <div class="col">YOU GOT<br><small style="color:green">{{ $total_got_amount }}</small>
+                                <div class="col">Rate<br><small style="color:green">{{ $total_got_amount }}</small>
                                 </div>
-                                <div class="col">BALANCE</div>
+                                <div class="col">Amount</div>
                             </li>
                             @forelse($payment as $pay)
                                 <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
@@ -505,7 +486,7 @@ $total_given_amount = $total_got_amount = 0;
                             </button>
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
 		</div>
 
