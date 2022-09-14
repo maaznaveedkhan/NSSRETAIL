@@ -81,6 +81,9 @@ Auth::routes();
 Route::group(['middleware' => ['user', 'auth']], function () {
     Route::get('all_business' , [BusinessController::class, 'AllBusinesses'])->name('all_business');
     Route::post('create_bill',[App\Http\Controllers\BillBookController::class,'add_bill'])->name('create_bill');
+    Route::get('edit_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'edit_bill'])->name('edit_bill');
+    Route::get('update_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'update_bill'])->name('update_bill');
+    Route::get('delete_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'delete_bill'])->name('delete_bill');
     // Route::get('/user_dashboard', [App\Http\Controllers\HomeController::class, 'user_dashboard'])->name('user_dashboard');
 });
 Route::group(['middleware' => ['admin', 'auth']], function () {

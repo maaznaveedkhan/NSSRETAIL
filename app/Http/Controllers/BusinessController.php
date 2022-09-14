@@ -39,7 +39,7 @@ class BusinessController extends Controller
         $customer = Customer::where('id', '=',$id)->latest()->first();
         $payment = DB::table('bussinesses_customers')->select('*')->where('customer_id', '=', $customer->id)->get();
         $suppliers = Supplier::where('business_id',$id)->get();
-        $bills = BillBook::where('business_id',$id)->get();
+       $bills = BillBook::where('business_id',$id)->get();
         $details = DB::table('customers')
                 ->join('bussinesses_customers', 'customers.id', '=', 'bussinesses_customers.customer_id')
                 ->get();

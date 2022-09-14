@@ -21,6 +21,7 @@
             <button class="tablinks" onclick="openCity(event, 'Main')" id="defaultOpen">Retail</button>
             <button class="tablinks" onclick="openCity(event, 'Paris')">Stock Book</button>
             <button class="tablinks" onclick="openCity(event, 'Billbook')">Bill book</button>
+            <button class="tablinks" onclick="openCity(event, 'Cashbook')">Cash book</button>
         </div>
 
         <div id="Main" class="tabcontent">
@@ -265,67 +266,8 @@
                     <div style="width: 100%;">
                         <span class="text-center">Bill Book</span>
                     </div>
-                    {{-- <i class="fa-solid fa-building-columns"></i>
-                        <div class="menu-nav">
-                            <div class="dropdown-container" tabindex="-1">
-                                <div class="three-dots"></div>
-                                <div class="dropdowns">
-                                    <div class="drop mb-2"><a href=""> Filter Customer List </a></div>
-                                    <div class="drop mb-2"><a href=""> Customer List PDF </a></div>
-                                    <div class="drop mb-2"><a href=""> Profile </a></div>
-                                    <div class="drop mb-2"><a href=""> About Us </a></div>
-                                    <div class="drop mb-2"><a href=""> Language </a></div>
-                                    <div class="drop mb-2"><a href=""> Help & Support </a></div>
-                                    <div class="drop mb-2"><a href=""> Cash Register </a></div>
-                                    <div class="drop mb-2"><a href=""> Recyle Bin </a></div>
-                                    <div class="drop mb-2"><a href=""> EasyDokan </a></div>
-                                    <div class="drop mb-2"><a href=""> Logout </a></div>
-                                </div>
-                            </div>
-                        </div> --}}
+
                 </div>
-                {{-- <div class="row amount mb-2">
-                        @if (isset($details))
-                            <?php
-                            $amount_remaning_got = $amount_remaning_given = $amount_remaning_balance = 0;
-                            ?>
-                            @foreach ($details as $detail)
-                                <?php
-                                $amount_remaning_given += $detail->given_amount;
-                                $amount_remaning_got += $detail->got_amount;
-                                $amount_remaning_balance += $detail->balance;
-                                ?>
-                            @endforeach
-                            <div class="col given_amount float-right text-center" style="width:30%">
-                                @if ($amount_remaning_given > $amount_remaning_got)
-                                    <span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
-                                @endif
-                                <small>You Will Give</small>
-                            </div>
-                            <div class="col text-center">
-                                @if ($amount_remaning_balance < $amount_remaning_got)
-                                    <span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
-                                @endif
-                                <small>You Will Get</small>
-                            </div>
-                        @else
-                            <div class="col given_amount text-center">
-                                <span>0</span>
-                                <small>You Will Give</small>
-                            </div>
-                            <div class="col float-right text-center" style="width:30%">
-                                <span>0</span>
-                                <small>You Will Get</small>
-                            </div>
-                        @endif
-                    </div>
-                    <!-- Report View -->
-                    <div class="row text-center">
-                        <div>
-                            <a href="{{ route('view_report', ['id' => $b]) }}" class="btn view_report text-uppercase">View Report
-                                &nbsp;<i class="fa-solid fa-angle-right"></i></a>
-                        </div>
-                    </div> --}}
                 <!-- Buttons Main -->
                 <div class="row m-2 mt-3">
                     @if (!empty($bills))
@@ -380,170 +322,336 @@
                             Customer</span>
                     </button>
                 </div>
-
-                <div
-                    class="nav flex-column nav-tabs text-center"
-                    id="v-tabs-tab"
-                    role="tablist"
-                    aria-orientation="vertical"
-                    >
-                    <a
-                        class="nav-link active"
-                        id="v-tabs-home-tab"
-                        data-mdb-toggle="tab"
-                        href="#v-tabs-home"
-                        role="tab"
-                        aria-controls="v-tabs-home"
-                        aria-selected="true"
-                        >Home</a
-                        >
-                    <a
-                        class="nav-link"
-                        id="v-tabs-profile-tab"
-                        data-mdb-toggle="tab"
-                        href="#v-tabs-profile"
-                        role="tab"
-                        aria-controls="v-tabs-profile"
-                        aria-selected="false"
-                        >Profile</a
-                        >
-                    <a
-                        class="nav-link"
-                        id="v-tabs-messages-tab"
-                        data-mdb-toggle="tab"
-                        href="#v-tabs-messages"
-                        role="tab"
-                        aria-controls="v-tabs-messages"
-                        aria-selected="false"
-                        >Messages</a
-                        >
+                <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
+                        @foreach ($bills as $item)
+                        <a style="background-color: #f37111; color:black;" class="nav-link {{ $item->id == 1 ? 'active' : '' }} mb-2" href="#home{{ $item->id }}" aria-controls="home{{$item->id}}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="" style="border-radius: 50%; width: 40px; height: 40px; background-color: white; padding-left: 0.85rem;">
+                                        <h3> {{$loop->iteration}}</h3>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
+                                    <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h6>Rs. {{ $item->amount }}</h6>
+                                    <span style="font-size: 1rem !important;">{{$item->method}}</span>
+                                </div>
+                            </div>
+                            {{-- {{ $item->amount }} --}}
+                        </a>
+                            {{-- <a class="nav-link {{ $item->id == 1 ? 'active' : '' }}" href="#{{$item->id}}" data-bs-toggle="tab" role="tab" aria-controls="{{$item->id}}" aria-selected="true">{{$item->amount}}</a> --}}
+                        @endforeach
+                    
+                    {{-- <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
+                    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
+                    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button> --}}
                 </div>
             </div>
             <div class="col-sm-9 second-div">
-                <div class="bg-light bg-gradient header-info p-0">
-                    <div class="header-profile">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Userimage.png" width="40"
-                            class="rounded-circle" />
-                        <span style="margin-left: 15px;">
-                            <h3 style="margin-bottom:0rem">{{ $customer['name'] }}</h3>
-                            <small>{{ $customer['phone_number'] }}</small>
-                        </span>
-                    </div>
-                    @if (sizeof($payment) != 0)
-                        <div class="header-amount">
-                            <span class="">
-                                <h6>
-                                    <span class="display-4"
-                                        style="color:
-                                          @if ($total_given_amount > $total_got_amount) red
-                                          @elseif($total_given_amount < $total_got_amount)
-                                              green
-                                          @elseif($pay->balance == 0)
-                                          black @endif">
-                                        @if ($total_given_amount == $total_got_amount)
-                                            Rs 0
-                                        @else
-                                            Rs {{ abs($total_given_amount - $total_got_amount) }}
-                                        @endif
-                                    </span>
-                                    <small>
-                                        @if ($pay->balance == 0)
-                                        @elseif($total_given_amount > $total_got_amount)
-                                            You Will Get
-                                        @elseif($total_given_amount < $total_got_amount)
-                                            You Will Give
-                                        @endif
-                                    </small>
-                                </h6>
-                            </span>
-                        </div>
-                    @else
-                        <div class="header-amount">
-                            <span class="">
-                                <h6>
-                                    <span class="display-4">
-                                        Rs 0
-                                    </span>
-                                </h6>
-                            </span>
-                        </div>
-                    @endif
-                    <div class="menu-nav">
-                        <div class="dropdown-container" tabindex="-1">
-                            <div class="three-dots"></div>
-                            <div class="dropdown">
-                                <div class="drop mb-2"><a href=""> Customer Profile </a></div>
-                                <div class="drop mb-2"><a href=""> Customer Ledger </a></div>
-                                <div class="drop mb-2"><a href=""> Delete Customer </a></div>
-                                <div class="drop mb-2"><a href=""> Switch to Supplier </a></div>
-                                <div class="drop mb-2"><a href=""> Call </a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-               
-                <!-- Tab content -->
-                <div class="tab-content" id="v-tabs-tabContent">
-                    <div class="tab-pane fade show active" id="v-tabs-home" role="tabpanel"
-                        aria-labelledby="v-tabs-home-tab">
-                        Home content
-                    </div>
-                    <div class="tab-pane fade" id="v-tabs-profile" role="tabpanel"
-                        aria-labelledby="v-tabs-profile-tab">
-                        Profile content
-                    </div>
-                    <div class="tab-pane fade" id="v-tabs-messages" role="tabpanel"
-                        aria-labelledby="v-tabs-messages-tab">
-                        Messages content
-                    </div>
-                </div>
-                <!-- Tab content -->
                 
-                {{-- @if (sizeof($payment) != 0)
-                            <ul class="responsive-table">
-                                <li class="table-header mb-2">
-                                    <div class="col">ENTRIES<br>
-                                        ({{ sizeof($payment) }})
+                    <div class="bg-light bg-gradient header-info p-0">
+                        <h4>Bill Detail</h4>
+                    </div>
+                    <div class="tab-content">
+                        @foreach ($bills as $item)
+                        <div role="tabpanel" class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="home{{ $item->id }}">
+                            {{-- <div class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="{{$item->id}}" role="tabpanel" > --}}
+                                {{-- <h3>{{$item->amount}}</h3> --}}
+                            <div class="row text-center">
+                                <h5>Bill # {{ $loop->iteration }}</h5>
+                            </div>
+                            <div class="row text-center">
+                                <h5> {{ $item->date }}</h5>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Rate</th>
+                                    <th scope="col">Amount</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">{{$item->item}}</th>
+                                    <td>{{$item->quantity}}</td>
+                                    <td>{{$item->rate}}</td>
+                                    <td>{{$item->amount}}</td>
+                                  </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">{{$item->item}}</th>
+                                    <td>Total</td>
+                                    <td>
+                                        
+                                    </td>
+                                        <td>Rs. {{$item->amount}}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="row float-left">
+                                <h5>Detail</h5>
+                                <p>{{$item->detail}}</p>
+                            </div>
+                            <div class="row text-center justify-content-center">
+                                <div class="col-md-6">
+                                    <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{{ route('delete_bill',$item->id) }}" class="btn btn-outline-danger" style="width: 15rem">Delete Entry</a>
+                                </div>
+                                {{-- <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a> --}}
+                            </div>
+                            
+                        </div>
+                        <div class="modal fade" id="edit-bill" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Add New Customer</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('add_customer') }}" method="POST">
+                                                @csrf()
+                                                <div class="mb-3">
+                                                    <input type="text" class="form-control" name="name_customer" id="name_customer"
+                                                        placeholder="Enter Name ">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <input type="text" class="form-control" name="phone_number" id="phone_number"
+                                                        placeholder="Enter Phone (Optional) ">
+                                                    <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Create Customer</button>
+                                        </div>
+                                        </form>
                                     </div>
-                                    <div class="col">Item</div>
-                                    <div class="col">Quantity<br><small style="color:red">Rs {{ $total_given_amount }}</small>
-                                    </div>
-                                    <div class="col">Rate<br><small style="color:green">{{ $total_got_amount }}</small>
-                                    </div>
-                                    <div class="col">Amount</div>
-                                </li>
-                                @forelse($payment as $pay)
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
-                                        <li class="table-row">
-                                            <div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small>
-                                            </div>
-                                            <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small></div>
-                                            <div class="col div-two" data-label="You Give">
-                                                <small>{{ $pay->given_amount }}</small></div>
-                                            <div class="col div-three" data-label="You Got"><small>{{ $pay->got_amount }}</small>
-                                            </div>
-                                            <div class="col div-one" data-label="Balance">
-                                                <small>
-                                                    {{ $pay->balance }}
-                                                </small>
-                                            </div>
-                                        </li>
-                                    </a>
-                                @empty
-                                @endforelse
-        
-                            </ul>
+                                </div>
+                            </div>
+                        @endforeach
+                        {{-- <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div> --}}
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    <div id="Cashbook" class="tabcontent">
+        <div class="row">
+            <div class="col-sm-3 main_div">
+                <div class="background-dark header-issue  p-3">
+                    <div style="width: 100%;">
+                        <span class="text-center">Cash Book</span>
+                    </div>
+                </div>
+                {{-- <div class="row amount mb-2">
+                        @if (isset($details))
+                            <?php
+                            $amount_remaning_got = $amount_remaning_given = $amount_remaning_balance = 0;
+                            ?>
+                            @foreach ($details as $detail)
+                                <?php
+                                $amount_remaning_given += $detail->given_amount;
+                                $amount_remaning_got += $detail->got_amount;
+                                $amount_remaning_balance += $detail->balance;
+                                ?>
+                            @endforeach
+                            <div class="col given_amount float-right text-center" style="width:30%">
+                                @if ($amount_remaning_given > $amount_remaning_got)
+                                    <span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
+                                @endif
+                                <small>You Will Give</small>
+                            </div>
+                            <div class="col text-center">
+                                @if ($amount_remaning_balance < $amount_remaning_got)
+                                    <span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
+                                @endif
+                                <small>You Will Get</small>
+                            </div>
+                        @else
+                            <div class="col given_amount text-center">
+                                <span>0</span>
+                                <small>You Will Give</small>
+                            </div>
+                            <div class="col float-right text-center" style="width:30%">
+                                <span>0</span>
+                                <small>You Will Get</small>
+                            </div>
                         @endif
-                        <div class="text-center buttons btn-give-got">
-                            <!-- Button trigger modal -->
-                            <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal" data-bs-target="#yougave">
-                                <span class="m-2 text-white">YOU GAVE (Rs)</span>
-                            </button>
-                            <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal" data-bs-target="#yougot">
-                                <span class="m-2 text-white">YOU GOT (Rs)</span>
-                            </button>
-                        </div> --}}
-                {{-- </div> --}}
+                    </div>
+                    <!-- Report View -->
+                    <div class="row text-center">
+                        <div>
+                            <a href="{{ route('view_report', ['id' => $b]) }}" class="btn view_report text-uppercase">View Report
+                                &nbsp;<i class="fa-solid fa-angle-right"></i></a>
+                        </div>
+                    </div> --}}
+                <!-- Buttons Main -->
+                <div class="row m-2 mt-3">
+                    @if (!empty($bills))
+                        <h3>Cash in Hand - {{ count($bills) }}</h3>
+                    @endif
+                </div>
+                
+                <!--End Buttons Main -->
+                <!-- Search Bar -->
+                <div class="row bg-light p-2 m-0">
+                    <div class="col">
+                        <input type="text" class="form-control rounded-pill search_bar" name="search"
+                            placeholder="Search Here">
+                    </div>
+                </div>
+                {{-- <div class="profile-span mb-1">
+                        @forelse($bills as  $index => $item)
+                                <a href="#" type="button"
+                                    class="btn btn-div mb-2 {{ $item->id == 1 ? 'active' : '' }}" href="#home{{ $item->id }}" aria-controls="home{{$item->id}}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <div class="" style="border-radius: 50%; width: 50px; height: 50px; background-color: white; padding: 6px;">
+                                                <h3> {{$loop->iteration}}</h3>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
+                                            <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h6>Rs. {{ $item->amount }}</h6>
+                                            <span style="font-size: 1rem !important;">{{$item->method}}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            @empty
+                        @endforelse
+                    </div> --}}
+                <div class="row m-2 mt-3">
+                    <div class="col-md-4">
+                        <h6>Date</h6>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Daily Balance</h6>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Balance</h6>
+                    </div>
+                </div>
+                <div class="row ms-1 me-1">
+                    <div class="col-md-4">
+                        <h6>11 Sep 2022</h6>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Rs. 0</h6>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Rs. 0</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 second-div">
+                
+                    <div class="bg-light bg-gradient header-info p-0">
+                        <h4>Bill Detail</h4>
+                    </div>
+                    <div class="tab-content">
+                        @foreach ($bills as $item)
+                        <div role="tabpanel" class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="home{{ $item->id }}">
+                            {{-- <div class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="{{$item->id}}" role="tabpanel" > --}}
+                                {{-- <h3>{{$item->amount}}</h3> --}}
+                            <div class="row text-center">
+                                <h5>Bill # {{ $loop->iteration }}</h5>
+                            </div>
+                            <div class="row text-center">
+                                <h5> {{ $item->date }}</h5>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Rate</th>
+                                    <th scope="col">Amount</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">{{$item->item}}</th>
+                                    <td>{{$item->quantity}}</td>
+                                    <td>{{$item->rate}}</td>
+                                    <td>{{$item->amount}}</td>
+                                  </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">{{$item->item}}</th>
+                                    <td>Total</td>
+                                    <td>
+                                        
+                                    </td>
+                                        <td>Rs. {{$item->amount}}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="row float-left">
+                                <h5>Detail</h5>
+                                <p>{{$item->detail}}</p>
+                            </div>
+                            <div class="row text-center justify-content-center">
+                                <div class="col-md-6">
+                                    <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{{ route('delete_bill',$item->id) }}" class="btn btn-outline-danger" style="width: 15rem">Delete Entry</a>
+                                </div>
+                                {{-- <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a> --}}
+                            </div>
+                            
+                        </div>
+                        <div class="modal fade" id="edit-bill" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Add New Customer</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('add_customer') }}" method="POST">
+                                                @csrf()
+                                                <div class="mb-3">
+                                                    <input type="text" class="form-control" name="name_customer" id="name_customer"
+                                                        placeholder="Enter Name ">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <input type="text" class="form-control" name="phone_number" id="phone_number"
+                                                        placeholder="Enter Phone (Optional) ">
+                                                    <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Create Customer</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                        {{-- <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div> --}}
+                    </div>
+                
             </div>
         </div>
     </div>
@@ -575,7 +683,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="Date">Select party</label>
-                    <select name="" id="">
+                    <select name="party" id="">
                         <option value="">Select Party</option>
                         @foreach ($all_customers as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
