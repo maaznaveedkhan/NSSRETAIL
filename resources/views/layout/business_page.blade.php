@@ -1,138 +1,140 @@
 @extends('layout.business')
 @section('content')
-@php
-    use Carbon\Carbon;
-@endphp
-<?php
-$total_given_amount = $total_got_amount = 0;
-?>
-@foreach ($payment as $pay)
+    @php
+        use Carbon\Carbon;
+    @endphp
     <?php
-    $total_given_amount += $pay->given_amount;
-    $total_got_amount += $pay->got_amount;
+    $total_given_amount = $total_got_amount = 0;
     ?>
-@endforeach
-	
+    @foreach ($payment as $pay)
+        <?php
+        $total_given_amount += $pay->given_amount;
+        $total_got_amount += $pay->got_amount;
+        ?>
+    @endforeach
+
     <div class="container-fluid pl-0 pr-0 mr-0 ml-0">
-		{{-- <h2>Vertical Tabs</h2>
+        {{-- <h2>Vertical Tabs</h2>
 		<p>Click on the buttons inside the tabbed menu:</p> --}}
 
-		<div class="tab">
-			<button class="tablinks" onclick="openCity(event, 'Main')" id="defaultOpen">Retail</button>
-			<button class="tablinks" onclick="openCity(event, 'Paris')">Stock Book</button>
-			<button class="tablinks" onclick="openCity(event, 'Billbook')">Bill book</button>
-		</div>
+        <div class="tab">
+            <button class="tablinks" onclick="openCity(event, 'Main')" id="defaultOpen">Retail</button>
+            <button class="tablinks" onclick="openCity(event, 'Paris')">Stock Book</button>
+            <button class="tablinks" onclick="openCity(event, 'Billbook')">Bill book</button>
+        </div>
 
-		<div id="Main" class="tabcontent">
-			<div class="row">
-				<div class="col-sm-3 main_div">
-					<div class="background-dark header-issue  p-3">
-						<div style="width: 100%;">
-							<span class="text-center">{{ $customer['business_name'] }}</span>
-						</div>
-						<i class="fa-solid fa-building-columns"></i>
-						<div class="menu-nav">
-							<div class="dropdown-container" tabindex="-1">
-								<div class="three-dots"></div>
-								<div class="dropdowns">
-									<div class="drop mb-2"><a href=""> Filter Customer List </a></div>
-									<div class="drop mb-2"><a href=""> Customer List PDF </a></div>
-									<div class="drop mb-2"><a href=""> Profile </a></div>
-									<div class="drop mb-2"><a href=""> About Us </a></div>
-									<div class="drop mb-2"><a href=""> Language </a></div>
-									<div class="drop mb-2"><a href=""> Help & Support </a></div>
-									<div class="drop mb-2"><a href=""> Cash Register </a></div>
-									<div class="drop mb-2"><a href=""> Recyle Bin </a></div>
-									<div class="drop mb-2"><a href=""> EasyDokan </a></div>
-									<div class="drop mb-2"><a href=""> Logout </a></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row amount mb-2">
-						@if (isset($details))
-							<?php
-								$amount_remaning_got = $amount_remaning_given = $amount_remaning_balance = 0;
-							?>
-							@foreach ($details as $detail)
-								<?php
-								$amount_remaning_given += $detail->given_amount;
-								$amount_remaning_got += $detail->got_amount;
-								$amount_remaning_balance += $detail->balance;
-								?>
-							@endforeach
-							<div class="col given_amount float-right text-center" style="width:30%">
-								@if ($amount_remaning_given > $amount_remaning_got)
-									<span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
-								@endif
-								<small>You Will Give</small>
-							</div>
-							<div class="col text-center">
-								@if ($amount_remaning_balance < $amount_remaning_got)
-									<span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
-								@endif
-								<small>You Will Get</small>
-							</div>
-						@else
-							<div class="col given_amount text-center">
-								<span>0</span>
-								<small>You Will Give</small>
-							</div>
-							<div class="col float-right text-center" style="width:30%">
-								<span>0</span>
-								<small>You Will Get</small>
-							</div>
-						@endif
-					</div>
-					<!-- Report View -->
-					<div class="row text-center">
-						<div>
-							<a href="{{ route('view_report', ['id' => $b]) }}" class="btn view_report text-uppercase">View Report
-								&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-						</div>
-					</div>
-					<!-- Search Bar -->
-					<div class="row bg-light p-2 m-0">
-						<div class="col">
-							<input type="text" class="form-control rounded-pill search_bar" name="search"
-								placeholder="Search Here">
-						</div>
-					</div>
-					<!-- Buttons Main -->
-					<div class="row m-2 mt-3">
-						<div class="col">
-							<a href="{{ route('business_page', ['id' => $b]) }}"
-								class="set_btn button_main btn btn-outline-danger p-1">Customers</a>
-						</div>
-						<div class="col">
-							<a href="{{ route('all_suppliers', ['business_id' => $b]) }}"
-								class="button_main btn btn-outline-danger p-1">Suplliers</a>
-						</div>
-						<div class="col">
-							<a href="" class="button_main btn btn-outline-danger p-1">All</a>
-						</div>
-					</div>
-					<!--End Buttons Main -->
-					@forelse($all_customers as $all_customer)
-						<div class="profile-span mb-1">
-							<a href="{{ route('customer', ['id' => $all_customer->id, 'business_id' => $b]) }}" type="button"
-								class="btn btn-div mb-2">
-								<div class="mb-1 mt-1 profile-image-div">
-									<img class="profile-image" src="{{ asset('E-khata') }}/images/logo/profile.png">
-									<span class="business-name">{{ $all_customer->name }}</span>
-								</div>
-							</a>
-						</div>
-					@empty
-					@endforelse
-					<div class="text-center buttons">
-						<!-- Button trigger modal -->
-						<button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-							data-bs-target="#customer-add">
-							<i class="fa fa-plus-circle" aria-hidden="true"></i><span class="m-2 text-white">Add Customer</span>
-						</button>
-					</div>
-				</div>
+        <div id="Main" class="tabcontent">
+            <div class="row">
+                <div class="col-sm-3 main_div">
+                    <div class="background-dark header-issue  p-3">
+                        <div style="width: 100%;">
+                            <span class="text-center">{{ $customer['business_name'] }}</span>
+                        </div>
+                        <i class="fa-solid fa-building-columns"></i>
+                        <div class="menu-nav">
+                            <div class="dropdown-container" tabindex="-1">
+                                <div class="three-dots"></div>
+                                <div class="dropdowns">
+                                    <div class="drop mb-2"><a href=""> Filter Customer List </a></div>
+                                    <div class="drop mb-2"><a href=""> Customer List PDF </a></div>
+                                    <div class="drop mb-2"><a href=""> Profile </a></div>
+                                    <div class="drop mb-2"><a href=""> About Us </a></div>
+                                    <div class="drop mb-2"><a href=""> Language </a></div>
+                                    <div class="drop mb-2"><a href=""> Help & Support </a></div>
+                                    <div class="drop mb-2"><a href=""> Cash Register </a></div>
+                                    <div class="drop mb-2"><a href=""> Recyle Bin </a></div>
+                                    <div class="drop mb-2"><a href=""> EasyDokan </a></div>
+                                    <div class="drop mb-2"><a href=""> Logout </a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row amount mb-2">
+                        @if (isset($details))
+                            <?php
+                            $amount_remaning_got = $amount_remaning_given = $amount_remaning_balance = 0;
+                            ?>
+                            @foreach ($details as $detail)
+                                <?php
+                                $amount_remaning_given += $detail->given_amount;
+                                $amount_remaning_got += $detail->got_amount;
+                                $amount_remaning_balance += $detail->balance;
+                                ?>
+                            @endforeach
+                            <div class="col given_amount float-right text-center" style="width:30%">
+                                @if ($amount_remaning_given > $amount_remaning_got)
+                                    <span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
+                                @endif
+                                <small>You Will Give</small>
+                            </div>
+                            <div class="col text-center">
+                                @if ($amount_remaning_balance < $amount_remaning_got)
+                                    <span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
+                                @endif
+                                <small>You Will Get</small>
+                            </div>
+                        @else
+                            <div class="col given_amount text-center">
+                                <span>0</span>
+                                <small>You Will Give</small>
+                            </div>
+                            <div class="col float-right text-center" style="width:30%">
+                                <span>0</span>
+                                <small>You Will Get</small>
+                            </div>
+                        @endif
+                    </div>
+                    <!-- Report View -->
+                    <div class="row text-center">
+                        <div>
+                            <a href="{{ route('view_report', ['id' => $b]) }}" class="btn view_report text-uppercase">View
+                                Report
+                                &nbsp;<i class="fa-solid fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- Search Bar -->
+                    <div class="row bg-light p-2 m-0">
+                        <div class="col">
+                            <input type="text" class="form-control rounded-pill search_bar" name="search"
+                                placeholder="Search Here">
+                        </div>
+                    </div>
+                    <!-- Buttons Main -->
+                    <div class="row m-2 mt-3">
+                        <div class="col">
+                            <a href="{{ route('business_page', ['id' => $b]) }}"
+                                class="set_btn button_main btn btn-outline-danger p-1">Customers</a>
+                        </div>
+                        <div class="col">
+                            <a href="{{ route('all_suppliers', ['business_id' => $b]) }}"
+                                class="button_main btn btn-outline-danger p-1">Suplliers</a>
+                        </div>
+                        <div class="col">
+                            <a href="" class="button_main btn btn-outline-danger p-1">All</a>
+                        </div>
+                    </div>
+                    <!--End Buttons Main -->
+                    @forelse($all_customers as $all_customer)
+                        <div class="profile-span mb-1">
+                            <a href="{{ route('customer', ['id' => $all_customer->id, 'business_id' => $b]) }}"
+                                type="button" class="btn btn-div mb-2">
+                                <div class="mb-1 mt-1 profile-image-div">
+                                    <img class="profile-image" src="{{ asset('E-khata') }}/images/logo/profile.png">
+                                    <span class="business-name">{{ $all_customer->name }}</span>
+                                </div>
+                            </a>
+                        </div>
+                    @empty
+                    @endforelse
+                    <div class="text-center buttons">
+                        <!-- Button trigger modal -->
+                        <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                            data-bs-target="#customer-add">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="m-2 text-white">Add
+                                Customer</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="col-sm-9 second-div">
                     <div class="bg-light bg-gradient header-info p-0">
                         <div class="header-profile">
@@ -182,7 +184,7 @@ $total_given_amount = $total_got_amount = 0;
                                 </span>
                             </div>
                         @endif
-    
+
                         <div class="menu-nav">
                             <div class="dropdown-container" tabindex="-1">
                                 <div class="three-dots"></div>
@@ -203,7 +205,8 @@ $total_given_amount = $total_got_amount = 0;
                                     ({{ sizeof($payment) }})
                                 </div>
                                 <div class="col">DETAIL</div>
-                                <div class="col">YOU GAVE<br><small style="color:red">Rs {{ $total_given_amount }}</small>
+                                <div class="col">YOU GAVE<br><small style="color:red">Rs
+                                        {{ $total_given_amount }}</small>
                                 </div>
                                 <div class="col">YOU GOT<br><small style="color:green">{{ $total_got_amount }}</small>
                                 </div>
@@ -214,10 +217,13 @@ $total_given_amount = $total_got_amount = 0;
                                     <li class="table-row">
                                         <div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small>
                                         </div>
-                                        <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small></div>
+                                        <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small>
+                                        </div>
                                         <div class="col div-two" data-label="You Give">
-                                            <small>{{ $pay->given_amount }}</small></div>
-                                        <div class="col div-three" data-label="You Got"><small>{{ $pay->got_amount }}</small>
+                                            <small>{{ $pay->given_amount }}</small>
+                                        </div>
+                                        <div class="col div-three" data-label="You Got">
+                                            <small>{{ $pay->got_amount }}</small>
                                         </div>
                                         <div class="col div-one" data-label="Balance">
                                             <small>
@@ -228,36 +234,38 @@ $total_given_amount = $total_got_amount = 0;
                                 </a>
                             @empty
                             @endforelse
-    
+
                         </ul>
                     @endif
-                        <div class="text-center buttons btn-give-got">
-                            <!-- Button trigger modal -->
-                            <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal" data-bs-target="#yougave">
-                                <span class="m-2 text-white">YOU GAVE (Rs)</span>
-                            </button>
-                            <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal" data-bs-target="#yougot">
-                                <span class="m-2 text-white">YOU GOT (Rs)</span>
-                            </button>
-                        </div>
+                    <div class="text-center buttons btn-give-got">
+                        <!-- Button trigger modal -->
+                        <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                            data-bs-target="#yougave">
+                            <span class="m-2 text-white">YOU GAVE (Rs)</span>
+                        </button>
+                        <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                            data-bs-target="#yougot">
+                            <span class="m-2 text-white">YOU GOT (Rs)</span>
+                        </button>
                     </div>
                 </div>
-			</div>
-		</div>
+            </div>
+        </div>
+    </div>
 
-		<div id="Paris" class="tabcontent">
-            <h3>Paris</h3>
-            <p>Paris is the capital of France.</p> 
-		</div>
+    <div id="Paris" class="tabcontent">
+        <h3>Paris</h3>
+        <p>Paris is the capital of France.</p>
+    </div>
 
-		<div id="Billbook" class="tabcontent">
-            <div class="row">
-                <div class="col-sm-3 main_div">
-                    <div class="background-dark header-issue  p-3">
-                        <div style="width: 100%;">
-                            <span class="text-center">Bill Book</span>
-                        </div>
-                        {{-- <i class="fa-solid fa-building-columns"></i>
+    <div id="Billbook" class="tabcontent">
+        <div class="row">
+            <div class="col-sm-3 main_div">
+                <div class="background-dark header-issue  p-3">
+                    <div style="width: 100%;">
+                        <span class="text-center">Bill Book</span>
+                    </div>
+                    {{-- <i class="fa-solid fa-building-columns"></i>
                         <div class="menu-nav">
                             <div class="dropdown-container" tabindex="-1">
                                 <div class="three-dots"></div>
@@ -275,11 +283,11 @@ $total_given_amount = $total_got_amount = 0;
                                 </div>
                             </div>
                         </div> --}}
-                    </div>
-                    {{-- <div class="row amount mb-2">
+                </div>
+                {{-- <div class="row amount mb-2">
                         @if (isset($details))
                             <?php
-                                $amount_remaning_got = $amount_remaning_given = $amount_remaning_balance = 0;
+                            $amount_remaning_got = $amount_remaning_given = $amount_remaning_balance = 0;
                             ?>
                             @foreach ($details as $detail)
                                 <?php
@@ -317,165 +325,215 @@ $total_given_amount = $total_got_amount = 0;
                             <a href="{{ route('view_report', ['id' => $b]) }}" class="btn view_report text-uppercase">View Report
                                 &nbsp;<i class="fa-solid fa-angle-right"></i></a>
                         </div>
-                    </div>--}}
-                    <!-- Buttons Main -->
-                    <div class="row m-2 mt-3">
-                        @if (!empty($bills))
+                    </div> --}}
+                <!-- Buttons Main -->
+                <div class="row m-2 mt-3">
+                    @if (!empty($bills))
                         <h3>Rs. {{ count($bills) }}</h3>
-                        @endif
-                        
-                        <h6>Total Sale for {{ Carbon::now()->month; }}</h6>
-                    </div>
-                    <!--End Buttons Main -->
-                   <!-- Create New Bill Start -->
-                   <div class="row m-2 mt-3">
-                        <button class="btn background-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Create New Bill</button>
-                    </div>
-                   <!-- Create New Bill End -->
-                    <!-- Search Bar -->
-                    <div class="row bg-light p-2 m-0">
-                        <div class="col">
-                            <input type="text" class="form-control rounded-pill search_bar" name="search"
-                                placeholder="Search Here">
-                        </div>
-                    </div> 
-                    @forelse($bills as  $index => $item)
-                        <div class="profile-span mb-1">
-                            <a data-toggle="tab" href="#tab-{{ $item->id }}" type="button"
-                                class="btn btn-div mb-2">
-                                <div class="row">
-                                    <div class="col-sm-2">
-                                        <div class="" style="border-radius: 50%; width: 50px; height: 50px; background-color: white; padding: 6px;">
-                                            <h3> {{$loop->iteration}}</h3>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
-                                        <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <h6>Rs. {{ $item->amount }}</h6>
-                                        <span style="font-size: 1rem !important;">{{$item->method}}</span>
-                                    </div>
-                                </div>
+                    @endif
 
-                            </a>
-                        </div>
-                    @empty
-                    @endforelse
-                    <div class="text-center buttons">
-                        <!-- Button trigger modal -->
-                        <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                            data-bs-target="#customer-add">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="m-2 text-white">Add Customer</span>
-                        </button>
+                    <h6>Total Sale for {{ Carbon::now()->month }}</h6>
+                </div>
+                <!--End Buttons Main -->
+                <!-- Create New Bill Start -->
+                <div class="row m-2 mt-3">
+                    <button class="btn background-dark" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Create New Bill</button>
+                </div>
+                <!-- Create New Bill End -->
+                <!-- Search Bar -->
+                <div class="row bg-light p-2 m-0">
+                    <div class="col">
+                        <input type="text" class="form-control rounded-pill search_bar" name="search"
+                            placeholder="Search Here">
                     </div>
                 </div>
-                <div class="col-sm-9 second-div">
-                    <div class="bg-light bg-gradient header-info p-0">
-                        <div class="header-profile">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Userimage.png" width="40"
-                                class="rounded-circle" />
-                            <span style="margin-left: 15px;">
-                                <h3 style="margin-bottom:0rem">{{ $customer['name'] }}</h3>
-                                <small>{{ $customer['phone_number'] }}</small>
-                            </span>
-                        </div>
-                        <div style="margin-top: 15%"  class="tab-content">
-                            @foreach($bills as $queue)
-                                <div id="tab-{{ $queue->id }}" class="tab-pane fade">
-                                    <p>{{ $queue->amount }}</p>
-                                </div>
-                           @endforeach
-                       </div>
-                        @if (sizeof($payment) != 0)
-                            <div class="header-amount">
-                                <span class="">
-                                    <h6>
-                                        <span class="display-4"
-                                            style="color:
+                {{-- <div class="profile-span mb-1">
+                        @forelse($bills as  $index => $item)
+                                <a href="#" type="button"
+                                    class="btn btn-div mb-2 {{ $item->id == 1 ? 'active' : '' }}" href="#home{{ $item->id }}" aria-controls="home{{$item->id}}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <div class="" style="border-radius: 50%; width: 50px; height: 50px; background-color: white; padding: 6px;">
+                                                <h3> {{$loop->iteration}}</h3>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
+                                            <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h6>Rs. {{ $item->amount }}</h6>
+                                            <span style="font-size: 1rem !important;">{{$item->method}}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            @empty
+                        @endforelse
+                    </div> --}}
+
+                <div class="text-center buttons">
+                    <!-- Button trigger modal -->
+                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                        data-bs-target="#customer-add">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="m-2 text-white">Add
+                            Customer</span>
+                    </button>
+                </div>
+
+                <div
+                    class="nav flex-column nav-tabs text-center"
+                    id="v-tabs-tab"
+                    role="tablist"
+                    aria-orientation="vertical"
+                    >
+                    <a
+                        class="nav-link active"
+                        id="v-tabs-home-tab"
+                        data-mdb-toggle="tab"
+                        href="#v-tabs-home"
+                        role="tab"
+                        aria-controls="v-tabs-home"
+                        aria-selected="true"
+                        >Home</a
+                        >
+                    <a
+                        class="nav-link"
+                        id="v-tabs-profile-tab"
+                        data-mdb-toggle="tab"
+                        href="#v-tabs-profile"
+                        role="tab"
+                        aria-controls="v-tabs-profile"
+                        aria-selected="false"
+                        >Profile</a
+                        >
+                    <a
+                        class="nav-link"
+                        id="v-tabs-messages-tab"
+                        data-mdb-toggle="tab"
+                        href="#v-tabs-messages"
+                        role="tab"
+                        aria-controls="v-tabs-messages"
+                        aria-selected="false"
+                        >Messages</a
+                        >
+                </div>
+            </div>
+            <div class="col-sm-9 second-div">
+                <div class="bg-light bg-gradient header-info p-0">
+                    <div class="header-profile">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Userimage.png" width="40"
+                            class="rounded-circle" />
+                        <span style="margin-left: 15px;">
+                            <h3 style="margin-bottom:0rem">{{ $customer['name'] }}</h3>
+                            <small>{{ $customer['phone_number'] }}</small>
+                        </span>
+                    </div>
+                    @if (sizeof($payment) != 0)
+                        <div class="header-amount">
+                            <span class="">
+                                <h6>
+                                    <span class="display-4"
+                                        style="color:
                                           @if ($total_given_amount > $total_got_amount) red
                                           @elseif($total_given_amount < $total_got_amount)
                                               green
                                           @elseif($pay->balance == 0)
                                           black @endif">
-                                            @if ($total_given_amount == $total_got_amount)
-                                                Rs 0
-                                            @else
-                                                Rs {{ abs($total_given_amount - $total_got_amount) }}
-                                            @endif
-                                        </span>
-                                        <small>
-                                            @if ($pay->balance == 0)
-                                            @elseif($total_given_amount > $total_got_amount)
-                                                You Will Get
-                                            @elseif($total_given_amount < $total_got_amount)
-                                                You Will Give
-                                            @endif
-                                        </small>
-                                    </h6>
-                                </span>
-                            </div>
-                        @else
-                            <div class="header-amount">
-                                <span class="">
-                                    <h6>
-                                        <span class="display-4">
+                                        @if ($total_given_amount == $total_got_amount)
                                             Rs 0
-                                        </span>
-                                    </h6>
-                                </span>
-                            </div>
-                        @endif
-    
-                        <div class="menu-nav">
-                            <div class="dropdown-container" tabindex="-1">
-                                <div class="three-dots"></div>
-                                <div class="dropdown">
-                                    <div class="drop mb-2"><a href=""> Customer Profile </a></div>
-                                    <div class="drop mb-2"><a href=""> Customer Ledger </a></div>
-                                    <div class="drop mb-2"><a href=""> Delete Customer </a></div>
-                                    <div class="drop mb-2"><a href=""> Switch to Supplier </a></div>
-                                    <div class="drop mb-2"><a href=""> Call </a></div>
-                                </div>
+                                        @else
+                                            Rs {{ abs($total_given_amount - $total_got_amount) }}
+                                        @endif
+                                    </span>
+                                    <small>
+                                        @if ($pay->balance == 0)
+                                        @elseif($total_given_amount > $total_got_amount)
+                                            You Will Get
+                                        @elseif($total_given_amount < $total_got_amount)
+                                            You Will Give
+                                        @endif
+                                    </small>
+                                </h6>
+                            </span>
+                        </div>
+                    @else
+                        <div class="header-amount">
+                            <span class="">
+                                <h6>
+                                    <span class="display-4">
+                                        Rs 0
+                                    </span>
+                                </h6>
+                            </span>
+                        </div>
+                    @endif
+                    <div class="menu-nav">
+                        <div class="dropdown-container" tabindex="-1">
+                            <div class="three-dots"></div>
+                            <div class="dropdown">
+                                <div class="drop mb-2"><a href=""> Customer Profile </a></div>
+                                <div class="drop mb-2"><a href=""> Customer Ledger </a></div>
+                                <div class="drop mb-2"><a href=""> Delete Customer </a></div>
+                                <div class="drop mb-2"><a href=""> Switch to Supplier </a></div>
+                                <div class="drop mb-2"><a href=""> Call </a></div>
                             </div>
                         </div>
                     </div>
-                    @if (sizeof($payment) != 0)
-                        <ul class="responsive-table">
-                            <li class="table-header mb-2">
-                                <div class="col">ENTRIES<br>
-                                    ({{ sizeof($payment) }})
-                                </div>
-                                <div class="col">Item</div>
-                                <div class="col">Quantity<br><small style="color:red">Rs {{ $total_given_amount }}</small>
-                                </div>
-                                <div class="col">Rate<br><small style="color:green">{{ $total_got_amount }}</small>
-                                </div>
-                                <div class="col">Amount</div>
-                            </li>
-                            @forelse($payment as $pay)
-                                <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
-                                    <li class="table-row">
-                                        <div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small>
-                                        </div>
-                                        <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small></div>
-                                        <div class="col div-two" data-label="You Give">
-                                            <small>{{ $pay->given_amount }}</small></div>
-                                        <div class="col div-three" data-label="You Got"><small>{{ $pay->got_amount }}</small>
-                                        </div>
-                                        <div class="col div-one" data-label="Balance">
-                                            <small>
-                                                {{ $pay->balance }}
-                                            </small>
-                                        </div>
-                                    </li>
-                                </a>
-                            @empty
-                            @endforelse
-    
-                        </ul>
-                    @endif
+                </div>
+               
+                <!-- Tab content -->
+                <div class="tab-content" id="v-tabs-tabContent">
+                    <div class="tab-pane fade show active" id="v-tabs-home" role="tabpanel"
+                        aria-labelledby="v-tabs-home-tab">
+                        Home content
+                    </div>
+                    <div class="tab-pane fade" id="v-tabs-profile" role="tabpanel"
+                        aria-labelledby="v-tabs-profile-tab">
+                        Profile content
+                    </div>
+                    <div class="tab-pane fade" id="v-tabs-messages" role="tabpanel"
+                        aria-labelledby="v-tabs-messages-tab">
+                        Messages content
+                    </div>
+                </div>
+                <!-- Tab content -->
+                
+                {{-- @if (sizeof($payment) != 0)
+                            <ul class="responsive-table">
+                                <li class="table-header mb-2">
+                                    <div class="col">ENTRIES<br>
+                                        ({{ sizeof($payment) }})
+                                    </div>
+                                    <div class="col">Item</div>
+                                    <div class="col">Quantity<br><small style="color:red">Rs {{ $total_given_amount }}</small>
+                                    </div>
+                                    <div class="col">Rate<br><small style="color:green">{{ $total_got_amount }}</small>
+                                    </div>
+                                    <div class="col">Amount</div>
+                                </li>
+                                @forelse($payment as $pay)
+                                    <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
+                                        <li class="table-row">
+                                            <div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small>
+                                            </div>
+                                            <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small></div>
+                                            <div class="col div-two" data-label="You Give">
+                                                <small>{{ $pay->given_amount }}</small></div>
+                                            <div class="col div-three" data-label="You Got"><small>{{ $pay->got_amount }}</small>
+                                            </div>
+                                            <div class="col div-one" data-label="Balance">
+                                                <small>
+                                                    {{ $pay->balance }}
+                                                </small>
+                                            </div>
+                                        </li>
+                                    </a>
+                                @empty
+                                @endforelse
+        
+                            </ul>
+                        @endif
                         <div class="text-center buttons btn-give-got">
                             <!-- Button trigger modal -->
                             <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal" data-bs-target="#yougave">
@@ -484,13 +542,13 @@ $total_given_amount = $total_got_amount = 0;
                             <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal" data-bs-target="#yougot">
                                 <span class="m-2 text-white">YOU GOT (Rs)</span>
                             </button>
-                        </div>
-                    </div>
-                </div>
+                        </div> --}}
+                {{-- </div> --}}
             </div>
-		</div>
-
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        </div>
+    </div>
+    {{-- Create Bill --}}
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 id="offcanvasRightLabel">Create New Bill</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -512,8 +570,7 @@ $total_given_amount = $total_got_amount = 0;
                 </div>
                 <div class="mb-3">
                     <label for="Date">Date</label>
-                    <input type="date" class="form-control" name="date" id="date"
-                        placeholder="Enter Date" >
+                    <input type="date" class="form-control" name="date" id="date" placeholder="Enter Date">
                     <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
                 </div>
                 <div class="mb-3">
@@ -524,42 +581,42 @@ $total_given_amount = $total_got_amount = 0;
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
-                    
+
                     <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
                 </div>
                 <div>
                     <input type="checkbox" value="cash" name="method" id=""> Cash
                     <input type="checkbox" name="method" value="credit" class="openmodal" value="">Credit
                     {{-- <div id="myModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Add Entry to Party</h4>
-                                </div>
-                                <div class="modal-body">
-                                    @forelse($suppliers as $item)
-                                        <div class="profile-span mb-1">
-                                            <a href="#" type="button" id="party"
-                                                class="btn btn-div mb-2">
-                                                <div class="mb-1 mt-1 profile-image-div">
-                                                    <img class="profile-image" src="{{ asset('E-khata') }}/images/logo/profile.png">
-                                                    <span class="business-name">{{ $item->name }}</span>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    @empty
-                                    @endforelse
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Add Entry to Party</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        @forelse($suppliers as $item)
+                                            <div class="profile-span mb-1">
+                                                <a href="#" type="button" id="party"
+                                                    class="btn btn-div mb-2">
+                                                    <div class="mb-1 mt-1 profile-image-div">
+                                                        <img class="profile-image" src="{{ asset('E-khata') }}/images/logo/profile.png">
+                                                        <span class="business-name">{{ $item->name }}</span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        @empty
+                                        @endforelse
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> --}}
+                        </div> --}}
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
-        </div>
-        {{-- <div class="row">
+    </div>
+    {{-- <div class="row">
             <div class="col-sm-3 main_div">
                 <div class="background-dark header-issue  p-3">
                     <div style="width: 100%;">
@@ -587,7 +644,7 @@ $total_given_amount = $total_got_amount = 0;
                 <div class="row amount mb-2">
                     @if (isset($details))
                         <?php
-                        	$amount_remaning_got = $amount_remaning_given = $amount_remaning_balance = 0;
+                        $amount_remaning_got = $amount_remaning_given = $amount_remaning_balance = 0;
                         ?>
                         @foreach ($details as $detail)
                             <?php
@@ -793,16 +850,16 @@ $total_given_amount = $total_got_amount = 0;
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('add_customer') }}" method="POST">
-                    @csrf()
-                    <div class="mb-3">
-                        <input type="text" class="form-control" name="name_customer" id="name_customer"
-                            placeholder="Enter Name ">
-                    </div>
-                    <div class="mb-3">
-                        <input type="text" class="form-control" name="phone_number" id="phone_number"
-                            placeholder="Enter Phone (Optional) ">
-                        <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
-                    </div>
+                        @csrf()
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="name_customer" id="name_customer"
+                                placeholder="Enter Name ">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="phone_number" id="phone_number"
+                                placeholder="Enter Phone (Optional) ">
+                            <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Create Customer</button>
@@ -1257,56 +1314,57 @@ $total_given_amount = $total_got_amount = 0;
             });
         });
     </script>
-	<script>
-		function openCity(evt, cityName) {
-		  var i, tabcontent, tablinks;
-		  tabcontent = document.getElementsByClassName("tabcontent");
-		  for (i = 0; i < tabcontent.length; i++) {
-			tabcontent[i].style.display = "none";
-		  }
-		  tablinks = document.getElementsByClassName("tablinks");
-		  for (i = 0; i < tablinks.length; i++) {
-			tablinks[i].className = tablinks[i].className.replace(" active", "");
-		  }
-		  document.getElementById(cityName).style.display = "block";
-		  evt.currentTarget.className += " active";
-		}
-		
-		// Get the element with id="defaultOpen" and click on it
-		document.getElementById("defaultOpen").click();
-	</script>
     <script>
-        $('.openmodal').click(function(){
-        if($(this).is(':checked')) {
-            $('#myModal').modal('show');
-        } else {
-        $('#myModal').on('hidden.bs.modal', function () { 
-            console.log('not working');
-            $('.openmodal').removeAttr('checked')});
+        function openCity(evt, cityName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
         }
-           
-        // });
-        // $('#myModal').on('hide.bs.modal', function () { 
-        //      $('.openmodal').removeAttr('checked')
+
+        // Get the element with id="defaultOpen" and click on it
+        document.getElementById("defaultOpen").click();
+    </script>
+    <script>
+        $('.openmodal').click(function() {
+            if ($(this).is(':checked')) {
+                $('#myModal').modal('show');
+            } else {
+                $('#myModal').on('hidden.bs.modal', function() {
+                    console.log('not working');
+                    $('.openmodal').removeAttr('checked')
+                });
+            }
+
+            // });
+            // $('#myModal').on('hide.bs.modal', function () { 
+            //      $('.openmodal').removeAttr('checked')
         });
 
 
         // the selector will match all input controls of type :checkbox
         // and attach a click event handler 
         $("input:checkbox").on('click', function() {
-        // in the handler, 'this' refers to the box clicked on
-        var $box = $(this);
-        if ($box.is(":checked")) {
-            // the name of the box is retrieved using the .attr() method
-            // as it is assumed and expected to be immutable
-            var group = "input:checkbox[name='" + $box.attr("name") + "']";
-            // the checked state of the group/box on the other hand will change
-            // and the current value is retrieved using .prop() method
-            $(group).prop("checked", false);
-            $box.prop("checked", true);
-        } else {
-            $box.prop("checked", false);
-        }
+            // in the handler, 'this' refers to the box clicked on
+            var $box = $(this);
+            if ($box.is(":checked")) {
+                // the name of the box is retrieved using the .attr() method
+                // as it is assumed and expected to be immutable
+                var group = "input:checkbox[name='" + $box.attr("name") + "']";
+                // the checked state of the group/box on the other hand will change
+                // and the current value is retrieved using .prop() method
+                $(group).prop("checked", false);
+                $box.prop("checked", true);
+            } else {
+                $box.prop("checked", false);
+            }
         });
     </script>
 @endsection
