@@ -559,7 +559,6 @@
                 </div>
             </div>
             <div class="col-sm-9 second-div">
-                
                     <div class="bg-light bg-gradient header-info p-0">
                         <h4>Bill Detail</h4>
                     </div>
