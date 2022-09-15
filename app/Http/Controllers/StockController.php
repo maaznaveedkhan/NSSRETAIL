@@ -19,14 +19,16 @@ class StockController extends Controller
         return view('layout.all_stock',compact('stocks','stock_details'));
     }
 
-    public function add_stock(Request $request,$id){
-        $id = $request->business_id;
+    public function add_item(Request $request){
+
+        $b = $request->business_id;
         $stock = new Stock();
-        $stock->business_id = $id;
+        $stock->business_id = $b;
         $stock->item_name = $request->item_name;
         $stock->item_unit = $request->item_unit;
         $stock->sale_rate = $request->sale_rate;
         $stock->purchase_rate = $request->purchase_rate;
+        return $stock;
         $stock->save();
         
         // $id =$stock->id; 

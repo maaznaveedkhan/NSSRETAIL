@@ -68,7 +68,7 @@ Route::delete('delete_payment' , [SupplierController::class, 'DeletePayment'])->
 
 //Stock Route
 Route::get('stock/{id}', [StockController::class, 'index'])->name('view_stock');
-Route::post('add_stockitem', [StockController::class, 'add_stock'])->name('add-item');
+Route::post('add_item', [StockController::class, 'add_item'])->name('add_item');
 Route::get('stock_page/{id}' , [StockController::class, 'stock_page'])->name('stock-page');
 Route::post('qty_in/{id}', [StockController::class, 'qty_in'])->name('qty-in');
 Route::post('qty_out/{id}', [StockController::class, 'qty_out'])->name('qty-out');
