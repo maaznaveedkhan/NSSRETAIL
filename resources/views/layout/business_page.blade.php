@@ -546,76 +546,117 @@
                         <h6>Balance</h6>
                     </div>
                 </div>
-                <div class="row ms-1 me-1">
-                    <div class="col-md-4">
-                        <h6>11 Sep 2022</h6>
-                    </div>
-                    <div class="col-md-4">
-                        <h6>Rs. 0</h6>
-                    </div>
-                    <div class="col-md-4">
-                        <h6>Rs. 0</h6>
-                    </div>
-                </div>
+                @foreach ($cash as $item)
+                    {{-- @foreach ($item  as $element) --}}
+                        <a href="">
+                            <div class="row ms-1 me-1">
+                                <div class="col-md-4">
+                                    <h6>{{ $item->date }}</h6>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>Rs. 0</h6>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>Rs. 0</h6>
+                                </div>
+                            </div>
+                        </a>
+                    {{-- @endforeach --}}
+                @endforeach
             </div>
             <div class="col-sm-9 second-div">
-                    <div class="bg-light bg-gradient header-info p-0">
-                        <h4>Bill Detail</h4>
-                    </div>
                     <div class="tab-content">
-                        @foreach ($bills as $item)
-                        <div role="tabpanel" class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="home{{ $item->id }}">
-                            {{-- <div class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="{{$item->id}}" role="tabpanel" > --}}
-                                {{-- <h3>{{$item->amount}}</h3> --}}
-                            <div class="row text-center">
-                                <h5>Bill # {{ $loop->iteration }}</h5>
-                            </div>
-                            <div class="row text-center">
-                                <h5> {{ $item->date }}</h5>
-                            </div>
-                            <table class="table table-striped">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">Item</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Rate</th>
-                                    <th scope="col">Amount</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <th scope="row">{{$item->item}}</th>
-                                    <td>{{$item->quantity}}</td>
-                                    <td>{{$item->rate}}</td>
-                                    <td>{{$item->amount}}</td>
-                                  </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th scope="row">{{$item->item}}</th>
-                                    <td>Total</td>
-                                    <td>
-                                        
-                                    </td>
-                                        <td>Rs. {{$item->amount}}</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                            <div class="row float-left">
-                                <h5>Detail</h5>
-                                <p>{{$item->detail}}</p>
-                            </div>
-                            <div class="row text-center justify-content-center">
-                                <div class="col-md-6">
-                                    <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a>
+                        {{-- <div role="tabpanel" class="tab-pane fade " id="home{{ $item->id }}"> --}}
+                            <div class="bg-light bg-gradient header-info p-0">
+                                <div class="header-profile">
+                                    <span style="margin-left: 15px;">
+                                        <h3 style="margin-bottom:0rem">Date</h3>
+                                    </span>
                                 </div>
-                                <div class="col-md-6">
-                                    <a href="{{ route('delete_bill',$item->id) }}" class="btn btn-outline-danger" style="width: 15rem">Delete Entry</a>
-                                </div>
-                                {{-- <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a> --}}
+                                <div class="header-amount">
+                                    <span class="">
+                                        <h6>
+                                            <span class="display-6">
+                                                Today Balance - Rs 0
+                                            </span>
+                                        </h6>
+                                    </span>
+                                </div>        
                             </div>
-                            
-                        </div>
+                            {{-- @if (sizeof($payment) != 0) --}}
+                                <ul class="responsive-table">
+                                    <li class="table-header mb-2">
+                                        <div class="col">ENTRIES<br>
+                                            ({{ sizeof($payment) }})
+                                        </div>
+                                        <div class="col">DETAIL</div>
+                                        <div class="col">YOU GAVE<br><small style="color:red">Rs
+                                                {{ $total_given_amount }}</small>
+                                        </div>
+                                        <div class="col">YOU GOT<br><small style="color:green">{{ $total_got_amount }}</small>
+                                        </div>
+                                        <div class="col">BALANCE</div>
+                                    </li>
+                                    {{-- @foreach ($cash as $item)
+                                        @forelse ($item  as $element)
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
+                                                <li class="table-row">
+                                                    <div class="col div-one" data-label="Entries"><small>{{ $element->date }}</small>
+                                                    </div>
+                                                    <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
+                                                    </div>
+                                                    <div class="col div-two" data-label="You Give">
+                                                        <small>{{ $element->cash_out }}</small>
+                                                    </div>
+                                                    <div class="col div-three" data-label="You Got">
+                                                        <small>{{ $element->cash_in }}</small>
+                                                    </div>
+                                                    <div class="col div-one" data-label="Balance">
+                                                        <small>
+                                                            {{ $element->balance }}
+                                                        </small>
+                                                    </div>
+                                                </li>
+                                            </a>
+                                        @empty
+                                        @endforelse
+                                    @endforeach --}}
+                                    {{-- @forelse($payment as $pay)
+                                        <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
+                                            <li class="table-row">
+                                                <div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small>
+                                                </div>
+                                                <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small>
+                                                </div>
+                                                <div class="col div-two" data-label="You Give">
+                                                    <small>{{ $pay->given_amount }}</small>
+                                                </div>
+                                                <div class="col div-three" data-label="You Got">
+                                                    <small>{{ $pay->got_amount }}</small>
+                                                </div>
+                                                <div class="col div-one" data-label="Balance">
+                                                    <small>
+                                                        {{ $pay->balance }}
+                                                    </small>
+                                                </div>
+                                            </li>
+                                        </a>
+                                    @empty
+                                    @endforelse --}}
+                                </ul>
+                            {{-- @endif --}}
+                            <div class="text-center buttons btn-give-got">
+                                <!-- Button trigger modal -->
+                                <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                                    data-bs-target="#cash_in">
+                                    <span class="m-2 text-white">Cash In</span>
+                                </button>
+                                <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                                    data-bs-target="#cash_out">
+                                    <span class="m-2 text-white">Cash Out</span>
+                                </button>
+                            </div>
+                        {{-- </div> --}}
                         <div class="modal fade" id="edit-bill" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
@@ -644,7 +685,6 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
                         {{-- <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
                         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
@@ -723,225 +763,7 @@
             </form>
         </div>
     </div>
-    {{-- <div class="row">
-            <div class="col-sm-3 main_div">
-                <div class="background-dark header-issue  p-3">
-                    <div style="width: 100%;">
-                        <span class="text-center">{{ $customer['business_name'] }}</span>
-                    </div>
-                    <i class="fa-solid fa-building-columns"></i>
-                    <div class="menu-nav">
-                        <div class="dropdown-container" tabindex="-1">
-                            <div class="three-dots"></div>
-                            <div class="dropdowns">
-                                <div class="drop mb-2"><a href=""> Filter Customer List </a></div>
-                                <div class="drop mb-2"><a href=""> Customer List PDF </a></div>
-                                <div class="drop mb-2"><a href=""> Profile </a></div>
-                                <div class="drop mb-2"><a href=""> About Us </a></div>
-                                <div class="drop mb-2"><a href=""> Language </a></div>
-                                <div class="drop mb-2"><a href=""> Help & Support </a></div>
-                                <div class="drop mb-2"><a href=""> Cash Register </a></div>
-                                <div class="drop mb-2"><a href=""> Recyle Bin </a></div>
-                                <div class="drop mb-2"><a href=""> EasyDokan </a></div>
-                                <div class="drop mb-2"><a href=""> Logout </a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row amount mb-2">
-                    @if (isset($details))
-                        <?php
-                        $amount_remaning_got = $amount_remaning_given = $amount_remaning_balance = 0;
-                        ?>
-                        @foreach ($details as $detail)
-                            <?php
-                            $amount_remaning_given += $detail->given_amount;
-                            $amount_remaning_got += $detail->got_amount;
-                            $amount_remaning_balance += $detail->balance;
-                            ?>
-                        @endforeach
-                        <div class="col given_amount float-right text-center" style="width:30%">
-                            @if ($amount_remaning_given > $amount_remaning_got)
-                                <span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
-                            @endif
-                            <small>You Will Give</small>
-                        </div>
-                        <div class="col text-center">
-                            @if ($amount_remaning_balance < $amount_remaning_got)
-                                <span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
-                            @endif
-                            <small>You Will Get</small>
-                        </div>
-                    @else
-                        <div class="col given_amount text-center">
-                            <span>0</span>
-                            <small>You Will Give</small>
-                        </div>
-                        <div class="col float-right text-center" style="width:30%">
-                            <span>0</span>
-                            <small>You Will Get</small>
-                        </div>
-                    @endif
-                </div>
-                <!-- Report View -->
-                <div class="row text-center">
-                    <div>
-                        <a href="{{ route('view_report', ['id' => $b]) }}" class="btn view_report text-uppercase">View Report
-                            &nbsp;<i class="fa-solid fa-angle-right"></i></a>
-                    </div>
-                </div>
-                <!-- Search Bar -->
-                <div class="row bg-light p-2 m-0">
-                    <div class="col">
-                        <input type="text" class="form-control rounded-pill search_bar" name="search"
-                            placeholder="Search Here">
-                    </div>
-                </div>
-                <!-- Buttons Main -->
-                <div class="row m-2 mt-3">
-                    <div class="col">
-                        <a href="{{ route('business_page', ['id' => $b]) }}"
-                            class="set_btn button_main btn btn-outline-danger p-1">Customers</a>
-                    </div>
-                    <div class="col">
-                        <a href="{{ route('all_suppliers', ['business_id' => $b]) }}"
-                            class="button_main btn btn-outline-danger p-1">Suplliers</a>
-                    </div>
-                    <div class="col">
-                        <a href="" class="button_main btn btn-outline-danger p-1">All</a>
-                    </div>
-                </div>
-                <!--End Buttons Main -->
-                @forelse($all_customers as $all_customer)
-                    <div class="profile-span mb-1">
-                        <a href="{{ route('customer', ['id' => $all_customer->id, 'business_id' => $b]) }}" type="button"
-                            class="btn btn-div mb-2">
-                            <div class="mb-1 mt-1 profile-image-div">
-                                <img class="profile-image" src="{{ asset('E-khata') }}/images/logo/profile.png">
-                                <span class="business-name">{{ $all_customer->name }}</span>
-                            </div>
-                        </a>
-                    </div>
-                @empty
-                @endforelse
-                <div class="text-center buttons">
-                    <!-- Button trigger modal -->
-                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                        data-bs-target="#customer-add">
-                        <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="m-2 text-white">Add Customer</span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-sm-9 second-div">
-                <div class="bg-light bg-gradient header-info p-0">
-                    <div class="header-profile">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Userimage.png" width="40"
-                            class="rounded-circle" />
-                        <span style="margin-left: 15px;">
-                            <h3 style="margin-bottom:0rem">{{ $customer['name'] }}</h3>
-                            <small>{{ $customer['phone_number'] }}</small>
-                        </span>
-                    </div>
-                    @if (sizeof($payment) != 0)
-                        <div class="header-amount">
-                            <span class="">
-                                <h6>
-                                    <span class="display-4"
-                                        style="color:
-	      							@if ($total_given_amount > $total_got_amount) red
-	      							@elseif($total_given_amount < $total_got_amount)
-	      								green
-	      							@elseif($pay->balance == 0)
-	      							black @endif">
-                                        @if ($total_given_amount == $total_got_amount)
-                                            Rs 0
-                                        @else
-                                            Rs {{ abs($total_given_amount - $total_got_amount) }}
-                                        @endif
-                                    </span>
-                                    <small>
-                                        @if ($pay->balance == 0)
-                                        @elseif($total_given_amount > $total_got_amount)
-                                            You Will Get
-                                        @elseif($total_given_amount < $total_got_amount)
-                                            You Will Give
-                                        @endif
-                                    </small>
-                                </h6>
-                            </span>
-                        </div>
-                    @else
-                        <div class="header-amount">
-                            <span class="">
-                                <h6>
-                                    <span class="display-4">
-                                        Rs 0
-                                    </span>
-                                </h6>
-                            </span>
-                        </div>
-                    @endif
-
-                    <div class="menu-nav">
-                        <div class="dropdown-container" tabindex="-1">
-                            <div class="three-dots"></div>
-                            <div class="dropdown">
-                                <div class="drop mb-2"><a href=""> Customer Profile </a></div>
-                                <div class="drop mb-2"><a href=""> Customer Ledger </a></div>
-                                <div class="drop mb-2"><a href=""> Delete Customer </a></div>
-                                <div class="drop mb-2"><a href=""> Switch to Supplier </a></div>
-                                <div class="drop mb-2"><a href=""> Call </a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-				@if (sizeof($payment) != 0)
-					<ul class="responsive-table">
-						<li class="table-header mb-2">
-							<div class="col">ENTRIES<br>
-								({{ sizeof($payment) }})
-							</div>
-							<div class="col">DETAIL</div>
-							<div class="col">YOU GAVE<br><small style="color:red">Rs {{ $total_given_amount }}</small>
-							</div>
-							<div class="col">YOU GOT<br><small style="color:green">{{ $total_got_amount }}</small>
-							</div>
-							<div class="col">BALANCE</div>
-						</li>
-						@forelse($payment as $pay)
-							<a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
-								<li class="table-row">
-									<div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small>
-									</div>
-									<div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small></div>
-									<div class="col div-two" data-label="You Give">
-										<small>{{ $pay->given_amount }}</small></div>
-									<div class="col div-three" data-label="You Got"><small>{{ $pay->got_amount }}</small>
-									</div>
-									<div class="col div-one" data-label="Balance">
-										<small>
-											{{ $pay->balance }}
-										</small>
-									</div>
-								</li>
-							</a>
-						@empty
-						@endforelse
-
-					</ul>
-				@endif
-					<div class="text-center buttons btn-give-got">
-						<!-- Button trigger modal -->
-						<button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal" data-bs-target="#yougave">
-							<span class="m-2 text-white">YOU GAVE (Rs)</span>
-						</button>
-						<button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal" data-bs-target="#yougot">
-							<span class="m-2 text-white">YOU GOT (Rs)</span>
-						</button>
-					</div>
-            	</div>
-        	</div>
-    	</div> --}}
+    
     </div>
 
 
@@ -1167,8 +989,210 @@
         </div>
     </div>
 
+    <div class="modal fade" id="cash_in" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Cash In</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="width:100%">
+                    <div style="width:100%">
+                        {{-- <div class="row"> --}}
+                                <form action="{{ route('cash_in') }}" method="POST">
+                                    @csrf()
+                                    <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                                    <div>
+                                        <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                        <input type="text" name="amount" id="amount" class="form-control"
+                                             value="">
+                                    </div>
+                                    <div>
+                                        <label for="detail" class="col-sm-2 col-form-label">Detail</label>
+                                        <input type="text" name="detail" id="detail" class="form-control">
+                                    </div>
+                                    <div>
+                                        <label for="date" class="col-sm-2 col-form-label">Date</label>
+                                        <input type="date" name="date" id="date" class="form-control">
+                                    </div>
+                                    <div>
+                                        <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
+                                        <input type="text" name="bill_no" id="bill" class="form-control">
+                                        <input type="hidden" name="customer_id" id="customer_id" class="form-control"
+                                            value="{{ $customer['id'] }}">
+                                    </div>
+                                    <div>
+                                        <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
+                                        <select name="party" id="">
+                                            @foreach ($suppliers as $item)
+                                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        
+                                    </div>
+                            {{-- <div class="col-sm-7">
+                                <div class="calculator card">
+                                    <!-- <input type="text" class="calculator-screen z-depth-1" value="" disabled /> -->
+                                    <div class="calculator-keys">
+
+                                        <button type="button" class="operator btn btn-info" value="+">+</button>
+                                        <button type="button" class="operator btn btn-info" value="-">-</button>
+                                        <button type="button" class="operator btn btn-info"
+                                            value="*">&times;</button>
+                                        <button type="button" class="operator btn btn-info"
+                                            value="/">&divide;</button>
+
+                                        <button type="button" value="7"
+                                            class="btn btn-light waves-effect">7</button>
+                                        <button type="button" value="8"
+                                            class="btn btn-light waves-effect">8</button>
+                                        <button type="button" value="9"
+                                            class="btn btn-light waves-effect">9</button>
 
 
+                                        <button type="button" value="4"
+                                            class="btn btn-light waves-effect">4</button>
+                                        <button type="button" value="5"
+                                            class="btn btn-light waves-effect">5</button>
+                                        <button type="button" value="6"
+                                            class="btn btn-light waves-effect">6</button>
+
+
+                                        <button type="button" value="1"
+                                            class="btn btn-light waves-effect">1</button>
+                                        <button type="button" value="2"
+                                            class="btn btn-light waves-effect">2</button>
+                                        <button type="button" value="3"
+                                            class="btn btn-light waves-effect">3</button>
+
+
+                                        <button type="button" value="0"
+                                            class="btn btn-light waves-effect">0</button>
+                                        <button type="button" class="decimal function btn btn-secondary"
+                                            value=".">.</button>
+                                        <button type="button" class="all-clear function btn btn-danger btn-sm"
+                                            value="all-clear">AC</button>
+
+                                        <button type="button" class="equal-sign operator btn btn-default"
+                                            value="=">=</button>
+                                    </div>
+                                </div>
+                            </div> --}}
+                        {{-- </div> --}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit	" class="btn btn-primary">Save</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="cash_out" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">
+                            Cash Out</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="width:100%">
+                        <div style="width:100%">
+                            {{-- <div class="row"> --}}
+                                    <form action="{{ route('cash_out') }}" method="POST">
+                                        @csrf()
+                                        <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                                        <div>
+                                            <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                            <input type="text" name="amount" id="amount" class="form-control"
+                                                value="">
+                                        </div>
+                                        <div>
+                                            <label for="detail" class="col-sm-2 col-form-label">Detail</label>
+                                            <input type="text" name="detail" id="detail" class="form-control">
+                                        </div>
+                                        <div>
+                                            <label for="date" class="col-sm-2 col-form-label">Date</label>
+                                            <input type="date" name="date" id="date" class="form-control">
+                                        </div>
+                                        <div>
+                                            <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
+                                            <input type="text" name="bill_no" id="bill" class="form-control">
+                                            <input type="hidden" name="customer_id" id="customer_id" class="form-control"
+                                                value="{{ $customer['id'] }}">
+                                        </div>
+                                        <div>
+                                            <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
+                                            <select name="party" id="">
+                                                @foreach ($suppliers as $item)
+                                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            
+                                        </div>
+                                {{-- <div class="col-sm-7">
+                                    <div class="calculator card">
+                                        <!-- <input type="text" class="calculator-screen z-depth-1" value="" disabled /> -->
+                                        <div class="calculator-keys">
+
+                                            <button type="button" class="operator btn btn-info" value="+">+</button>
+                                            <button type="button" class="operator btn btn-info" value="-">-</button>
+                                            <button type="button" class="operator btn btn-info"
+                                                value="*">&times;</button>
+                                            <button type="button" class="operator btn btn-info"
+                                                value="/">&divide;</button>
+
+                                            <button type="button" value="7"
+                                                class="btn btn-light waves-effect">7</button>
+                                            <button type="button" value="8"
+                                                class="btn btn-light waves-effect">8</button>
+                                            <button type="button" value="9"
+                                                class="btn btn-light waves-effect">9</button>
+
+
+                                            <button type="button" value="4"
+                                                class="btn btn-light waves-effect">4</button>
+                                            <button type="button" value="5"
+                                                class="btn btn-light waves-effect">5</button>
+                                            <button type="button" value="6"
+                                                class="btn btn-light waves-effect">6</button>
+
+
+                                            <button type="button" value="1"
+                                                class="btn btn-light waves-effect">1</button>
+                                            <button type="button" value="2"
+                                                class="btn btn-light waves-effect">2</button>
+                                            <button type="button" value="3"
+                                                class="btn btn-light waves-effect">3</button>
+
+
+                                            <button type="button" value="0"
+                                                class="btn btn-light waves-effect">0</button>
+                                            <button type="button" class="decimal function btn btn-secondary"
+                                                value=".">.</button>
+                                            <button type="button" class="all-clear function btn btn-danger btn-sm"
+                                                value="all-clear">AC</button>
+
+                                            <button type="button" class="equal-sign operator btn btn-default"
+                                                value="=">=</button>
+                                        </div>
+                                    </div>
+                                </div> --}}
+                            {{-- </div> --}}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit	" class="btn btn-primary">Save</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
 
     <!-- Modal -->
     @foreach ($payment as $pay)

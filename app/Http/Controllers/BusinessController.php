@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BillBook;
 use Illuminate\Http\Request;
 use App\Models\Business;
+use App\Models\CashBook;
 use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\User;
@@ -39,15 +40,16 @@ class BusinessController extends Controller
         $customer = Customer::where('id', '=',$id)->latest()->first();
         $payment = DB::table('bussinesses_customers')->select('*')->where('customer_id', '=', $customer->id)->get();
         $suppliers = Supplier::where('business_id',$id)->get();
-       $bills = BillBook::where('business_id',$id)->get();
+        $bills = BillBook::where('business_id',$id)->get();
         $details = DB::table('customers')
                 ->join('bussinesses_customers', 'customers.id', '=', 'bussinesses_customers.customer_id')
                 ->get();
-
+        $cash = CashBook::select('date')->distinct()->get();
         if($customer != null){
-            return view('layout.business_page', compact('customer', 'all_customers', 'b', 'payment', 'details','suppliers','bills'));
+            return view('layout.business_page', compact('customer', 'all_customers', 'b', 'payment', 'details','suppliers','bills','cash'));
         }else{
             return view('layout.all_customers', compact('b'));
         }
     }
+
 }

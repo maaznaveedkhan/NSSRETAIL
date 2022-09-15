@@ -287,7 +287,7 @@
   .tab {
       float: left;
       border: 1px solid;
-      background-color: blue;
+      background-color: #f37111;
       width: 10%;
       height: 100%;
   }

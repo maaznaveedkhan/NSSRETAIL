@@ -13,15 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cashes', function (Blueprint $table) {
+        Schema::create('cash_books', function (Blueprint $table) {
             $table->id();
             $table->string('business_id')->nullable();
-            $table->string('cash')->nullable();
+            $table->date('date')->nullable();
+            $table->string('amount')->nullable();
+            $table->decimal('cash_in')->nullable();
+            $table->decimal('cash_out')->nullable();
+            $table->string('bill_no')->nullable();
+            $table->string('party')->nullable();
             $table->string('detail')->nullable();
-            $table->string('in')->nullable();
-            $table->string('out')->nullable();
-            $table->string('balance')->nullable();
-            $table->time('time')->nullable();
+            $table->decimal('daily_balance')->nullable();
+            $table->decimal('balance')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cashes');
+        Schema::dropIfExists('cash_books');
     }
 };

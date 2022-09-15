@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BillBookController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\CashBookController;
 use App\Http\Controllers\CashController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
@@ -80,10 +82,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Auth::routes();
 Route::group(['middleware' => ['user', 'auth']], function () {
     Route::get('all_business' , [BusinessController::class, 'AllBusinesses'])->name('all_business');
+    Route::get('cash' , [CashBookController::class, 'cash'])->name('cash');
     Route::post('create_bill',[App\Http\Controllers\BillBookController::class,'add_bill'])->name('create_bill');
     Route::get('edit_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'edit_bill'])->name('edit_bill');
     Route::get('update_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'update_bill'])->name('update_bill');
     Route::get('delete_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'delete_bill'])->name('delete_bill');
+    Route::post('cash_in',[App\Http\Controllers\CashBookController::class,'cash_in'])->name('cash_in');
+    Route::post('cash_out',[App\Http\Controllers\CashBookController::class,'cash_out'])->name('cash_out');
     // Route::get('/user_dashboard', [App\Http\Controllers\HomeController::class, 'user_dashboard'])->name('user_dashboard');
 });
 Route::group(['middleware' => ['admin', 'auth']], function () {
