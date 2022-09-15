@@ -283,103 +283,23 @@
                     </div>
                 </div>
                 <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
-                    @foreach ($bills as $item)
-                        <a style="background-color: #f37111; color:black;" class="nav-link {{ $item->id == 1 ? 'active' : '' }} mb-2" href="#home{{ $item->id }}" aria-controls="home{{$item->id}}" role="tab" aria-selected="true" data-bs-toggle="tab">
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
-                                    <span>{{$item->created_at}}</span>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h6>Rs. {{ $item->amount }}</h6>
-                                    <span>{{$item->method}}</span>
-                                </div>
+                    <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#" aria-controls="" role="tab" aria-selected="true" data-bs-toggle="tab">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <h5 class="font-weight-bold">Rice</h5>
+                                <span>Time</span>
                             </div>
-                        </a>
-                    @endforeach
+                            <div class="col-sm-4">
+                                <h6>10</h6>
+                                <span>Kg</span>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
             <div class="col-sm-9 second-div">
                 <div class="tab-content">
-                    @foreach ($cash as $item)
-                        <div role="tabpanel" class="tab-pane fade {{ $item->date == 1 ? 'active' : ''  }}" id="cash{{ $item->date }}">
-                            {{-- <div role="tabpanel" class="tab-pane fade " id="home{{ $item->id }}"> --}}
-                                <div class="bg-light bg-gradient header-info p-0">
-                                    <div class="header-profile">
-                                        <span style="margin-left: 15px;">
-                                            <h3 style="margin-bottom:0rem">{{ $item->date }}</h3>
-                                        </span>
-                                    </div>
-                                    <div class="header-amount">
-                                        <span class="">
-                                            <h6>
-                                                <span class="display-6">
-                                                    Today Balance - Rs 0
-                                                </span>
-                                            </h6>
-                                        </span>
-                                    </div>        
-                                </div>
-                                @php
-                                    $cash_detail = CashBook::where('date',$item->date)->get();
-                                    $cash_out = $cash_detail->sum('cash_out');
-                                    $cash_in = $cash_detail->sum('cash_in');
-                                @endphp
-                                
-                                {{-- @if (sizeof($payment) != 0) --}}
-                                    <ul class="responsive-table">
-                                        <li class="table-header mb-2">
-                                            <div class="col">ENTRIES<br>
-                                                ({{ sizeof($cash_detail) }})
-                                            </div>
-                                            <div class="col">DETAIL</div>
-                                            <div class="col">Cash Out<br><small style="color:red">Rs
-                                                    {{ $cash_out }}</small>
-                                            </div>
-                                            <div class="col">Cash in<br><small style="color:green">
-                                                Rs. {{ $cash_in }}</small>
-                                            </div>
-                                            {{-- <div class="col">BALANCE</div> --}}
-                                        </li>
-                                            @forelse ($cash_detail  as $element)
-                                                <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
-                                                    <li class="table-row">
-                                                        <div class="col div-one" data-label="Entries"><small>{{ $element->date }}</small>
-                                                        </div>
-                                                        <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
-                                                        </div>
-                                                        <div class="col div-two" data-label="You Give">
-                                                            <small>{{ $element->cash_out }}</small>
-                                                        </div>
-                                                        <div class="col div-three" data-label="You Got">
-                                                            <small>{{ $element->cash_in }}</small>
-                                                        </div>
-                                                        {{-- <div class="col div-one" data-label="Balance">
-                                                            <small>
-                                                                {{ $amount_remaning_balance }}
-                                                            </small>
-                                                        </div> --}}
-                                                    </li>
-                                                </a>
-                                            @empty
-                                            @endforelse
-                                     
-                                    </ul>
-                                {{-- @endif --}}
-                                <div class="text-center buttons btn-give-got">
-                                    <!-- Button trigger modal -->
-                                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                                        data-bs-target="#cash_in">
-                                        <span class="m-2 text-white">Cash In</span>
-                                    </button>
-                                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                                        data-bs-target="#cash_out">
-                                        <span class="m-2 text-white">Cash Out</span>
-                                    </button>
-                                </div>
-                            {{-- </div> --}}
-                        </div>
-                    @endforeach
+      
                 </div>
             </div>
         </div>
