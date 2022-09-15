@@ -2,6 +2,7 @@
 @section('content')
     @php
         use Carbon\Carbon;
+        use App\Models\CashBook;
     @endphp
     <?php
     $total_given_amount = $total_got_amount = 0;
@@ -323,7 +324,7 @@
                     </button>
                 </div>
                 <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
-                        @foreach ($bills as $item)
+                    @foreach ($bills as $item)
                         <a style="background-color: #f37111; color:black;" class="nav-link {{ $item->id == 1 ? 'active' : '' }} mb-2" href="#home{{ $item->id }}" aria-controls="home{{$item->id}}" role="tab" aria-selected="true" data-bs-toggle="tab">
                             <div class="row">
                                 <div class="col-sm-2">
@@ -343,7 +344,7 @@
                             {{-- {{ $item->amount }} --}}
                         </a>
                             {{-- <a class="nav-link {{ $item->id == 1 ? 'active' : '' }}" href="#{{$item->id}}" data-bs-toggle="tab" role="tab" aria-controls="{{$item->id}}" aria-selected="true">{{$item->amount}}</a> --}}
-                        @endforeach
+                    @endforeach
                     
                     {{-- <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
                     <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
@@ -546,151 +547,130 @@
                         <h6>Balance</h6>
                     </div>
                 </div>
-                @foreach ($cash as $item)
-                    {{-- @foreach ($item  as $element) --}}
-                        <a href="">
-                            <div class="row ms-1 me-1">
-                                <div class="col-md-4">
-                                    <h6>{{ $item->date }}</h6>
-                                </div>
-                                <div class="col-md-4">
-                                    <h6>Rs. 0</h6>
-                                </div>
-                                <div class="col-md-4">
-                                    <h6>Rs. 0</h6>
-                                </div>
+                <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
+                    @foreach ($cash as $item)
+                    <a style="background-color: #f37111; color:black;" class="nav-link {{ $item->date == 1 ? 'active' : '' }} mb-2" href="#cash{{ $item->date }}" aria-controls="cash{{$item->date}}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                        <div class="row ms-1 me-1">
+                            <div class="col-md-4">
+                                <h6>{{ $item->date }}</h6>
                             </div>
-                        </a>
+                            <div class="col-md-4">
+                                <h6>Rs. 0</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <h6>Rs. 0</h6>
+                            </div>
+                        </div>
+                    </a>
                     {{-- @endforeach --}}
-                @endforeach
+                    @endforeach
+                </div>
             </div>
             <div class="col-sm-9 second-div">
-                    <div class="tab-content">
-                        {{-- <div role="tabpanel" class="tab-pane fade " id="home{{ $item->id }}"> --}}
-                            <div class="bg-light bg-gradient header-info p-0">
-                                <div class="header-profile">
-                                    <span style="margin-left: 15px;">
-                                        <h3 style="margin-bottom:0rem">Date</h3>
-                                    </span>
+                <div class="tab-content">
+                    @foreach ($cash as $item)
+                        <div role="tabpanel" class="tab-pane fade {{ $item->date == 1 ? 'active' : ''  }}" id="cash{{ $item->date }}">
+                            {{-- <div role="tabpanel" class="tab-pane fade " id="home{{ $item->id }}"> --}}
+                                <div class="bg-light bg-gradient header-info p-0">
+                                    <div class="header-profile">
+                                        <span style="margin-left: 15px;">
+                                            <h3 style="margin-bottom:0rem">{{ $item->date }}</h3>
+                                        </span>
+                                    </div>
+                                    <div class="header-amount">
+                                        <span class="">
+                                            <h6>
+                                                <span class="display-6">
+                                                    Today Balance - Rs 0
+                                                </span>
+                                            </h6>
+                                        </span>
+                                    </div>        
                                 </div>
-                                <div class="header-amount">
-                                    <span class="">
-                                        <h6>
-                                            <span class="display-6">
-                                                Today Balance - Rs 0
-                                            </span>
-                                        </h6>
-                                    </span>
-                                </div>        
-                            </div>
-                            {{-- @if (sizeof($payment) != 0) --}}
-                                <ul class="responsive-table">
-                                    <li class="table-header mb-2">
-                                        <div class="col">ENTRIES<br>
-                                            ({{ sizeof($payment) }})
-                                        </div>
-                                        <div class="col">DETAIL</div>
-                                        <div class="col">YOU GAVE<br><small style="color:red">Rs
-                                                {{ $total_given_amount }}</small>
-                                        </div>
-                                        <div class="col">YOU GOT<br><small style="color:green">{{ $total_got_amount }}</small>
-                                        </div>
-                                        <div class="col">BALANCE</div>
-                                    </li>
-                                    {{-- @foreach ($cash as $item)
-                                        @forelse ($item  as $element)
+                                @php
+                                    $cash_detail = CashBook::where('date',$item->date)->get();
+                                    $cash_out = $cash_detail->sum('cash_out');
+                                    $cash_in = $cash_detail->sum('cash_in');
+                                @endphp
+                                
+                                {{-- @if (sizeof($payment) != 0) --}}
+                                    <ul class="responsive-table">
+                                        <li class="table-header mb-2">
+                                            <div class="col">ENTRIES<br>
+                                                ({{ sizeof($cash_detail) }})
+                                            </div>
+                                            <div class="col">DETAIL</div>
+                                            <div class="col">Cash Out<br><small style="color:red">Rs
+                                                    {{ $cash_out }}</small>
+                                            </div>
+                                            <div class="col">Cash in<br><small style="color:green">
+                                                Rs. {{ $cash_in }}</small>
+                                            </div>
+                                            {{-- <div class="col">BALANCE</div> --}}
+                                        </li>
+                                         {{-- @foreach ($cash as $item) --}}
+                                            @forelse ($cash_detail  as $element)
+                                                <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
+                                                    <li class="table-row">
+                                                        <div class="col div-one" data-label="Entries"><small>{{ $element->date }}</small>
+                                                        </div>
+                                                        <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
+                                                        </div>
+                                                        <div class="col div-two" data-label="You Give">
+                                                            <small>{{ $element->cash_out }}</small>
+                                                        </div>
+                                                        <div class="col div-three" data-label="You Got">
+                                                            <small>{{ $element->cash_in }}</small>
+                                                        </div>
+                                                        {{-- <div class="col div-one" data-label="Balance">
+                                                            <small>
+                                                                {{ $amount_remaning_balance }}
+                                                            </small>
+                                                        </div> --}}
+                                                    </li>
+                                                </a>
+                                            @empty
+                                            @endforelse
+                                        {{-- @endforeach  --}}
+                                        {{-- @forelse($payment as $pay)
                                             <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
                                                 <li class="table-row">
-                                                    <div class="col div-one" data-label="Entries"><small>{{ $element->date }}</small>
+                                                    <div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small>
                                                     </div>
-                                                    <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
+                                                    <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small>
                                                     </div>
                                                     <div class="col div-two" data-label="You Give">
-                                                        <small>{{ $element->cash_out }}</small>
+                                                        <small>{{ $pay->given_amount }}</small>
                                                     </div>
                                                     <div class="col div-three" data-label="You Got">
-                                                        <small>{{ $element->cash_in }}</small>
+                                                        <small>{{ $pay->got_amount }}</small>
                                                     </div>
                                                     <div class="col div-one" data-label="Balance">
                                                         <small>
-                                                            {{ $element->balance }}
+                                                            {{ $pay->balance }}
                                                         </small>
                                                     </div>
                                                 </li>
                                             </a>
                                         @empty
-                                        @endforelse
-                                    @endforeach --}}
-                                    {{-- @forelse($payment as $pay)
-                                        <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
-                                            <li class="table-row">
-                                                <div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small>
-                                                </div>
-                                                <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small>
-                                                </div>
-                                                <div class="col div-two" data-label="You Give">
-                                                    <small>{{ $pay->given_amount }}</small>
-                                                </div>
-                                                <div class="col div-three" data-label="You Got">
-                                                    <small>{{ $pay->got_amount }}</small>
-                                                </div>
-                                                <div class="col div-one" data-label="Balance">
-                                                    <small>
-                                                        {{ $pay->balance }}
-                                                    </small>
-                                                </div>
-                                            </li>
-                                        </a>
-                                    @empty
-                                    @endforelse --}}
-                                </ul>
-                            {{-- @endif --}}
-                            <div class="text-center buttons btn-give-got">
-                                <!-- Button trigger modal -->
-                                <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                                    data-bs-target="#cash_in">
-                                    <span class="m-2 text-white">Cash In</span>
-                                </button>
-                                <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                                    data-bs-target="#cash_out">
-                                    <span class="m-2 text-white">Cash Out</span>
-                                </button>
-                            </div>
-                        {{-- </div> --}}
-                        <div class="modal fade" id="edit-bill" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">Add New Customer</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="{{ route('add_customer') }}" method="POST">
-                                                @csrf()
-                                                <div class="mb-3">
-                                                    <input type="text" class="form-control" name="name_customer" id="name_customer"
-                                                        placeholder="Enter Name ">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <input type="text" class="form-control" name="phone_number" id="phone_number"
-                                                        placeholder="Enter Phone (Optional) ">
-                                                    <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
-                                                </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Create Customer</button>
-                                        </div>
-                                        </form>
-                                    </div>
+                                        @endforelse --}}
+                                    </ul>
+                                {{-- @endif --}}
+                                <div class="text-center buttons btn-give-got">
+                                    <!-- Button trigger modal -->
+                                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                                        data-bs-target="#cash_in">
+                                        <span class="m-2 text-white">Cash In</span>
+                                    </button>
+                                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                                        data-bs-target="#cash_out">
+                                        <span class="m-2 text-white">Cash Out</span>
+                                    </button>
                                 </div>
-                            </div>
-                        {{-- <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
-                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
-                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
-                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div> --}}
-                    </div>
-                
+                            {{-- </div> --}}
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

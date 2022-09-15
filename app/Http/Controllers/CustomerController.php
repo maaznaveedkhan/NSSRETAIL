@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BillBook;
 use Illuminate\Http\Request;
 
 use App\Models\Customer;
 use App\Models\Business;
-
+use App\Models\CashBook;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use Storage;
@@ -34,11 +36,13 @@ class CustomerController extends Controller
         $all_customers = Customer::where('business_id', $request->business_id)->get();
         $customer = Customer::where('id', $id)->latest()->first();
         $payment = DB::table('bussinesses_customers')->select('*')->where('customer_id', $customer->id)->get();
-
+        $suppliers = Supplier::where('business_id',$id)->get();
+        $bills = BillBook::where('business_id',$id)->get();
+        $cash = CashBook::where('business_id',$id)->select('date')->distinct()->get();
         $details = DB::table('customers')
                 ->join('bussinesses_customers', 'customers.id', '=', 'bussinesses_customers.customer_id')
                 ->get();                
-        return view('layout/business_page', compact('customer', 'all_customers', 'b', 'payment', 'details'));
+        return view('layout.business_page', compact('customer', 'all_customers', 'b', 'payment', 'details','bills','cash','suppliers'));
     }
 
     public function GivenAmount(Request $request){

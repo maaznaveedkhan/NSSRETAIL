@@ -44,7 +44,12 @@ class BusinessController extends Controller
         $details = DB::table('customers')
                 ->join('bussinesses_customers', 'customers.id', '=', 'bussinesses_customers.customer_id')
                 ->get();
-        $cash = CashBook::select('date')->distinct()->get();
+        $cash = CashBook::where('business_id',$id)->select('date')->distinct()->get();
+
+        foreach($cash as $item){
+            $cash_detail = CashBook::where('date',$item->date)->get();
+
+        }
         if($customer != null){
             return view('layout.business_page', compact('customer', 'all_customers', 'b', 'payment', 'details','suppliers','bills','cash'));
         }else{

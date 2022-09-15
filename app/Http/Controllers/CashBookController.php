@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Cash;
 use App\Models\CashBook;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class CashBookController extends Controller
 {
     //
-    
+  
     public function cash_in(Request $request){
         $b = $request->business_id;
         $cash_in = new CashBook();
