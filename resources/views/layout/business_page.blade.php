@@ -4,6 +4,7 @@
         use Carbon\Carbon;
         use App\Models\CashBook;
         use App\Models\StockQuantity;
+        use App\Models\BankAccount;
     @endphp
     <?php
     $total_given_amount = $total_got_amount = 0;
@@ -299,18 +300,6 @@
                             </div>
                         </a>
                     @endforeach
-                    {{-- <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#" aria-controls="" role="tab" aria-selected="true" data-bs-toggle="tab">
-                        <div class="row">
-                            <div class="col-sm-8">
-                                <h5 class="font-weight-bold">Rice</h5>
-                                <span>Time</span>
-                            </div>
-                            <div class="col-sm-4">
-                                <h6>10</h6>
-                                <span>Kg</span>
-                            </div>
-                        </div>
-                    </a> --}}
                 </div>
             </div>
             <div class="col-sm-9 second-div">
@@ -347,7 +336,7 @@
                                         </div>
                                         <div class="col">DETAIL</div>
                                         <div class="col">Quantity in<br><small style="color:green">
-                                            Rs. {{ $qty_in }}</small>
+                                             {{ $qty_in }}</small>
                                         </div>
                                         <div class="col">Quantity Out<br><small style="color:red">Rs
                                                 {{ $qty_out }}</small>
@@ -916,25 +905,58 @@
                 </div>
                 <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
                     @foreach ($bank_accounts as $item)
-                        <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#stock{{ $item->id }}" aria-controls="stock{{ $item->id }}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                        <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#account{{ $item->account }}" aria-controls="account{{ $item->account }}" role="tab" aria-selected="true" data-bs-toggle="tab">
                             <span style="font-size: 0.75rem;">Account No</span>
                             <h5 class="font-weight-bold">{{ $item->account }}</h5>
-                            {{-- <div class="row">
-                                <div class="col-sm-7">
-                                    <h5 class="font-weight-bold">{{ $item->account }}</h5>
-                                    <span style="font-size: 0.75rem;">{{ $item->created_at }}</span>
-                                </div>
-                                <div class="col-sm-5">
-                                    <h5 class="font-weight-bold">10</h5>
-                                    <span >{{ $item->item_unit }}</span>
-                                </div>
-                            </div> --}}
                         </a>
                     @endforeach
                 </div>
             </div>
             <div class="col-sm-9 second-div">
-                
+                <div class="tab-content">
+                    @foreach ($bank_accounts as $item)
+                        <div role="tabpanel" class="tab-pane fade {{ $item->account == 1 ? 'active' : ''  }}" id="account{{ $item->account }}">
+                            <div class="bg-light bg-gradient header-info p-0">
+                                <div class="header-profile">
+                                    <span style="margin-left: 15px;">
+                                        <h3 style="margin-bottom:0rem">Account No: {{ $item->account }}</h3>
+                                    </span>
+                                </div>
+                            </div>
+                            @php
+                                $account_detail = BankAccount::where('account',$item->account )->get();
+                            @endphp
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Cheque</th>
+                                        <th scope="col">Cheque No</th>
+                                        <th scope="col">Bank</th>
+                                        <th scope="col">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($account_detail  as $element)
+                                        <tr>
+                                            <td>{{ $element->account_holder_name }}</td>
+                                            <td>{{ $element->amount }}</td>
+                                            <td> 
+                                                <img src="{{ asset('images/cheque_images/'.$element->cheque_img) }}" alt="" class="img-fluid" height="80" width="80"> 
+                                            </td>
+                                            <td>{{ $element->cheque_no }}</td>
+                                            <td>{{ $element->account_holder_bank }}</td>
+                                            <td>{{ $element->date }}</td>
+                                        </tr>
+                                    @empty
+                                    @endforelse
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
@@ -957,7 +979,11 @@
                     <label for="Detail">Bank</label>
                     <input type="text" class="form-control" name="account_holder_bank" id="account_holder_bank"
                         placeholder="Enter Bank" required>
-                    <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
+                </div>
+                <div class="mb-3">
+                    <label for="Detail">Amount</label>
+                    <input type="text" class="form-control" name="amount" id="amount"
+                        placeholder="Enter Amount" required>
                 </div>
                 <div class="mb-3">
                     <label for="Detail">Upload Cheque</label>

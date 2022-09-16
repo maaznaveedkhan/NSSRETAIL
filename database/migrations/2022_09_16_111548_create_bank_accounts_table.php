@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('account_holder_bank')->nullable();
             $table->string('cheque_img')->nullable();
             $table->string('cheque_no')->nullable();
+            $table->string('amount')->nullable();
             $table->string('tobe1')->nullable();
             $table->string('tobe2')->nullable();
             $table->string('tobe3')->nullable();

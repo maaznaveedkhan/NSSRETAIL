@@ -22,6 +22,7 @@ class BankAccountController extends Controller
         $bank_ac->business_id = $request->business_id;
         $bank_ac->date = $request->date;
         $bank_ac->account = $request->account;
+        $bank_ac->amount = $request->amount;
         $bank_ac->account_holder_id = $request->account_holder_id;
         $bank_ac->account_holder_name = $request->account_holder_name;
         $bank_ac->account_holder_phone = $request->account_holder_phone;
