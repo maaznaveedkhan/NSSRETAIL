@@ -35,6 +35,7 @@ class BusinessController extends Controller
     public function BusinessPage($id){
 
         $b = $id;
+        $business = Business::where('id',$b)->first();
         $all_customers = Customer::where('business_id', $b)->get();
         if(sizeof($all_customers) == 0 ){
             return view('layout.all_customers', compact('b'));            
@@ -54,7 +55,7 @@ class BusinessController extends Controller
 
         }
         if($customer != null){
-            return view('layout.business_page', compact('customer', 'all_customers', 'b', 'payment', 'details','suppliers','bills','cash','stock','bank_accounts'));
+            return view('layout.business_page', compact('business','customer', 'all_customers', 'b', 'payment', 'details','suppliers','bills','cash','stock','bank_accounts'));
         }else{
             return view('layout.all_customers', compact('b'));
         }

@@ -27,29 +27,28 @@
             <button class="tablinks" onclick="openCity(event, 'Cashbook')">Cash book</button>
             <button class="tablinks" onclick="openCity(event, 'Bankac')">Bank Ac</button>
         </div>
-
         <div id="Main" class="tabcontent">
             <div class="row">
                 <div class="col-sm-3 main_div">
                     <div class="background-dark header-issue  p-3">
                         <div style="width: 100%;">
-                            <span class="text-center">{{ $customer['business_name'] }}</span>
+                            <span class="text-center">{{ $business['business_name'] }}</span>
                         </div>
                         <i class="fa-solid fa-building-columns"></i>
                         <div class="menu-nav">
                             <div class="dropdown-container" tabindex="-1">
                                 <div class="three-dots"></div>
                                 <div class="dropdowns">
-                                    <div class="drop mb-2"><a href=""> Filter Customer List </a></div>
-                                    <div class="drop mb-2"><a href=""> Customer List PDF </a></div>
-                                    <div class="drop mb-2"><a href=""> Profile </a></div>
-                                    <div class="drop mb-2"><a href=""> About Us </a></div>
-                                    <div class="drop mb-2"><a href=""> Language </a></div>
-                                    <div class="drop mb-2"><a href=""> Help & Support </a></div>
-                                    <div class="drop mb-2"><a href=""> Cash Register </a></div>
-                                    <div class="drop mb-2"><a href=""> Recyle Bin </a></div>
-                                    <div class="drop mb-2"><a href=""> EasyDokan </a></div>
-                                    <div class="drop mb-2"><a href=""> Logout </a></div>
+                                    <div class="drop mb-2">
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +188,7 @@
                                 </span>
                             </div>
                         @endif
-
+    
                         <div class="menu-nav">
                             <div class="dropdown-container" tabindex="-1">
                                 <div class="three-dots"></div>
@@ -204,43 +203,44 @@
                         </div>
                     </div>
                     @if (sizeof($payment) != 0)
-                        <ul class="responsive-table">
-                            <li class="table-header mb-2">
-                                <div class="col">ENTRIES<br>
-                                    ({{ sizeof($payment) }})
-                                </div>
-                                <div class="col">DETAIL</div>
-                                <div class="col">YOU GAVE<br><small style="color:red">Rs
-                                        {{ $total_given_amount }}</small>
-                                </div>
-                                <div class="col">YOU GOT<br><small style="color:green">{{ $total_got_amount }}</small>
-                                </div>
-                                <div class="col">BALANCE</div>
-                            </li>
-                            @forelse($payment as $pay)
-                                <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
-                                    <li class="table-row">
-                                        <div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small>
-                                        </div>
-                                        <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small>
-                                        </div>
-                                        <div class="col div-two" data-label="You Give">
-                                            <small>{{ $pay->given_amount }}</small>
-                                        </div>
-                                        <div class="col div-three" data-label="You Got">
-                                            <small>{{ $pay->got_amount }}</small>
-                                        </div>
-                                        <div class="col div-one" data-label="Balance">
-                                            <small>
-                                                {{ $pay->balance }}
-                                            </small>
-                                        </div>
-                                    </li>
-                                </a>
-                            @empty
-                            @endforelse
-
-                        </ul>
+                        <div style="height: 27rem; overflow: auto;">
+                            <ul class="responsive-table">
+                                <li class="table-header mb-2">
+                                    <div class="col">ENTRIES<br>
+                                        ({{ sizeof($payment) }})
+                                    </div>
+                                    <div class="col">DETAIL</div>
+                                    <div class="col">YOU GAVE<br><small style="color:red">Rs
+                                            {{ $total_given_amount }}</small>
+                                    </div>
+                                    <div class="col">YOU GOT<br><small style="color:green">{{ $total_got_amount }}</small>
+                                    </div>
+                                    <div class="col">BALANCE</div>
+                                </li>
+                                @forelse($payment as $pay)
+                                    <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
+                                        <li class="table-row">
+                                            <div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small>
+                                            </div>
+                                            <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small>
+                                            </div>
+                                            <div class="col div-two" data-label="You Give">
+                                                <small>{{ $pay->given_amount }}</small>
+                                            </div>
+                                            <div class="col div-three" data-label="You Got">
+                                                <small>{{ $pay->got_amount }}</small>
+                                            </div>
+                                            <div class="col div-one" data-label="Balance">
+                                                <small>
+                                                    {{ $pay->balance }}
+                                                </small>
+                                            </div>
+                                        </li>
+                                    </a>
+                                @empty
+                                @endforelse
+                            </ul>
+                        </div>
                     @endif
                     <div class="text-center buttons btn-give-got">
                         <!-- Button trigger modal -->
@@ -256,710 +256,676 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="Stockbook" class="tabcontent">
-        <div class="row">
-            <div class="col-sm-3 main_div">
-                <div class="background-dark header-issue  p-3">
-                    <div style="width: 100%;">
-                        <span class="text-center">Stock Book</span>
+        <div id="Stockbook" class="tabcontent">
+            <div class="row">
+                <div class="col-sm-3 main_div">
+                    <div class="background-dark header-issue  p-3">
+                        <div style="width: 100%;">
+                            <span class="text-center">Stock Book</span>
+                        </div>
                     </div>
-                </div>
-                <!-- Buttons Main -->
-                <div class="row m-2 mt-3">
-                    <h3>Total Items - 1</h3>
-                </div>
-                <!--End Buttons Main -->
-                <!-- Add new item Start -->
-                <div class="row m-2 mt-3">
-                    <button class="btn background-dark" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#add_new_stock" aria-controls="add_new_stock">Add New Stock</button>
-                </div>
-                <!-- Add new item Bill End -->
-                
-                <!-- Search Bar -->
-                <div class="row bg-light p-2 m-0">
-                    <div class="col">
-                        <input type="text" class="form-control rounded-pill search_bar" name="search"
-                            placeholder="Search Here">
+                    <!-- Buttons Main -->
+                    <div class="row m-2 mt-3">
+                        <h3>Total Items - 1</h3>
                     </div>
-                </div>
-                <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
-                    @foreach ($stock as $item)
-                        <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#stock{{ $item->id }}" aria-controls="stock{{ $item->id }}" role="tab" aria-selected="true" data-bs-toggle="tab">
-                            <div class="row">
-                                <div class="col-sm-7">
-                                    <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
-                                    <span style="font-size: 0.75rem;">{{ $item->created_at }}</span>
-                                </div>
-                                <div class="col-sm-5">
-                                    <h5 class="font-weight-bold">10</h5>
-                                    <span >{{ $item->item_unit }}</span>
-                                </div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-            <div class="col-sm-9 second-div">
-                <div class="tab-content">
-                    @foreach ($stock as $item)
-                        <div role="tabpanel" class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="stock{{ $item->id }}">
-                            {{-- <div role="tabpanel" class="tab-pane fade " id="home{{ $item->id }}"> --}}
-                                <div class="bg-light bg-gradient header-info p-0">
-                                    <div class="header-profile">
-                                        <span style="margin-left: 15px;">
-                                            <h3 style="margin-bottom:0rem">{{ $item->item_name }}</h3>
-                                        </span>
+                    <!--End Buttons Main -->
+                    <!-- Add new item Start -->
+                    <div class="row m-2 mt-3">
+                        <button class="btn background-dark" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#add_new_stock" aria-controls="add_new_stock">Add New Stock</button>
+                    </div>
+                    <!-- Add new item Bill End -->
+                    
+                    <!-- Search Bar -->
+                    <div class="row bg-light p-2 m-0">
+                        <div class="col">
+                            <input type="text" class="form-control rounded-pill search_bar" name="search"
+                                placeholder="Search Here">
+                        </div>
+                    </div>
+                    <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
+                        @foreach ($stock as $item)
+                            <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#stock{{ $item->id }}" aria-controls="stock{{ $item->id }}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                                <div class="row">
+                                    <div class="col-sm-7">
+                                        <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
+                                        <span style="font-size: 0.75rem;">{{ $item->created_at }}</span>
                                     </div>
-                                    <div class="header-amount">
-                                        <span class="">
-                                            <h6>
-                                                <span class="display-6">
-                                                    Today Balance - Rs 0
-                                                </span>
-                                            </h6>
-                                        </span>
-                                    </div>        
+                                    <div class="col-sm-5">
+                                        <h5 class="font-weight-bold">10</h5>
+                                        <span >{{ $item->item_unit }}</span>
+                                    </div>
                                 </div>
-                                @php
-                                    $item_id = $item->id;
-                                    $stock_detail = StockQuantity::where('item_id',$item->id)->get();
-                                    $qty_out = $stock_detail->sum('qty_out');
-                                    $qty_in = $stock_detail->sum('qty_in');
-                                @endphp
-                                <ul  class="responsive-table">
-                                    <li class="table-header mb-2">
-                                        <div class="col">ENTRIES<br>
-                                            ({{ sizeof($stock_detail) }})
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="col-sm-9 second-div">
+                    <div class="tab-content">
+                        @foreach ($stock as $item)
+                            <div role="tabpanel" class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="stock{{ $item->id }}">
+                                {{-- <div role="tabpanel" class="tab-pane fade " id="home{{ $item->id }}"> --}}
+                                    <div class="bg-light bg-gradient header-info p-0">
+                                        <div class="header-profile">
+                                            <span style="margin-left: 15px;">
+                                                <h3 style="margin-bottom:0rem">{{ $item->item_name }}</h3>
+                                            </span>
                                         </div>
-                                        <div class="col">DETAIL</div>
-                                        <div class="col">Quantity in<br><small style="color:green">
-                                             {{ $qty_in }}</small>
-                                        </div>
-                                        <div class="col">Quantity Out<br><small style="color:red">Rs
-                                                {{ $qty_out }}</small>
-                                        </div>                                            
-                                        {{-- <div class="col">BALANCE</div> --}}
-                                    </li>
-                                </ul>
-                                @if (sizeof($stock_detail) != 0)
-                                    <ul class="responsive-table" style="height: 35rem; overflow: auto;">
-                                        {{-- <li class="table-header mb-2">
+                                        <div class="header-amount">
+                                            <span class="">
+                                                <h6>
+                                                    <span class="display-6">
+                                                        Today Balance - Rs 0
+                                                    </span>
+                                                </h6>
+                                            </span>
+                                        </div>        
+                                    </div>
+                                    @php
+                                        $item_id = $item->id;
+                                        $stock_detail = StockQuantity::where('item_id',$item->id)->get();
+                                        $qty_out = $stock_detail->sum('qty_out');
+                                        $qty_in = $stock_detail->sum('qty_in');
+                                    @endphp
+                                    <ul  class="responsive-table">
+                                        <li class="table-header mb-2">
                                             <div class="col">ENTRIES<br>
                                                 ({{ sizeof($stock_detail) }})
                                             </div>
                                             <div class="col">DETAIL</div>
                                             <div class="col">Quantity in<br><small style="color:green">
-                                                Rs. {{ $qty_in }}</small>
+                                                 {{ $qty_in }}</small>
                                             </div>
-                                            <div class="col">Quantity Out<br><small style="color:red">Rs
+                                            <div class="col">Quantity Out<br><small style="color:red">
                                                     {{ $qty_out }}</small>
                                             </div>                                            
-                                        </li> --}}
-                                        @forelse ($stock_detail  as $element)
-                                            <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $element->id }} ">
-                                                <li class="table-row">
-                                                    <div class="col div-one" data-label="Entries"><small>{{ $element->created_at }}</small>
-                                                    </div>
-                                                    <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
-                                                    </div>
-                                                    <div class="col div-three" data-label="You Got">
-                                                        <small>{{ $element->qty_in }}</small>
-                                                    </div>
-                                                    <div class="col div-two" data-label="You Give">
-                                                        <small>{{ $element->qty_out }}</small>
-                                                    </div>
-                                                    {{-- <div class="col div-one" data-label="Balance">
-                                                        <small>
-                                                            {{ $amount_remaning_balance }}
-                                                        </small>
-                                                    </div> --}}
-                                                </li>
-                                            </a>
-                                        @empty
-                                        @endforelse
+                                            {{-- <div class="col">BALANCE</div> --}}
+                                        </li>
                                     </ul>
-                                @endif
-                            <div class="text-center buttons btn-give-got">
-                                <!-- Button trigger modal -->
-                                <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                                    data-bs-target="#qty_in{{ $item->id }}">
-                                    <span class="m-2 text-white">Quantity In</span>
-                                </button>
-                                <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                                    data-bs-target="#qty_out{{ $item_id }}">
-                                    <span class="m-2 text-white">Quantity Out</span>
-                                </button>
-                            </div>
-                            <!-- Close Modal For Customer Form -->
-                            <div class="modal fade" id="qty_in{{ $item->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">
-                                                Quantity In</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    @if (sizeof($stock_detail) != 0)
+                                        <div style="height: 27rem; overflow: auto;">
+                                            <ul class="responsive-table">
+                                                @forelse ($stock_detail  as $element)
+                                                    <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $element->id }} ">
+                                                        <li class="table-row">
+                                                            <div class="col div-one" data-label="Entries"><small>{{ $element->created_at }}</small>
+                                                            </div>
+                                                            <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
+                                                            </div>
+                                                            <div class="col div-three" data-label="You Got">
+                                                                <small>{{ $element->qty_in }}</small>
+                                                            </div>
+                                                            <div class="col div-two" data-label="You Give">
+                                                                <small>{{ $element->qty_out }}</small>
+                                                            </div>
+                                                            {{-- <div class="col div-one" data-label="Balance">
+                                                                <small>
+                                                                    {{ $amount_remaning_balance }}
+                                                                </small>
+                                                            </div> --}}
+                                                        </li>
+                                                    </a>
+                                                @empty
+                                                @endforelse
+                                            </ul>
                                         </div>
-                                        <div class="modal-body" style="width:100%">
-                                            <div style="width:100%">
-                                            <form action="{{ route('qty_in') }}" method="POST">
-                                                @csrf()
-                                                <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
-                                                <input type="hidden" name="item_id" id="item_id" value="{{ $item_id}}">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <label for="amount" class="col-sm-2 col-form-label">Quantity</label>
-                                                        <input type="text" name="qty_in" id="qty_in" class="form-control"
-                                                                value="">
+                                    @endif
+                                <div class="text-center buttons btn-give-got">
+                                    <!-- Button trigger modal -->
+                                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                                        data-bs-target="#qty_in{{ $item->id }}">
+                                        <span class="m-2 text-white">Quantity In</span>
+                                    </button>
+                                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                                        data-bs-target="#qty_out{{ $item_id }}">
+                                        <span class="m-2 text-white">Quantity Out</span>
+                                    </button>
+                                </div>
+                                <!-- Close Modal For Customer Form -->
+                                <div class="modal fade" id="qty_in{{ $item->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">
+                                                    Quantity In</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body" style="width:100%">
+                                                <div style="width:100%">
+                                                <form action="{{ route('qty_in') }}" method="POST">
+                                                    @csrf()
+                                                    <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                                                    <input type="hidden" name="item_id" id="item_id" value="{{ $item_id}}">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="amount" class="col-sm-2 col-form-label">Quantity</label>
+                                                            <input type="text" name="qty_in" id="qty_in" class="form-control"
+                                                                    value="">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="detail" class="col-sm-2 col-form-label">Rate</label>
+                                                            <input type="text" name="rate" id="rate" class="form-control">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                                            <input type="text" name="amount" id="amount" class="form-control">
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <label for="detail" class="col-sm-2 col-form-label">Rate</label>
-                                                        <input type="text" name="rate" id="rate" class="form-control">
+                                                    <div>
+                                                        <label for="detail" class="col-sm-2 col-form-label">Detail</label>
+                                                        <input type="text" name="detail" id="detail" class="form-control">
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <label for="amount" class="col-sm-2 col-form-label">Amount</label>
-                                                        <input type="text" name="amount" id="amount" class="form-control">
+                                                    <div>
+                                                        <label for="bill" class="col-sm-2 col-form-label">Date</label>
+                                                        <input type="date" name="date" id="date" class="form-control">
                                                     </div>
-                                                </div>
-                                                <div>
-                                                    <label for="detail" class="col-sm-2 col-form-label">Detail</label>
-                                                    <input type="text" name="detail" id="detail" class="form-control">
-                                                </div>
-                                                <div>
-                                                    <label for="bill" class="col-sm-2 col-form-label">Date</label>
-                                                    <input type="date" name="date" id="date" class="form-control">
-                                                </div>
-                                                <div>
-                                                    <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
-                                                    <input type="text" name="bill_no" id="bill" class="form-control">
-                                                    <input type="hidden" name="customer_id" id="customer_id" class="form-control"
-                                                        value="{{ $customer['id'] }}">
-                                                </div>
-                                                <div>
-                                                    <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
-                                                    <select name="party" id="">
-                                                        @foreach ($suppliers as $item)
-                                                            <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    
+                                                    <div>
+                                                        <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
+                                                        <input type="text" name="bill_no" id="bill" class="form-control">
+                                                        <input type="hidden" name="customer_id" id="customer_id" class="form-control"
+                                                            value="{{ $customer['id'] }}">
+                                                    </div>
+                                                    <div>
+                                                        <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
+                                                        <select name="party" id="">
+                                                            @foreach ($suppliers as $item)
+                                                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="qty_out{{ $item_id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">
-                                                Quantity In</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body" style="width:100%">
-                                            <div style="width:100%">
-                                            <form action="{{ route('qty_out') }}" method="POST">
-                                                @csrf()
-                                                <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
-                                                <input type="hidden" name="item_id" id="item_id" value="{{ $item_id}}">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <label for="amount" class="col-sm-2 col-form-label">Quantity</label>
-                                                        <input type="text" name="qty_out" id="qty_out" class="form-control"
-                                                                value="">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="detail" class="col-sm-2 col-form-label">Rate</label>
-                                                        <input type="text" name="rate" id="rate" class="form-control">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label for="amount" class="col-sm-2 col-form-label">Amount</label>
-                                                        <input type="text" name="amount" id="amount" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label for="detail" class="col-sm-2 col-form-label">Detail</label>
-                                                    <input type="text" name="detail" id="detail" class="form-control">
-                                                </div>
-                                                <div>
-                                                    <label for="bill" class="col-sm-2 col-form-label">Date</label>
-                                                    <input type="date" name="date" id="date" class="form-control">
-                                                </div>
-                                                <div>
-                                                    <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
-                                                    <input type="text" name="bill_no" id="bill" class="form-control">
-                                                    <input type="hidden" name="customer_id" id="customer_id" class="form-control"
-                                                        value="{{ $customer['id'] }}">
-                                                </div>
-                                                <div>
-                                                    <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
-                                                    <select name="party" id="">
-                                                        @foreach ($all_customers as $item)
-                                                            <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    
-                                                </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                            </form>
-                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                
-            </div>
-        </div>
-    </div>
-
-    <div id="Billbook" class="tabcontent">
-        <div class="row">
-            <div class="col-sm-3 main_div">
-                <div class="background-dark header-issue  p-3">
-                    <div style="width: 100%;">
-                        <span class="text-center">Bill Book</span>
-                    </div>
-
-                </div>
-                <!-- Buttons Main -->
-                <div class="row m-2 mt-3">
-                    @if (!empty($bills))
-                        <h3>Rs. {{ count($bills) }}</h3>
-                    @endif
-
-                    <h6>Total Sale for {{ Carbon::now()->month }}</h6>
-                </div>
-                <!--End Buttons Main -->
-                <!-- Create New Bill Start -->
-                <div class="row m-2 mt-3">
-                    <button class="btn background-dark" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Create New Bill</button>
-                </div>
-                <!-- Create New Bill End -->
-                <!-- Search Bar -->
-                <div class="row bg-light p-2 m-0">
-                    <div class="col">
-                        <input type="text" class="form-control rounded-pill search_bar" name="search"
-                            placeholder="Search Here">
-                    </div>
-                </div>
-                {{-- <div class="profile-span mb-1">
-                        @forelse($bills as  $index => $item)
-                                <a href="#" type="button"
-                                    class="btn btn-div mb-2 {{ $item->id == 1 ? 'active' : '' }}" href="#home{{ $item->id }}" aria-controls="home{{$item->id}}" role="tab" aria-selected="true" data-bs-toggle="tab">
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <div class="" style="border-radius: 50%; width: 50px; height: 50px; background-color: white; padding: 6px;">
-                                                <h3> {{$loop->iteration}}</h3>
+                                <div class="modal fade" id="qty_out{{ $item_id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">
+                                                    Quantity In</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body" style="width:100%">
+                                                <div style="width:100%">
+                                                <form action="{{ route('qty_out') }}" method="POST">
+                                                    @csrf()
+                                                    <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                                                    <input type="hidden" name="item_id" id="item_id" value="{{ $item_id}}">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="amount" class="col-sm-2 col-form-label">Quantity</label>
+                                                            <input type="text" name="qty_out" id="qty_out" class="form-control"
+                                                                    value="">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="detail" class="col-sm-2 col-form-label">Rate</label>
+                                                            <input type="text" name="rate" id="rate" class="form-control">
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                                            <input type="text" name="amount" id="amount" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label for="detail" class="col-sm-2 col-form-label">Detail</label>
+                                                        <input type="text" name="detail" id="detail" class="form-control">
+                                                    </div>
+                                                    <div>
+                                                        <label for="bill" class="col-sm-2 col-form-label">Date</label>
+                                                        <input type="date" name="date" id="date" class="form-control">
+                                                    </div>
+                                                    <div>
+                                                        <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
+                                                        <input type="text" name="bill_no" id="bill" class="form-control">
+                                                        <input type="hidden" name="customer_id" id="customer_id" class="form-control"
+                                                            value="{{ $customer['id'] }}">
+                                                    </div>
+                                                    <div>
+                                                        <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
+                                                        <select name="party" id="">
+                                                            @foreach ($all_customers as $item)
+                                                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
-                                            <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <h6>Rs. {{ $item->amount }}</h6>
-                                            <span style="font-size: 1rem !important;">{{$item->method}}</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            @empty
-                        @endforelse
-                    </div> --}}
-
-                <div class="text-center buttons">
-                    <!-- Button trigger modal -->
-                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                        data-bs-target="#customer-add">
-                        <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="m-2 text-white">Add
-                            Customer</span>
-                    </button>
-                </div>
-                <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
-                    @foreach ($bills as $item)
-                        <a style="background-color: #f37111; color:black;" class="nav-link {{ $item->id == 1 ? 'active' : '' }} mb-2" href="#home{{ $item->id }}" aria-controls="home{{$item->id}}" role="tab" aria-selected="true" data-bs-toggle="tab">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <div class="" style="border-radius: 50%; width: 40px; height: 40px; background-color: white; padding-left: 0.85rem;">
-                                        <h3> {{$loop->iteration}}</h3>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
-                                    <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h6>Rs. {{ $item->amount }}</h6>
-                                    <span style="font-size: 1rem !important;">{{$item->method}}</span>
-                                </div>
-                            </div>
-                            {{-- {{ $item->amount }} --}}
-                        </a>
-                            {{-- <a class="nav-link {{ $item->id == 1 ? 'active' : '' }}" href="#{{$item->id}}" data-bs-toggle="tab" role="tab" aria-controls="{{$item->id}}" aria-selected="true">{{$item->amount}}</a> --}}
-                    @endforeach
-                    
-                    {{-- <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
-                    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
-                    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button> --}}
-                </div>
-            </div>
-            <div class="col-sm-9 second-div">
-                
-                    <div class="bg-light bg-gradient header-info p-0">
-                        <h4>Bill Detail</h4>
-                    </div>
-                    <div class="tab-content">
-                        @foreach ($bills as $item)
-                        <div role="tabpanel" class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="home{{ $item->id }}">
-                            {{-- <div class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="{{$item->id}}" role="tabpanel" > --}}
-                                {{-- <h3>{{$item->amount}}</h3> --}}
-                            <div class="row text-center">
-                                <h5>Bill # {{ $loop->iteration }}</h5>
-                            </div>
-                            <div class="row text-center">
-                                <h5> {{ $item->date }}</h5>
-                            </div>
-                            <table class="table table-striped">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">Item</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Rate</th>
-                                    <th scope="col">Amount</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <th scope="row">{{$item->item}}</th>
-                                    <td>{{$item->quantity}}</td>
-                                    <td>{{$item->rate}}</td>
-                                    <td>{{$item->amount}}</td>
-                                  </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th scope="row">{{$item->item}}</th>
-                                    <td>Total</td>
-                                    <td>
-                                        
-                                    </td>
-                                        <td>Rs. {{$item->amount}}</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                            <div class="row float-left">
-                                <h5>Detail</h5>
-                                <p>{{$item->detail}}</p>
-                            </div>
-                            <div class="row text-center justify-content-center">
-                                <div class="col-md-6">
-                                    <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a>
-                                </div>
-                                <div class="col-md-6">
-                                    <a href="{{ route('delete_bill',$item->id) }}" class="btn btn-outline-danger" style="width: 15rem">Delete Entry</a>
-                                </div>
-                                {{-- <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a> --}}
-                            </div>
-                            
-                        </div>
-                        <div class="modal fade" id="edit-bill" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">Add New Customer</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="{{ route('add_customer') }}" method="POST">
-                                                @csrf()
-                                                <div class="mb-3">
-                                                    <input type="text" class="form-control" name="name_customer" id="name_customer"
-                                                        placeholder="Enter Name ">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <input type="text" class="form-control" name="phone_number" id="phone_number"
-                                                        placeholder="Enter Phone (Optional) ">
-                                                    <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
-                                                </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Create Customer</button>
-                                        </div>
-                                        </form>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
-                        {{-- <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
-                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
-                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
-                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div> --}}
                     </div>
-                
+                    
+                </div>
             </div>
         </div>
-    </div>
-    <div id="Cashbook" class="tabcontent">
-        <div class="row">
-            <div class="col-sm-3 main_div">
-                <div class="background-dark header-issue  p-3">
-                    <div style="width: 100%;">
-                        <span class="text-center">Cash Book</span>
+    
+        <div id="Billbook" class="tabcontent">
+            <div class="row">
+                <div class="col-sm-3 main_div">
+                    <div class="background-dark header-issue  p-3">
+                        <div style="width: 100%;">
+                            <span class="text-center">Bill Book</span>
+                        </div>
+    
                     </div>
-                </div>
-                <!-- Buttons Main -->
-                <div class="row m-2 mt-3">
-                    @if (!empty($bills))
-                        <h3>Cash in Hand - {{ count($bills) }}</h3>
-                    @endif
-                </div>
-                
-                <!--End Buttons Main -->
-                <!-- Search Bar -->
-                <div class="row bg-light p-2 m-0">
-                    <div class="col">
-                        <input type="text" class="form-control rounded-pill search_bar" name="search"
-                            placeholder="Search Here">
+                    <!-- Buttons Main -->
+                    <div class="row m-2 mt-3">
+                        @if (!empty($bills))
+                            <h3>Rs. {{ count($bills) }}</h3>
+                        @endif
+    
+                        <h6>Total Sale for {{ Carbon::now()->month }}</h6>
                     </div>
-                </div>
-                {{-- <div class="profile-span mb-1">
-                        @forelse($bills as  $index => $item)
-                                <a href="#" type="button"
-                                    class="btn btn-div mb-2 {{ $item->id == 1 ? 'active' : '' }}" href="#home{{ $item->id }}" aria-controls="home{{$item->id}}" role="tab" aria-selected="true" data-bs-toggle="tab">
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <div class="" style="border-radius: 50%; width: 50px; height: 50px; background-color: white; padding: 6px;">
-                                                <h3> {{$loop->iteration}}</h3>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
-                                            <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <h6>Rs. {{ $item->amount }}</h6>
-                                            <span style="font-size: 1rem !important;">{{$item->method}}</span>
+                    <!--End Buttons Main -->
+                    <!-- Create New Bill Start -->
+                    <div class="row m-2 mt-3">
+                        <button class="btn background-dark" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Create New Bill</button>
+                    </div>
+                    <!-- Create New Bill End -->
+                    <!-- Search Bar -->
+                    <div class="row bg-light p-2 m-0">
+                        <div class="col">
+                            <input type="text" class="form-control rounded-pill search_bar" name="search"
+                                placeholder="Search Here">
+                        </div>
+                    </div>
+                    <div class="text-center buttons">
+                        <!-- Button trigger modal -->
+                        <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                            data-bs-target="#customer-add">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="m-2 text-white">Add
+                                Customer</span>
+                        </button>
+                    </div>
+                    <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
+                        @foreach ($bills as $item)
+                            <a style="background-color: #f37111; color:black;" class="nav-link {{ $item->id == 1 ? 'active' : '' }} mb-2" href="#home{{ $item->id }}" aria-controls="home{{$item->id}}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <div class="" style="border-radius: 50%; width: 40px; height: 40px; background-color: white; padding-left: 0.85rem;">
+                                            <h3> {{$loop->iteration}}</h3>
                                         </div>
                                     </div>
-                                </a>
-                            @empty
-                        @endforelse
-                    </div> --}}
-                <div class="row m-2 mt-3">
-                    <div class="col-md-4">
-                        <h6>Date</h6>
-                    </div>
-                    <div class="col-md-4">
-                        <h6>Daily Balance</h6>
-                    </div>
-                    <div class="col-md-4">
-                        <h6>Balance</h6>
+                                    <div class="col-sm-6">
+                                        <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
+                                        <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h6>Rs. {{ $item->amount }}</h6>
+                                        <span style="font-size: 1rem !important;">{{$item->method}}</span>
+                                    </div>
+                                </div>
+                                {{-- {{ $item->amount }} --}}
+                            </a>
+                                {{-- <a class="nav-link {{ $item->id == 1 ? 'active' : '' }}" href="#{{$item->id}}" data-bs-toggle="tab" role="tab" aria-controls="{{$item->id}}" aria-selected="true">{{$item->amount}}</a> --}}
+                        @endforeach
+                        
+                        {{-- <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
+                        <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
+                        <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button> --}}
                     </div>
                 </div>
-                <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
-                    @foreach ($cash as $item)
-                    <a style="background-color: #f37111; color:black;" class="nav-link {{ $item->date == 1 ? 'active' : '' }} mb-2" href="#cash{{ $item->date }}" aria-controls="cash{{$item->date}}" role="tab" aria-selected="true" data-bs-toggle="tab">
-                        <div class="row ms-1 me-1">
-                            <div class="col-md-4">
-                                <h6>{{ $item->date }}</h6>
-                            </div>
-                            <div class="col-md-4">
-                                <h6>Rs. 0</h6>
-                            </div>
-                            <div class="col-md-4">
-                                <h6>Rs. 0</h6>
-                            </div>
+                <div class="col-sm-9 second-div">
+                        <div class="bg-light bg-gradient header-info p-0">
+                            <h4>Bill Detail</h4>
                         </div>
-                    </a>
-                    {{-- @endforeach --}}
-                    @endforeach
+                        <div class="tab-content">
+                            @foreach ($bills as $item)
+                            <div role="tabpanel" class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="home{{ $item->id }}">
+                                {{-- <div class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="{{$item->id}}" role="tabpanel" > --}}
+                                    {{-- <h3>{{$item->amount}}</h3> --}}
+                                <div class="row text-center">
+                                    <h5>Bill # {{ $loop->iteration }}</h5>
+                                </div>
+                                <div class="row text-center">
+                                    <h5> {{ $item->date }}</h5>
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">Item</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Rate</th>
+                                        <th scope="col">Amount</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <th scope="row">{{$item->item}}</th>
+                                        <td>{{$item->quantity}}</td>
+                                        <td>{{$item->rate}}</td>
+                                        <td>{{$item->amount}}</td>
+                                      </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th scope="row">{{$item->item}}</th>
+                                        <td>Total</td>
+                                        <td>
+                                            
+                                        </td>
+                                            <td>Rs. {{$item->amount}}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="row float-left">
+                                    <h5>Detail</h5>
+                                    <p>{{$item->detail}}</p>
+                                </div>
+                                <div class="row text-center justify-content-center">
+                                    <div class="col-md-6">
+                                        <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="{{ route('delete_bill',$item->id) }}" class="btn btn-outline-danger" style="width: 15rem">Delete Entry</a>
+                                    </div>
+                                    {{-- <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a> --}}
+                                </div>
+                                
+                            </div>
+                            <div class="modal fade" id="edit-bill" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Add New Customer</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route('add_customer') }}" method="POST">
+                                                    @csrf()
+                                                    <div class="mb-3">
+                                                        <input type="text" class="form-control" name="name_customer" id="name_customer"
+                                                            placeholder="Enter Name ">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <input type="text" class="form-control" name="phone_number" id="phone_number"
+                                                            placeholder="Enter Phone (Optional) ">
+                                                        <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Create Customer</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                            {{-- <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
+                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+                            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div> --}}
+                        </div>
+                    
                 </div>
             </div>
-            <div class="col-sm-9 second-div">
-                <div class="tab-content">
-                    @foreach ($cash as $item)
-                        <div role="tabpanel" class="tab-pane fade {{ $item->date == 1 ? 'active' : ''  }}" id="cash{{ $item->date }}">
-                            {{-- <div role="tabpanel" class="tab-pane fade " id="home{{ $item->id }}"> --}}
+        </div>
+        <div id="Cashbook" class="tabcontent">
+            <div class="row">
+                <div class="col-sm-3 main_div">
+                    <div class="background-dark header-issue  p-3">
+                        <div style="width: 100%;">
+                            <span class="text-center">Cash Book</span>
+                        </div>
+                    </div>
+                    <!-- Buttons Main -->
+                    <div class="row m-2 mt-3">
+                        @if (!empty($bills))
+                            <h3>Cash in Hand - {{ count($bills) }}</h3>
+                        @endif
+                    </div>
+                    
+                    <!--End Buttons Main -->
+                    <!-- Search Bar -->
+                    <div class="row bg-light p-2 m-0">
+                        <div class="col">
+                            <input type="text" class="form-control rounded-pill search_bar" name="search"
+                                placeholder="Search Here">
+                        </div>
+                    </div>
+                    {{-- <div class="profile-span mb-1">
+                            @forelse($bills as  $index => $item)
+                                    <a href="#" type="button"
+                                        class="btn btn-div mb-2 {{ $item->id == 1 ? 'active' : '' }}" href="#home{{ $item->id }}" aria-controls="home{{$item->id}}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <div class="" style="border-radius: 50%; width: 50px; height: 50px; background-color: white; padding: 6px;">
+                                                    <h3> {{$loop->iteration}}</h3>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <h5 class="font-weight-bold">Bill# {{$loop->iteration}}</h5>
+                                                <span style="font-size: 0.75rem !important;">{{$item->created_at}}</span>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <h6>Rs. {{ $item->amount }}</h6>
+                                                <span style="font-size: 1rem !important;">{{$item->method}}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @empty
+                            @endforelse
+                        </div> --}}
+                    <div class="row m-2 mt-3">
+                        <div class="col-md-4">
+                            <h6>Date</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Daily Balance</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Balance</h6>
+                        </div>
+                    </div>
+                    <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
+                        @foreach ($cash as $item)
+                        <a style="background-color: #f37111; color:black;" class="nav-link {{ $item->date == 1 ? 'active' : '' }} mb-2" href="#cash{{ $item->date }}" aria-controls="cash{{$item->date}}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                            <div class="row ms-1 me-1">
+                                <div class="col-md-4">
+                                    <h6>{{ $item->date }}</h6>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>Rs. 0</h6>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>Rs. 0</h6>
+                                </div>
+                            </div>
+                        </a>
+                        {{-- @endforeach --}}
+                        @endforeach
+                    </div>
+                </div>
+                <div class="col-sm-9 second-div">
+                    <div class="tab-content">
+                        @foreach ($cash as $item)
+                            <div role="tabpanel" class="tab-pane fade {{ $item->date == 1 ? 'active' : ''  }}" id="cash{{ $item->date }}">
+                                {{-- <div role="tabpanel" class="tab-pane fade " id="home{{ $item->id }}"> --}}
+                                    <div class="bg-light bg-gradient header-info p-0">
+                                        <div class="header-profile">
+                                            <span style="margin-left: 15px;">
+                                                <h3 style="margin-bottom:0rem">{{ $item->date }}</h3>
+                                            </span>
+                                        </div>
+                                        <div class="header-amount">
+                                            <span class="">
+                                                <h6>
+                                                    <span class="display-6">
+                                                        Today Balance - Rs 0
+                                                    </span>
+                                                </h6>
+                                            </span>
+                                        </div>        
+                                    </div>
+                                    @php
+                                        $cash_detail = CashBook::where('date',$item->date)->get();
+                                        $cash_out = $cash_detail->sum('cash_out');
+                                        $cash_in = $cash_detail->sum('cash_in');
+                                    @endphp
+                                    
+                                    {{-- @if (sizeof($payment) != 0) --}}
+                                        <ul class="responsive-table">
+                                            <li class="table-header mb-2">
+                                                <div class="col">ENTRIES<br>
+                                                    ({{ sizeof($cash_detail) }})
+                                                </div>
+                                                <div class="col">DETAIL</div>
+                                                <div class="col">Cash Out<br><small style="color:red">Rs
+                                                        {{ $cash_out }}</small>
+                                                </div>
+                                                <div class="col">Cash in<br><small style="color:green">
+                                                    Rs. {{ $cash_in }}</small>
+                                                </div>
+                                                {{-- <div class="col">BALANCE</div> --}}
+                                            </li>
+                                                @forelse ($cash_detail  as $element)
+                                                    <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
+                                                        <li class="table-row">
+                                                            <div class="col div-one" data-label="Entries"><small>{{ $element->date }}</small>
+                                                            </div>
+                                                            <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
+                                                            </div>
+                                                            <div class="col div-two" data-label="You Give">
+                                                                <small>{{ $element->cash_out }}</small>
+                                                            </div>
+                                                            <div class="col div-three" data-label="You Got">
+                                                                <small>{{ $element->cash_in }}</small>
+                                                            </div>
+                                                            {{-- <div class="col div-one" data-label="Balance">
+                                                                <small>
+                                                                    {{ $amount_remaning_balance }}
+                                                                </small>
+                                                            </div> --}}
+                                                        </li>
+                                                    </a>
+                                                @empty
+                                                @endforelse
+                                         
+                                        </ul>
+                                    {{-- @endif --}}
+                                    
+                                {{-- </div> --}}
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="text-center buttons btn-give-got">
+                        <!-- Button trigger modal -->
+                        <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                            data-bs-target="#cash_in">
+                            <span class="m-2 text-white">Cash In</span>
+                        </button>
+                        <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                            data-bs-target="#cash_out">
+                            <span class="m-2 text-white">Cash Out</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Bankac" class="tabcontent">
+            <div class="row">
+                <div class="col-sm-3 main_div">
+                    <div class="background-dark header-issue  p-3">
+                        <div style="width: 100%;">
+                            <span class="text-center">Bank Account</span>
+                        </div>
+                    </div>
+                    <!-- Buttons Main -->
+                    <div class="row m-2 mt-3">
+                        <h3>Total Accounts - {{ sizeof($bank_accounts) }}</h3>
+                    </div>
+                    <!--End Buttons Main -->
+                    <!-- Add new item Start -->
+                    <div class="row m-2 mt-3">
+                        <button class="btn background-dark" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#add_new_bankac" aria-controls="add_new_bankac">Add New Account</button>
+                    </div>
+                    <!-- Add new item Bill End -->
+                    
+                    <!-- Search Bar -->
+                    <div class="row bg-light p-2 m-0">
+                        <div class="col">
+                            <input type="text" class="form-control rounded-pill search_bar" name="search"
+                                placeholder="Search Here">
+                        </div>
+                    </div>
+                    <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
+                        @foreach ($bank_accounts as $item)
+                            <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#account{{ $item->account }}" aria-controls="account{{ $item->account }}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                                <span style="font-size: 0.75rem;">Account No</span>
+                                <h5 class="font-weight-bold">{{ $item->account }}</h5>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="col-sm-9 second-div">
+                    <div class="tab-content">
+                        @foreach ($bank_accounts as $item)
+                            <div role="tabpanel" class="tab-pane fade {{ $item->account == 1 ? 'active' : ''  }}" id="account{{ $item->account }}">
                                 <div class="bg-light bg-gradient header-info p-0">
                                     <div class="header-profile">
                                         <span style="margin-left: 15px;">
-                                            <h3 style="margin-bottom:0rem">{{ $item->date }}</h3>
+                                            <h3 style="margin-bottom:0rem">Account No: {{ $item->account }}</h3>
                                         </span>
                                     </div>
-                                    <div class="header-amount">
-                                        <span class="">
-                                            <h6>
-                                                <span class="display-6">
-                                                    Today Balance - Rs 0
-                                                </span>
-                                            </h6>
-                                        </span>
-                                    </div>        
                                 </div>
                                 @php
-                                    $cash_detail = CashBook::where('date',$item->date)->get();
-                                    $cash_out = $cash_detail->sum('cash_out');
-                                    $cash_in = $cash_detail->sum('cash_in');
+                                    $account_detail = BankAccount::where('account',$item->account )->get();
                                 @endphp
-                                
-                                {{-- @if (sizeof($payment) != 0) --}}
-                                    <ul class="responsive-table">
-                                        <li class="table-header mb-2">
-                                            <div class="col">ENTRIES<br>
-                                                ({{ sizeof($cash_detail) }})
-                                            </div>
-                                            <div class="col">DETAIL</div>
-                                            <div class="col">Cash Out<br><small style="color:red">Rs
-                                                    {{ $cash_out }}</small>
-                                            </div>
-                                            <div class="col">Cash in<br><small style="color:green">
-                                                Rs. {{ $cash_in }}</small>
-                                            </div>
-                                            {{-- <div class="col">BALANCE</div> --}}
-                                        </li>
-                                            @forelse ($cash_detail  as $element)
-                                                <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
-                                                    <li class="table-row">
-                                                        <div class="col div-one" data-label="Entries"><small>{{ $element->date }}</small>
-                                                        </div>
-                                                        <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
-                                                        </div>
-                                                        <div class="col div-two" data-label="You Give">
-                                                            <small>{{ $element->cash_out }}</small>
-                                                        </div>
-                                                        <div class="col div-three" data-label="You Got">
-                                                            <small>{{ $element->cash_in }}</small>
-                                                        </div>
-                                                        {{-- <div class="col div-one" data-label="Balance">
-                                                            <small>
-                                                                {{ $amount_remaning_balance }}
-                                                            </small>
-                                                        </div> --}}
-                                                    </li>
-                                                </a>
-                                            @empty
-                                            @endforelse
-                                     
-                                    </ul>
-                                {{-- @endif --}}
-                                
-                            {{-- </div> --}}
-                        </div>
-                    @endforeach
-                </div>
-                <div class="text-center buttons btn-give-got">
-                    <!-- Button trigger modal -->
-                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                        data-bs-target="#cash_in">
-                        <span class="m-2 text-white">Cash In</span>
-                    </button>
-                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                        data-bs-target="#cash_out">
-                        <span class="m-2 text-white">Cash Out</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="Bankac" class="tabcontent">
-        <div class="row">
-            <div class="col-sm-3 main_div">
-                <div class="background-dark header-issue  p-3">
-                    <div style="width: 100%;">
-                        <span class="text-center">Bank Account</span>
-                    </div>
-                </div>
-                <!-- Buttons Main -->
-                <div class="row m-2 mt-3">
-                    <h3>Total Accounts - {{ sizeof($bank_accounts) }}</h3>
-                </div>
-                <!--End Buttons Main -->
-                <!-- Add new item Start -->
-                <div class="row m-2 mt-3">
-                    <button class="btn background-dark" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#add_new_bankac" aria-controls="add_new_bankac">Add New Account</button>
-                </div>
-                <!-- Add new item Bill End -->
-                
-                <!-- Search Bar -->
-                <div class="row bg-light p-2 m-0">
-                    <div class="col">
-                        <input type="text" class="form-control rounded-pill search_bar" name="search"
-                            placeholder="Search Here">
-                    </div>
-                </div>
-                <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
-                    @foreach ($bank_accounts as $item)
-                        <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#account{{ $item->account }}" aria-controls="account{{ $item->account }}" role="tab" aria-selected="true" data-bs-toggle="tab">
-                            <span style="font-size: 0.75rem;">Account No</span>
-                            <h5 class="font-weight-bold">{{ $item->account }}</h5>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-            <div class="col-sm-9 second-div">
-                <div class="tab-content">
-                    @foreach ($bank_accounts as $item)
-                        <div role="tabpanel" class="tab-pane fade {{ $item->account == 1 ? 'active' : ''  }}" id="account{{ $item->account }}">
-                            <div class="bg-light bg-gradient header-info p-0">
-                                <div class="header-profile">
-                                    <span style="margin-left: 15px;">
-                                        <h3 style="margin-bottom:0rem">Account No: {{ $item->account }}</h3>
-                                    </span>
-                                </div>
-                            </div>
-                            @php
-                                $account_detail = BankAccount::where('account',$item->account )->get();
-                            @endphp
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Amount</th>
-                                        <th scope="col">Cheque</th>
-                                        <th scope="col">Cheque No</th>
-                                        <th scope="col">Bank</th>
-                                        <th scope="col">Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($account_detail  as $element)
+                                <table class="table table-striped">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $element->account_holder_name }}</td>
-                                            <td>{{ $element->amount }}</td>
-                                            <td> 
-                                                <img src="{{ asset('images/cheque_images/'.$element->cheque_img) }}" alt="" class="img-fluid" height="80" width="80"> 
-                                            </td>
-                                            <td>{{ $element->cheque_no }}</td>
-                                            <td>{{ $element->account_holder_bank }}</td>
-                                            <td>{{ $element->date }}</td>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Cheque</th>
+                                            <th scope="col">Cheque No</th>
+                                            <th scope="col">Bank</th>
+                                            <th scope="col">Date</th>
                                         </tr>
-                                    @empty
-                                    @endforelse
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    @endforeach
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($account_detail  as $element)
+                                            <tr>
+                                                <td>{{ $element->account_holder_name }}</td>
+                                                <td>{{ $element->amount }}</td>
+                                                <td> 
+                                                    <img src="{{ asset('images/cheque_images/'.$element->cheque_img) }}" alt="" class="img-fluid" height="80" width="80"> 
+                                                </td>
+                                                <td>{{ $element->cheque_no }}</td>
+                                                <td>{{ $element->account_holder_bank }}</td>
+                                                <td>{{ $element->date }}</td>
+                                            </tr>
+                                        @empty
+                                        @endforelse
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    
     {{-- Create Bill --}}
     <div class="offcanvas offcanvas-end" tabindex="-1" id="add_new_bankac" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">

@@ -1,15 +1,13 @@
 @extends('layout.business')
 @section('content')
 <div class="container-fluid pl-0 pr-0 mr-0 ml-0">
-  
       <div class="row">
-       
         <div class="col-sm-3 main_div">
           <div class="header-issue p-3 background-dark">
             <div style="width: 100%;">
               <span class="text-center">NSS Retail</span>
             </div>
-            <i class="fa-solid fa-building-columns" style="color: white !important;"></i>
+            {{-- <i class="fa-solid fa-building-columns" style="color: white !important;"></i>
             <div class="menu-nav">
               <div class="dropdown-container" tabindex="-1">
                 <div class="three-dots"></div>
@@ -29,15 +27,13 @@
                                       document.getElementById('logout-form').submit();">
                         {{ __('Logout') }}
                     </a>
-
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
-                    {{-- <a href=""> Logout </a> --}}
                   </div>			            
                 </div>
               </div>
-            </div>
+            </div> --}}
           </div>
           <span>
             <div class="text-center bg-light bg-gradient header-info p-3">Select Business</div>

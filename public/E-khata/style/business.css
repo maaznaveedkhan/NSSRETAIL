@@ -288,9 +288,9 @@
   .tab {
       float: left;
       border: 1px solid;
-      background-color: #f37111;
+      background-color: #8b9cb4;
       width: 10%;
-      height: 100%;
+      height: 38rem;
   }
   /* Style the buttons inside the tab */
   
@@ -310,19 +310,19 @@
   /* Change background color of buttons on hover */
   
   .tab button:hover {
-      background-color: #ddd;
+      background-color: #f47415;
   }
   /* Create an active/current "tab button" class */
   
   .tab button.active {
-      background-color: #ccc;
+      background-color: #f47415;
   }
   /* Style the tab content */
   
   .tabcontent {
       float: left;
       padding: 0px 12px;
-      border: 1px solid #ccc;
+      border: 1px solid #f47415;
       width: 89%;
       border-left: none;
       height: 100%;
