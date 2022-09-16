@@ -48,7 +48,7 @@ class BusinessController extends Controller
                 ->get();
         $cash = CashBook::where('business_id',$id)->select('date')->distinct()->get();
         $stock = Stock::where('business_id',$id)->get();
-        $bank_accounts = BankAccount::where('business_id',$id)->get();
+        $bank_accounts = BankAccount::where('business_id',$id)->select('account')->distinct()->get();
         foreach($cash as $item){
             $cash_detail = CashBook::where('date',$item->date)->get();
 

@@ -915,18 +915,20 @@
                     </div>
                 </div>
                 <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
-                    @foreach ($stock as $item)
+                    @foreach ($bank_accounts as $item)
                         <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#stock{{ $item->id }}" aria-controls="stock{{ $item->id }}" role="tab" aria-selected="true" data-bs-toggle="tab">
-                            <div class="row">
+                            <span style="font-size: 0.75rem;">Account No</span>
+                            <h5 class="font-weight-bold">{{ $item->account }}</h5>
+                            {{-- <div class="row">
                                 <div class="col-sm-7">
-                                    <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
+                                    <h5 class="font-weight-bold">{{ $item->account }}</h5>
                                     <span style="font-size: 0.75rem;">{{ $item->created_at }}</span>
                                 </div>
                                 <div class="col-sm-5">
                                     <h5 class="font-weight-bold">10</h5>
                                     <span >{{ $item->item_unit }}</span>
                                 </div>
-                            </div>
+                            </div> --}}
                         </a>
                     @endforeach
                 </div>

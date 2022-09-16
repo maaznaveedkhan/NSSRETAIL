@@ -19,6 +19,7 @@ class BankAccountController extends Controller
             $file->move('images/cheque_images', $filename);
             $bank_ac->cheque_img = $filename;
         }
+        $bank_ac->business_id = $request->business_id;
         $bank_ac->date = $request->date;
         $bank_ac->account = $request->account;
         $bank_ac->account_holder_id = $request->account_holder_id;
