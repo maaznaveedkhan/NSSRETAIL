@@ -37,6 +37,6 @@ class HomeController extends Controller
         return view('dashboard.userdashboard');
     }
     public function admin_dashboard(){
-        return 'You are not admin!';
+        return view('dashboard.admindashboard');
     }
 }

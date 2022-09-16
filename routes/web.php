@@ -69,9 +69,9 @@ Route::delete('delete_payment' , [SupplierController::class, 'DeletePayment'])->
 //Stock Route
 Route::get('stock/{id}', [StockController::class, 'index'])->name('view_stock');
 Route::post('add_item', [StockController::class, 'add_item'])->name('add_item');
-Route::get('stock_page/{id}' , [StockController::class, 'stock_page'])->name('stock-page');
-Route::post('qty_in/{id}', [StockController::class, 'qty_in'])->name('qty-in');
-Route::post('qty_out/{id}', [StockController::class, 'qty_out'])->name('qty-out');
+Route::get('stock_page/{id}' , [StockController::class, 'stock_page'])->name('stock_page');
+Route::post('qty_in', [App\Http\Controllers\StockQuantityController::class, 'qty_in'])->name('qty_in');
+Route::post('qty_out', [App\Http\Controllers\StockQuantityController::class, 'qty_out'])->name('qty_out');
 
 
 Route::get('view_report/{id}', [ReportController::class, 'ViewReport'])->name('view_report');
@@ -89,6 +89,7 @@ Route::group(['middleware' => ['user', 'auth']], function () {
     Route::get('delete_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'delete_bill'])->name('delete_bill');
     Route::post('cash_in',[App\Http\Controllers\CashBookController::class,'cash_in'])->name('cash_in');
     Route::post('cash_out',[App\Http\Controllers\CashBookController::class,'cash_out'])->name('cash_out');
+    Route::post('add_bank_ac',[App\Http\Controllers\BankAccountController::class,'add_bank_ac'])->name('add_bank_ac');
     // Route::get('/user_dashboard', [App\Http\Controllers\HomeController::class, 'user_dashboard'])->name('user_dashboard');
 });
 Route::group(['middleware' => ['admin', 'auth']], function () {

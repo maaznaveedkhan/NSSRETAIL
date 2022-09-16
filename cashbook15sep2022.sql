@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2022 at 01:11 PM
+-- Generation Time: Sep 15, 2022 at 01:47 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -203,15 +203,6 @@ CREATE TABLE `cash_books` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `cash_books`
---
-
-INSERT INTO `cash_books` (`id`, `business_id`, `date`, `amount`, `cash_in`, `cash_out`, `bill_no`, `party`, `detail`, `daily_balance`, `balance`, `created_at`, `updated_at`) VALUES
-(1, '2', '2022-09-15', '5000', '5000.00', NULL, '3', 'Test Supplier 2', 'cash', NULL, NULL, '2022-09-15 06:21:52', '2022-09-15 06:21:52'),
-(2, '2', '2022-09-21', '50000', NULL, '50000.00', '3', 'Test Supplier 2', 'cash', NULL, NULL, '2022-09-15 06:33:51', '2022-09-15 06:33:51'),
-(3, '2', '2022-09-15', '50000', '50000.00', NULL, '3', 'Test Supplier 2', 'Test Amount', NULL, NULL, '2022-09-15 07:51:36', '2022-09-15 07:51:36');
-
 -- --------------------------------------------------------
 
 --
@@ -290,7 +281,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (88, '2022_07_05_105042_create_cashes_table', 6),
 (89, '2022_07_05_110501_add_business_id_to_stocks', 6),
 (92, '2022_09_13_132931_create_bill_books_table', 7),
-(95, '2022_09_15_100956_create_cash_books_table', 8);
+(96, '2022_09_15_100956_create_cash_books_table', 8),
+(97, '2022_09_15_163726_create_stock_quantities_table', 8);
 
 -- --------------------------------------------------------
 
@@ -356,6 +348,28 @@ CREATE TABLE `stocks` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `business_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_quantities`
+--
+
+CREATE TABLE `stock_quantities` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `item_id` int(11) DEFAULT NULL,
+  `sale_rate` decimal(8,2) DEFAULT NULL,
+  `purchase_rate` decimal(8,2) DEFAULT NULL,
+  `detail` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `qty_in` decimal(8,2) DEFAULT NULL,
+  `qty_out` decimal(8,2) DEFAULT NULL,
+  `balance` decimal(8,2) DEFAULT NULL,
+  `amount` decimal(8,2) DEFAULT NULL,
+  `party` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bill_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -528,6 +542,12 @@ ALTER TABLE `stocks`
   ADD KEY `stocks_business_id_foreign` (`business_id`);
 
 --
+-- Indexes for table `stock_quantities`
+--
+ALTER TABLE `stock_quantities`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `suppliers`
 --
 ALTER TABLE `suppliers`
@@ -590,7 +610,7 @@ ALTER TABLE `cashes`
 -- AUTO_INCREMENT for table `cash_books`
 --
 ALTER TABLE `cash_books`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `customers`
@@ -608,7 +628,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -626,6 +646,12 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `stocks`
 --
 ALTER TABLE `stocks`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `stock_quantities`
+--
+ALTER TABLE `stock_quantities`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --

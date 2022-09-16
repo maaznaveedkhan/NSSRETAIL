@@ -3,6 +3,7 @@
     @php
         use Carbon\Carbon;
         use App\Models\CashBook;
+        use App\Models\StockQuantity;
     @endphp
     <?php
     $total_given_amount = $total_got_amount = 0;
@@ -23,6 +24,7 @@
             <button class="tablinks" onclick="openCity(event, 'Stockbook')">Stock Book</button>
             <button class="tablinks" onclick="openCity(event, 'Billbook')">Bill book</button>
             <button class="tablinks" onclick="openCity(event, 'Cashbook')">Cash book</button>
+            <button class="tablinks" onclick="openCity(event, 'Bankac')">Bank Ac</button>
         </div>
 
         <div id="Main" class="tabcontent">
@@ -283,7 +285,21 @@
                     </div>
                 </div>
                 <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
-                    <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#" aria-controls="" role="tab" aria-selected="true" data-bs-toggle="tab">
+                    @foreach ($stock as $item)
+                        <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#stock{{ $item->id }}" aria-controls="stock{{ $item->id }}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                            <div class="row">
+                                <div class="col-sm-7">
+                                    <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
+                                    <span style="font-size: 0.75rem;">{{ $item->created_at }}</span>
+                                </div>
+                                <div class="col-sm-5">
+                                    <h5 class="font-weight-bold">10</h5>
+                                    <span >{{ $item->item_unit }}</span>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                    {{-- <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#" aria-controls="" role="tab" aria-selected="true" data-bs-toggle="tab">
                         <div class="row">
                             <div class="col-sm-8">
                                 <h5 class="font-weight-bold">Rice</h5>
@@ -294,13 +310,229 @@
                                 <span>Kg</span>
                             </div>
                         </div>
-                    </a>
+                    </a> --}}
                 </div>
             </div>
             <div class="col-sm-9 second-div">
                 <div class="tab-content">
-      
+                    @foreach ($stock as $item)
+                        <div role="tabpanel" class="tab-pane fade {{ $item->id == 1 ? 'active' : ''  }}" id="stock{{ $item->id }}">
+                            {{-- <div role="tabpanel" class="tab-pane fade " id="home{{ $item->id }}"> --}}
+                                <div class="bg-light bg-gradient header-info p-0">
+                                    <div class="header-profile">
+                                        <span style="margin-left: 15px;">
+                                            <h3 style="margin-bottom:0rem">{{ $item->item_name }}</h3>
+                                        </span>
+                                    </div>
+                                    <div class="header-amount">
+                                        <span class="">
+                                            <h6>
+                                                <span class="display-6">
+                                                    Today Balance - Rs 0
+                                                </span>
+                                            </h6>
+                                        </span>
+                                    </div>        
+                                </div>
+                                @php
+                                    $item_id = $item->id;
+                                    $stock_detail = StockQuantity::where('item_id',$item->id)->get();
+                                    $qty_out = $stock_detail->sum('qty_out');
+                                    $qty_in = $stock_detail->sum('qty_in');
+                                @endphp
+                                <ul  class="responsive-table">
+                                    <li class="table-header mb-2">
+                                        <div class="col">ENTRIES<br>
+                                            ({{ sizeof($stock_detail) }})
+                                        </div>
+                                        <div class="col">DETAIL</div>
+                                        <div class="col">Quantity in<br><small style="color:green">
+                                            Rs. {{ $qty_in }}</small>
+                                        </div>
+                                        <div class="col">Quantity Out<br><small style="color:red">Rs
+                                                {{ $qty_out }}</small>
+                                        </div>                                            
+                                        {{-- <div class="col">BALANCE</div> --}}
+                                    </li>
+                                </ul>
+                                @if (sizeof($stock_detail) != 0)
+                                    <ul class="responsive-table" style="height: 35rem; overflow: auto;">
+                                        {{-- <li class="table-header mb-2">
+                                            <div class="col">ENTRIES<br>
+                                                ({{ sizeof($stock_detail) }})
+                                            </div>
+                                            <div class="col">DETAIL</div>
+                                            <div class="col">Quantity in<br><small style="color:green">
+                                                Rs. {{ $qty_in }}</small>
+                                            </div>
+                                            <div class="col">Quantity Out<br><small style="color:red">Rs
+                                                    {{ $qty_out }}</small>
+                                            </div>                                            
+                                        </li> --}}
+                                        @forelse ($stock_detail  as $element)
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $element->id }} ">
+                                                <li class="table-row">
+                                                    <div class="col div-one" data-label="Entries"><small>{{ $element->created_at }}</small>
+                                                    </div>
+                                                    <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
+                                                    </div>
+                                                    <div class="col div-three" data-label="You Got">
+                                                        <small>{{ $element->qty_in }}</small>
+                                                    </div>
+                                                    <div class="col div-two" data-label="You Give">
+                                                        <small>{{ $element->qty_out }}</small>
+                                                    </div>
+                                                    {{-- <div class="col div-one" data-label="Balance">
+                                                        <small>
+                                                            {{ $amount_remaning_balance }}
+                                                        </small>
+                                                    </div> --}}
+                                                </li>
+                                            </a>
+                                        @empty
+                                        @endforelse
+                                    </ul>
+                                @endif
+                            <div class="text-center buttons btn-give-got">
+                                <!-- Button trigger modal -->
+                                <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                                    data-bs-target="#qty_in{{ $item->id }}">
+                                    <span class="m-2 text-white">Quantity In</span>
+                                </button>
+                                <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                                    data-bs-target="#qty_out{{ $item_id }}">
+                                    <span class="m-2 text-white">Quantity Out</span>
+                                </button>
+                            </div>
+                            <!-- Close Modal For Customer Form -->
+                            <div class="modal fade" id="qty_in{{ $item->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">
+                                                Quantity In</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body" style="width:100%">
+                                            <div style="width:100%">
+                                            <form action="{{ route('qty_in') }}" method="POST">
+                                                @csrf()
+                                                <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                                                <input type="hidden" name="item_id" id="item_id" value="{{ $item_id}}">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label for="amount" class="col-sm-2 col-form-label">Quantity</label>
+                                                        <input type="text" name="qty_in" id="qty_in" class="form-control"
+                                                                value="">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="detail" class="col-sm-2 col-form-label">Rate</label>
+                                                        <input type="text" name="rate" id="rate" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                                        <input type="text" name="amount" id="amount" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label for="detail" class="col-sm-2 col-form-label">Detail</label>
+                                                    <input type="text" name="detail" id="detail" class="form-control">
+                                                </div>
+                                                <div>
+                                                    <label for="bill" class="col-sm-2 col-form-label">Date</label>
+                                                    <input type="date" name="date" id="date" class="form-control">
+                                                </div>
+                                                <div>
+                                                    <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
+                                                    <input type="text" name="bill_no" id="bill" class="form-control">
+                                                    <input type="hidden" name="customer_id" id="customer_id" class="form-control"
+                                                        value="{{ $customer['id'] }}">
+                                                </div>
+                                                <div>
+                                                    <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
+                                                    <select name="party" id="">
+                                                        @foreach ($suppliers as $item)
+                                                            <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="qty_out{{ $item_id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">
+                                                Quantity In</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body" style="width:100%">
+                                            <div style="width:100%">
+                                            <form action="{{ route('qty_out') }}" method="POST">
+                                                @csrf()
+                                                <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                                                <input type="hidden" name="item_id" id="item_id" value="{{ $item_id}}">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label for="amount" class="col-sm-2 col-form-label">Quantity</label>
+                                                        <input type="text" name="qty_out" id="qty_out" class="form-control"
+                                                                value="">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="detail" class="col-sm-2 col-form-label">Rate</label>
+                                                        <input type="text" name="rate" id="rate" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                                        <input type="text" name="amount" id="amount" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label for="detail" class="col-sm-2 col-form-label">Detail</label>
+                                                    <input type="text" name="detail" id="detail" class="form-control">
+                                                </div>
+                                                <div>
+                                                    <label for="bill" class="col-sm-2 col-form-label">Date</label>
+                                                    <input type="date" name="date" id="date" class="form-control">
+                                                </div>
+                                                <div>
+                                                    <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
+                                                    <input type="text" name="bill_no" id="bill" class="form-control">
+                                                    <input type="hidden" name="customer_id" id="customer_id" class="form-control"
+                                                        value="{{ $customer['id'] }}">
+                                                </div>
+                                                <div>
+                                                    <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
+                                                    <select name="party" id="">
+                                                        @foreach ($all_customers as $item)
+                                                            <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
+                
             </div>
         </div>
     </div>
@@ -636,25 +868,123 @@
                                      
                                     </ul>
                                 {{-- @endif --}}
-                                <div class="text-center buttons btn-give-got">
-                                    <!-- Button trigger modal -->
-                                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                                        data-bs-target="#cash_in">
-                                        <span class="m-2 text-white">Cash In</span>
-                                    </button>
-                                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
-                                        data-bs-target="#cash_out">
-                                        <span class="m-2 text-white">Cash Out</span>
-                                    </button>
-                                </div>
+                                
                             {{-- </div> --}}
                         </div>
                     @endforeach
                 </div>
+                <div class="text-center buttons btn-give-got">
+                    <!-- Button trigger modal -->
+                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                        data-bs-target="#cash_in">
+                        <span class="m-2 text-white">Cash In</span>
+                    </button>
+                    <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
+                        data-bs-target="#cash_out">
+                        <span class="m-2 text-white">Cash Out</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="Bankac" class="tabcontent">
+        <div class="row">
+            <div class="col-sm-3 main_div">
+                <div class="background-dark header-issue  p-3">
+                    <div style="width: 100%;">
+                        <span class="text-center">Bank Account</span>
+                    </div>
+                </div>
+                <!-- Buttons Main -->
+                <div class="row m-2 mt-3">
+                    <h3>Total Accounts - {{ sizeof($bank_accounts) }}</h3>
+                </div>
+                <!--End Buttons Main -->
+                <!-- Add new item Start -->
+                <div class="row m-2 mt-3">
+                    <button class="btn background-dark" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#add_new_bankac" aria-controls="add_new_bankac">Add New Account</button>
+                </div>
+                <!-- Add new item Bill End -->
+                
+                <!-- Search Bar -->
+                <div class="row bg-light p-2 m-0">
+                    <div class="col">
+                        <input type="text" class="form-control rounded-pill search_bar" name="search"
+                            placeholder="Search Here">
+                    </div>
+                </div>
+                <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
+                    @foreach ($stock as $item)
+                        <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#stock{{ $item->id }}" aria-controls="stock{{ $item->id }}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                            <div class="row">
+                                <div class="col-sm-7">
+                                    <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
+                                    <span style="font-size: 0.75rem;">{{ $item->created_at }}</span>
+                                </div>
+                                <div class="col-sm-5">
+                                    <h5 class="font-weight-bold">10</h5>
+                                    <span >{{ $item->item_unit }}</span>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+            <div class="col-sm-9 second-div">
+                
             </div>
         </div>
     </div>
     {{-- Create Bill --}}
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="add_new_bankac" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel">Add New Bank Account</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <form action="{{ route('add_bank_ac') }}" method="POST" enctype="multipart/form-data">
+                @csrf()
+                <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
+                <div class="mb-3">
+                    <label for="">Account No</label>
+                    <input type="text" class="form-control" name="account" id="account"
+                        placeholder="Enter Account No" required>
+                </div>
+                <div class="mb-3">
+                    <label for="Detail">Bank</label>
+                    <input type="text" class="form-control" name="account_holder_bank" id="account_holder_bank"
+                        placeholder="Enter Bank" required>
+                    <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
+                </div>
+                <div class="mb-3">
+                    <label for="Detail">Upload Cheque</label>
+                    <input type="file" class="form-control" name="cheque_img" id="cheque_img" >
+                </div>
+                <div class="mb-3">
+                    <label for="Detail">Enter Cheque</label>
+                    <input type="text" class="form-control" name="cheque_no" id="cheque_no"
+                        placeholder="Enter Cheque (Optional)">
+                </div>
+                <div class="mb-3">
+                    <label for="Date">Date</label>
+                    <input type="date" class="form-control" name="date" id="date" placeholder="Enter Date (Optional)">
+                </div>
+                <div class="mb-3">
+                    <label for="Detail">Account Holder Name</label>
+                    <input type="text" class="form-control" name="account_holder_name" id="account_holder_name"
+                        placeholder="Enter Account Holder Name (Optional) ">
+                </div>
+                <div class="mb-3">
+                    <label for="Detail">Account Holder Phone</label>
+                    <input type="text" class="form-control" name="account_holder_phone" id="account_holder_phone"
+                        placeholder="Enter Account Holder Phone (Optional) ">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 id="offcanvasRightLabel">Create New Bill</h5>
@@ -756,7 +1086,6 @@
       </div>
     </div>
 
-
     <!-- Modal For Customer Form -->
     <!-- Modal -->
     <div class="modal fade" id="customer-add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -787,8 +1116,7 @@
             </div>
         </div>
     </div>
-    <!-- Close Modal For Customer Form -->
-
+    
     <!-- Modal -->
     <div class="modal fade" id="yougave" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -1081,108 +1409,108 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="cash_out" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">
-                            Cash Out</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" style="width:100%">
-                        <div style="width:100%">
-                            {{-- <div class="row"> --}}
-                                    <form action="{{ route('cash_out') }}" method="POST">
-                                        @csrf()
-                                        <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
-                                        <div>
-                                            <label for="amount" class="col-sm-2 col-form-label">Amount</label>
-                                            <input type="text" name="amount" id="amount" class="form-control"
-                                                value="">
-                                        </div>
-                                        <div>
-                                            <label for="detail" class="col-sm-2 col-form-label">Detail</label>
-                                            <input type="text" name="detail" id="detail" class="form-control">
-                                        </div>
-                                        <div>
-                                            <label for="date" class="col-sm-2 col-form-label">Date</label>
-                                            <input type="date" name="date" id="date" class="form-control">
-                                        </div>
-                                        <div>
-                                            <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
-                                            <input type="text" name="bill_no" id="bill" class="form-control">
-                                            <input type="hidden" name="customer_id" id="customer_id" class="form-control"
-                                                value="{{ $customer['id'] }}">
-                                        </div>
-                                        <div>
-                                            <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
-                                            <select name="party" id="">
-                                                @foreach ($suppliers as $item)
-                                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            
-                                        </div>
-                                {{-- <div class="col-sm-7">
-                                    <div class="calculator card">
-                                        <!-- <input type="text" class="calculator-screen z-depth-1" value="" disabled /> -->
-                                        <div class="calculator-keys">
 
-                                            <button type="button" class="operator btn btn-info" value="+">+</button>
-                                            <button type="button" class="operator btn btn-info" value="-">-</button>
-                                            <button type="button" class="operator btn btn-info"
-                                                value="*">&times;</button>
-                                            <button type="button" class="operator btn btn-info"
-                                                value="/">&divide;</button>
-
-                                            <button type="button" value="7"
-                                                class="btn btn-light waves-effect">7</button>
-                                            <button type="button" value="8"
-                                                class="btn btn-light waves-effect">8</button>
-                                            <button type="button" value="9"
-                                                class="btn btn-light waves-effect">9</button>
-
-
-                                            <button type="button" value="4"
-                                                class="btn btn-light waves-effect">4</button>
-                                            <button type="button" value="5"
-                                                class="btn btn-light waves-effect">5</button>
-                                            <button type="button" value="6"
-                                                class="btn btn-light waves-effect">6</button>
-
-
-                                            <button type="button" value="1"
-                                                class="btn btn-light waves-effect">1</button>
-                                            <button type="button" value="2"
-                                                class="btn btn-light waves-effect">2</button>
-                                            <button type="button" value="3"
-                                                class="btn btn-light waves-effect">3</button>
-
-
-                                            <button type="button" value="0"
-                                                class="btn btn-light waves-effect">0</button>
-                                            <button type="button" class="decimal function btn btn-secondary"
-                                                value=".">.</button>
-                                            <button type="button" class="all-clear function btn btn-danger btn-sm"
-                                                value="all-clear">AC</button>
-
-                                            <button type="button" class="equal-sign operator btn btn-default"
-                                                value="=">=</button>
-                                        </div>
+    <div class="modal fade" id="cash_out" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Cash Out</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="width:100%">
+                    <div style="width:100%">
+                        {{-- <div class="row"> --}}
+                                <form action="{{ route('cash_out') }}" method="POST">
+                                    @csrf()
+                                    <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                                    <div>
+                                        <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                        <input type="text" name="amount" id="amount" class="form-control"
+                                            value="">
                                     </div>
-                                </div> --}}
-                            {{-- </div> --}}
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit	" class="btn btn-primary">Save</button>
-                        </form>
+                                    <div>
+                                        <label for="detail" class="col-sm-2 col-form-label">Detail</label>
+                                        <input type="text" name="detail" id="detail" class="form-control">
+                                    </div>
+                                    <div>
+                                        <label for="date" class="col-sm-2 col-form-label">Date</label>
+                                        <input type="date" name="date" id="date" class="form-control">
+                                    </div>
+                                    <div>
+                                        <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
+                                        <input type="text" name="bill_no" id="bill" class="form-control">
+                                        <input type="hidden" name="customer_id" id="customer_id" class="form-control"
+                                            value="{{ $customer['id'] }}">
+                                    </div>
+                                    <div>
+                                        <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
+                                        <select name="party" id="">
+                                            @foreach ($suppliers as $item)
+                                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        
+                                    </div>
+                            {{-- <div class="col-sm-7">
+                                <div class="calculator card">
+                                    <!-- <input type="text" class="calculator-screen z-depth-1" value="" disabled /> -->
+                                    <div class="calculator-keys">
 
+                                        <button type="button" class="operator btn btn-info" value="+">+</button>
+                                        <button type="button" class="operator btn btn-info" value="-">-</button>
+                                        <button type="button" class="operator btn btn-info"
+                                            value="*">&times;</button>
+                                        <button type="button" class="operator btn btn-info"
+                                            value="/">&divide;</button>
+
+                                        <button type="button" value="7"
+                                            class="btn btn-light waves-effect">7</button>
+                                        <button type="button" value="8"
+                                            class="btn btn-light waves-effect">8</button>
+                                        <button type="button" value="9"
+                                            class="btn btn-light waves-effect">9</button>
+
+
+                                        <button type="button" value="4"
+                                            class="btn btn-light waves-effect">4</button>
+                                        <button type="button" value="5"
+                                            class="btn btn-light waves-effect">5</button>
+                                        <button type="button" value="6"
+                                            class="btn btn-light waves-effect">6</button>
+
+
+                                        <button type="button" value="1"
+                                            class="btn btn-light waves-effect">1</button>
+                                        <button type="button" value="2"
+                                            class="btn btn-light waves-effect">2</button>
+                                        <button type="button" value="3"
+                                            class="btn btn-light waves-effect">3</button>
+
+
+                                        <button type="button" value="0"
+                                            class="btn btn-light waves-effect">0</button>
+                                        <button type="button" class="decimal function btn btn-secondary"
+                                            value=".">.</button>
+                                        <button type="button" class="all-clear function btn btn-danger btn-sm"
+                                            value="all-clear">AC</button>
+
+                                        <button type="button" class="equal-sign operator btn btn-default"
+                                            value="=">=</button>
+                                    </div>
+                                </div>
+                            </div> --}}
+                        {{-- </div> --}}
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit	" class="btn btn-primary">Save</button>
+                    </form>
+
                 </div>
             </div>
         </div>
+    </div>
 
     <!-- Modal -->
     @foreach ($payment as $pay)

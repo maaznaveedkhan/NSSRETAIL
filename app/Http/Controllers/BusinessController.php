@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BankAccount;
 use App\Models\BillBook;
 use Illuminate\Http\Request;
 use App\Models\Business;
 use App\Models\CashBook;
 use App\Models\Customer;
+use App\Models\Stock;
 use App\Models\Supplier;
 use App\Models\User;
 use Carbon\Carbon;
@@ -45,13 +47,14 @@ class BusinessController extends Controller
                 ->join('bussinesses_customers', 'customers.id', '=', 'bussinesses_customers.customer_id')
                 ->get();
         $cash = CashBook::where('business_id',$id)->select('date')->distinct()->get();
-
+        $stock = Stock::where('business_id',$id)->get();
+        $bank_accounts = BankAccount::where('business_id',$id)->get();
         foreach($cash as $item){
             $cash_detail = CashBook::where('date',$item->date)->get();
 
         }
         if($customer != null){
-            return view('layout.business_page', compact('customer', 'all_customers', 'b', 'payment', 'details','suppliers','bills','cash'));
+            return view('layout.business_page', compact('customer', 'all_customers', 'b', 'payment', 'details','suppliers','bills','cash','stock','bank_accounts'));
         }else{
             return view('layout.all_customers', compact('b'));
         }

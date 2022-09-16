@@ -28,7 +28,7 @@ class StockController extends Controller
         $stock->item_unit = $request->item_unit;
         $stock->sale_rate = $request->sale_rate;
         $stock->purchase_rate = $request->purchase_rate;
-        return $stock;
+        // return $stock;
         $stock->save();
         
         // $id =$stock->id; 
