@@ -322,7 +322,7 @@
   .tabcontent {
       float: left;
       padding: 0px 12px;
-      border: 1px solid #f47415;
+      border: 1px solid white;
       width: 89%;
       border-left: none;
       height: 100%;

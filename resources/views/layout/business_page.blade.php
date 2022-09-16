@@ -189,7 +189,7 @@
                             </div>
                         @endif
     
-                        <div class="menu-nav">
+                        {{-- <div class="menu-nav">
                             <div class="dropdown-container" tabindex="-1">
                                 <div class="three-dots"></div>
                                 <div class="dropdown">
@@ -200,7 +200,7 @@
                                     <div class="drop mb-2"><a href=""> Call </a></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     @if (sizeof($payment) != 0)
                         <div style="height: 27rem; overflow: auto;">
