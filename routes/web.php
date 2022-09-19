@@ -25,14 +25,10 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
+// Route::get('logout',[App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-
-
-Route::get('home_page', function () {
-    return view('layout.home_page');
-});
 
 Route::get('login', function () {
     return view('layout.login');

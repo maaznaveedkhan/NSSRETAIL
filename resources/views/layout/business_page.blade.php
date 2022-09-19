@@ -39,6 +39,9 @@
                             <div class="dropdown-container" tabindex="-1">
                                 <div class="three-dots"></div>
                                 <div class="dropdowns">
+                                    {{-- <div class="drop mb-2">
+                                        <a href="{{ route('logout') }}">Logout</a>
+                                    </div> --}}
                                     <div class="drop mb-2">
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
@@ -203,20 +206,22 @@
                         </div> --}}
                     </div>
                     @if (sizeof($payment) != 0)
+                        <ul class="responsive-table">
+                            <li class="table-header mb-2">
+                                <div class="col">ENTRIES<br>
+                                    ({{ sizeof($payment) }})
+                                </div>
+                                <div class="col">DETAIL</div>
+                                <div class="col">YOU GAVE<br><small style="color:red">Rs
+                                        {{ $total_given_amount }}</small>
+                                </div>
+                                <div class="col">YOU GOT<br><small style="color:green">{{ $total_got_amount }}</small>
+                                </div>
+                                <div class="col">BALANCE</div>
+                            </li>
+                        </ul>
                         <div style="height: 27rem; overflow: auto;">
                             <ul class="responsive-table">
-                                <li class="table-header mb-2">
-                                    <div class="col">ENTRIES<br>
-                                        ({{ sizeof($payment) }})
-                                    </div>
-                                    <div class="col">DETAIL</div>
-                                    <div class="col">YOU GAVE<br><small style="color:red">Rs
-                                            {{ $total_given_amount }}</small>
-                                    </div>
-                                    <div class="col">YOU GOT<br><small style="color:green">{{ $total_got_amount }}</small>
-                                    </div>
-                                    <div class="col">BALANCE</div>
-                                </li>
                                 @forelse($payment as $pay)
                                     <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
                                         <li class="table-row">
@@ -607,7 +612,15 @@
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <th scope="row">{{$item->item}}</th>
+                                        @php
+                                            $items = explode(',',$item->item);
+                                        @endphp
+                                        <th scope="row">
+                                            @foreach ($items as $element)
+                                                {{ $element }}<br>
+                                            @endforeach
+                                            {{-- {{$item->item}} --}}
+                                        </th>
                                         <td>{{$item->quantity}}</td>
                                         <td>{{$item->rate}}</td>
                                         <td>{{$item->amount}}</td>
@@ -615,8 +628,8 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th scope="row">{{$item->item}}</th>
-                                        <td>Total</td>
+                                            <th scope="row"></th>
+                                            <td>Total</td>
                                         <td>
                                             
                                         </td>
@@ -1002,7 +1015,17 @@
                 <div class="mb-3">
                     <label for="Date">Date</label>
                     <input type="date" class="form-control" name="date" id="date" placeholder="Enter Date">
-                    <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
+                </div>
+                <a class="btn btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#add_items">Add items</a>
+                <div class="mb-3">
+                    <label for="Date">Select Item</label>
+                    <select name="items[]" id="" multiple>
+                        <option value="">Select Item</option>
+                        @foreach ($stock as $item)
+                            <option value="{{ $item->item_name }}">{{ $item->item_name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="Date">Select party</label>
@@ -1012,8 +1035,6 @@
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
-
-                    <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
                 </div>
                 <div>
                     <input type="checkbox" value="cash" name="method" id=""> Cash
@@ -1506,6 +1527,37 @@
         </div>
     </div>
 
+    <div class="modal fade" id="add_items" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Select Items</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST" id="item_form">
+                        @foreach ($stock as $item)
+                            <input type="checkbox" name="item[]" id="add_quantity" value="{{$item->item_name}}" onchange="valueChanged()"/> <label>{{$item->item_name}}</label><br>
+                        @endforeach
+                        @csrf()
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="name_customer" id="name_customer"
+                                placeholder="Enter Name ">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="phone_number" id="phone_number"
+                                placeholder="Enter Phone (Optional) ">
+                            <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Create Customer</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     @foreach ($payment as $pay)
         <?php
@@ -1809,5 +1861,14 @@
                 $box.prop("checked", false);
             }
         });
+    </script>
+    <script type="text/javascript">
+        function valueChanged()
+        {
+            if($('#add_quantity').is(":checked"))   
+                $("#item_form").show();
+            else
+                $("#item_form").hide();
+        }
     </script>
 @endsection

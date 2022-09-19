@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 14, 2022 at 01:05 PM
+-- Generation Time: Sep 16, 2022 at 01:09 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -20,6 +20,38 @@ SET time_zone = "+00:00";
 --
 -- Database: `cashbook`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bank_accounts`
+--
+
+CREATE TABLE `bank_accounts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `business_id` int(11) DEFAULT NULL,
+  `date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `account` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `account_holder_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `account_holder_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `account_holder_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `account_holder_bank` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cheque_img` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cheque_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tobe1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tobe2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tobe3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bank_accounts`
+--
+
+INSERT INTO `bank_accounts` (`id`, `business_id`, `date`, `account`, `account_holder_id`, `account_holder_name`, `account_holder_phone`, `account_holder_bank`, `cheque_img`, `cheque_no`, `amount`, `tobe1`, `tobe2`, `tobe3`, `created_at`, `updated_at`) VALUES
+(1, 2, '2022-09-16', '123', NULL, 'Test', '03025697856', 'test', '1663322479.png', '20', '5000', NULL, NULL, NULL, '2022-09-16 10:01:19', '2022-09-16 10:01:19');
 
 -- --------------------------------------------------------
 
@@ -184,6 +216,28 @@ CREATE TABLE `cashes` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cash_books`
+--
+
+CREATE TABLE `cash_books` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `business_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `amount` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cash_in` decimal(8,2) DEFAULT NULL,
+  `cash_out` decimal(8,2) DEFAULT NULL,
+  `bill_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `party` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `detail` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `daily_balance` decimal(8,2) DEFAULT NULL,
+  `balance` decimal(8,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customers`
 --
 
@@ -258,7 +312,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (87, '2022_07_01_060558_add_phone_to_users', 6),
 (88, '2022_07_05_105042_create_cashes_table', 6),
 (89, '2022_07_05_110501_add_business_id_to_stocks', 6),
-(92, '2022_09_13_132931_create_bill_books_table', 7);
+(92, '2022_09_13_132931_create_bill_books_table', 7),
+(100, '2022_09_15_100956_create_cash_books_table', 8),
+(101, '2022_09_15_163726_create_stock_quantities_table', 8),
+(107, '2022_09_16_111548_create_bank_accounts_table', 9);
 
 -- --------------------------------------------------------
 
@@ -325,6 +382,58 @@ CREATE TABLE `stocks` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `business_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `stocks`
+--
+
+INSERT INTO `stocks` (`id`, `item_name`, `item_unit`, `purchase_rate`, `sale_rate`, `created_at`, `updated_at`, `business_id`) VALUES
+(1, 'Rice', 'Kilogram(Kg)', '220.00', '240.00', '2022-09-16 04:08:13', '2022-09-16 04:08:13', 2),
+(2, 'Sugar', 'Kilogram(Kg)', '105.00', '120.00', '2022-09-16 05:21:39', '2022-09-16 05:21:39', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_quantities`
+--
+
+CREATE TABLE `stock_quantities` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `business_id` int(11) DEFAULT NULL,
+  `item_id` int(11) DEFAULT NULL,
+  `sale_rate` decimal(8,2) DEFAULT NULL,
+  `purchase_rate` decimal(8,2) DEFAULT NULL,
+  `qty_in` decimal(8,2) DEFAULT NULL,
+  `qty_out` decimal(8,2) DEFAULT NULL,
+  `detail` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bill_no` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` decimal(8,2) DEFAULT NULL,
+  `party` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `balance` decimal(8,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `stock_quantities`
+--
+
+INSERT INTO `stock_quantities` (`id`, `business_id`, `item_id`, `sale_rate`, `purchase_rate`, `qty_in`, `qty_out`, `detail`, `date`, `bill_no`, `amount`, `party`, `balance`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, NULL, '240.00', '25.00', NULL, 'cash', '2022-09-16', '3', '50000.00', 'Test Supplier 2', NULL, '2022-09-16 05:16:19', '2022-09-16 05:16:19'),
+(2, 2, 1, '240.00', NULL, NULL, '20.00', 'cash', '2022-09-22', '4', '1000.00', 'Zahid', NULL, '2022-09-16 05:21:18', '2022-09-16 05:21:18'),
+(3, 2, 2, NULL, '240.00', '50.00', NULL, 'Amount', '2022-09-16', '3', '10000.00', 'Test Supplier 2', NULL, '2022-09-16 05:22:27', '2022-09-16 05:22:27'),
+(4, 2, 2, NULL, '240.00', '25.00', NULL, 'cash', '2022-09-16', '3', '1000.00', 'Test Supplier 2', NULL, '2022-09-16 05:23:04', '2022-09-16 05:23:04'),
+(5, 2, 2, NULL, '240.00', '25.00', NULL, 'Test Amount', '2022-09-16', '3', '5000.00', 'Test Supplier', NULL, '2022-09-16 05:23:39', '2022-09-16 05:23:39'),
+(6, 2, 2, '240.00', NULL, NULL, '20.00', 'Test Amount', '2022-09-16', '3', '50000.00', 'Zahid', NULL, '2022-09-16 05:27:05', '2022-09-16 05:27:05'),
+(7, 2, 2, NULL, '240.00', '25.00', NULL, 'cash', '2022-09-16', '3', '5000.00', 'Test Supplier 2', NULL, '2022-09-16 05:30:44', '2022-09-16 05:30:44'),
+(8, 2, 1, NULL, '240.00', '25.00', NULL, 'Test Amount', '2022-09-16', '3', '5000.00', 'Test Supplier 2', NULL, '2022-09-16 05:33:43', '2022-09-16 05:33:43'),
+(9, 2, 1, '250.00', NULL, NULL, '20.00', 'Test Qty', '2022-09-16', '4', '10000.00', 'Zahid', NULL, '2022-09-16 05:36:11', '2022-09-16 05:36:11'),
+(10, 2, 1, NULL, '850.00', '35.00', NULL, 'yhrg', '2022-09-07', '536', '968410.00', 'Test Supplier', NULL, '2022-09-16 05:42:18', '2022-09-16 05:42:18'),
+(11, 2, 2, NULL, '150.00', '960.00', NULL, 'asde', '2022-09-02', '850', '19850.00', 'Test Supplier 2', NULL, '2022-09-16 05:43:32', '2022-09-16 05:43:32'),
+(12, 2, 1, '10.00', NULL, NULL, '13.00', 'Final', '2022-09-01', '35', '130.00', 'Zahid', NULL, '2022-09-16 06:03:17', '2022-09-16 06:03:17'),
+(13, 2, 2, '20.00', NULL, NULL, '85.00', 'Check', '2022-09-02', '41', '1700.00', 'Ramaz', NULL, '2022-09-16 06:03:59', '2022-09-16 06:03:59'),
+(14, 2, 1, NULL, '10.00', '96.00', NULL, 'Test', '2022-09-03', '85', '960.00', 'Test Supplier 2', NULL, '2022-09-16 06:04:31', '2022-09-16 06:04:31');
 
 -- --------------------------------------------------------
 
@@ -407,6 +516,12 @@ INSERT INTO `users` (`id`, `role`, `name`, `email`, `email_verified_at`, `passwo
 --
 
 --
+-- Indexes for table `bank_accounts`
+--
+ALTER TABLE `bank_accounts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `bill_books`
 --
 ALTER TABLE `bill_books`
@@ -441,6 +556,12 @@ ALTER TABLE `bussinesses_suppliers`
 -- Indexes for table `cashes`
 --
 ALTER TABLE `cashes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cash_books`
+--
+ALTER TABLE `cash_books`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -490,6 +611,12 @@ ALTER TABLE `stocks`
   ADD KEY `stocks_business_id_foreign` (`business_id`);
 
 --
+-- Indexes for table `stock_quantities`
+--
+ALTER TABLE `stock_quantities`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `suppliers`
 --
 ALTER TABLE `suppliers`
@@ -511,6 +638,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `bank_accounts`
+--
+ALTER TABLE `bank_accounts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `bill_books`
@@ -549,6 +682,12 @@ ALTER TABLE `cashes`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `cash_books`
+--
+ALTER TABLE `cash_books`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
@@ -564,7 +703,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -582,7 +721,13 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `stocks`
 --
 ALTER TABLE `stocks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `stock_quantities`
+--
+ALTER TABLE `stock_quantities`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
