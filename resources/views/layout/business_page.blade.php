@@ -1,6 +1,11 @@
 @extends('layout.business')
 @section('content')
-    @php
+<style>
+    .showthis {
+    display: none;
+    }
+</style>
+@php
         use Carbon\Carbon;
         use App\Models\CashBook;
         use App\Models\StockQuantity;
@@ -1536,20 +1541,47 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" id="item_form">
-                        @foreach ($stock as $item)
-                            <input type="checkbox" name="item[]" id="add_quantity" value="{{$item->item_name}}" onchange="valueChanged()"/> <label>{{$item->item_name}}</label><br>
+                    <form >
+                        <input type="hidden" name="counter" id="counter" value="{{ $stock->count() }}">
+                        @foreach ($stock as $key => $item)
+                            <input type="checkbox" id="trigger{{ $key }}" name="{{$item->item_name}}" value=""> <label>{{$item->item_name}}</label><br>
+                           
+                            <div id="showthis{{ $key }}" style="display: none">
+                                <div class="row">
+                                    <input type="text">
+                                    {{-- <div class="col-sm-4">
+                                        <label for="quantity">Quantity</label>
+                                        <input type="text" class="form-control" name="">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="rate">Rate</label>
+                                        <input type="text" class="form-control" name="">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="amount">Amount</label>
+                                        <input type="text" class="form-control" name="">
+                                    </div> --}}
+                                </div>
+                            </div>
                         @endforeach
-                        @csrf()
-                        <div class="mb-3">
-                            <input type="text" class="form-control" name="name_customer" id="name_customer"
-                                placeholder="Enter Name ">
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" class="form-control" name="phone_number" id="phone_number"
-                                placeholder="Enter Phone (Optional) ">
-                            <input type="hidden" class="form-control" name="business_id" value="{{ $b }}">
-                        </div>
+                        {{-- <input type="checkbox" id="trigger"  name="item[]" value=""> <label>{{$item->item_name}}</label><br>
+                        <div class="showthis">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="quantity">Quantity</label>
+                                    <input type="text" class="form-control" name="quantity">
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="rate">Rate</label>
+                                    <input type="text" class="form-control" name="rate">
+                                </div>
+                                <div class="col-sm-4">
+                                    <label for="amount">Amount</label>
+                                    <input type="text" class="form-control" name="showhideinput">
+                                </div>
+                            </div>
+                        </div> --}}
+                        @csrf
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Create Customer</button>
@@ -1794,7 +1826,6 @@
             updateDisplay();
         });
     </script>
-
     <script type="text/javascript">
         $(document).ready(function() {
             $('.set_btn').css({
@@ -1863,12 +1894,17 @@
         });
     </script>
     <script type="text/javascript">
-        function valueChanged()
-        {
-            if($('#add_quantity').is(":checked"))   
-                $("#item_form").show();
-            else
-                $("#item_form").hide();
-        }
+        $(function() {
+            var counter = document.getElementById('counter').value;
+            counter = parseInt(counter);
+            // alert(typeof(counter));
+            // var counter = document.getElementById('counter').value;
+                for(i=0; i<counter; i++){
+                    $(`#trigger${i}`).change(function() {
+                    $(`#showthis${i}`).show();
+                    // alert('checked');
+                })
+            }
+        });
     </script>
 @endsection
