@@ -294,14 +294,14 @@
                         @foreach ($stock as $item)
                             <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#stock{{ $item->id }}" aria-controls="stock{{ $item->id }}" role="tab" aria-selected="true" data-bs-toggle="tab">
                                 <div class="row">
-                                    <div class="col-sm-7">
+                                    <div class="col-md-4">
                                         <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
-                                        <span style="font-size: 0.75rem;">{{ $item->created_at }}</span>
                                     </div>
-                                    <div class="col-sm-5">
-                                        <h5 class="font-weight-bold">10</h5>
-                                        <span >{{ $item->item_unit }}</span>
+                                    <div class="col-md-8">
+                                        <span style="">{{ $item->created_at->format('Y-m-d')  }}</span>
                                     </div>
+                                    {{-- <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
+                                    <span style="font-size: 0.75rem;">{{ $item->created_at }}</span> --}}
                                 </div>
                             </a>
                         @endforeach
@@ -321,9 +321,7 @@
                                         <div class="header-amount">
                                             <span class="">
                                                 <h6>
-                                                    <span class="display-6">
-                                                        Today Balance - Rs 0
-                                                    </span>
+                                                    Quantity in Hand
                                                 </h6>
                                             </span>
                                         </div>        
@@ -940,7 +938,6 @@
                                             </tr>
                                         @empty
                                         @endforelse
-                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -1035,12 +1032,7 @@
                         {{-- <div><input type="text" name="mytext[]"></div> --}}
                     </div>
                 </div>
-                <div id="items_array">
-
-                </div>
-                {{-- <button id="1" onClick="reply_click(this.id)">B1</button>
-                <button id="2" onClick="reply_click(this.id)">B2</button>
-                <button id="3" onClick="reply_click(this.id)">B3</button> --}}
+                <div id="items_array"></div>
                 <div>
                     <input type="checkbox" value="cash" name="method" id=""> Cash
                     <input type="checkbox" name="method" value="credit" class="openmodal" value="">Credit

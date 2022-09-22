@@ -12,9 +12,7 @@ class StockQuantityController extends Controller
 {
     //
     public function qty_in(Request $request){
-
-       
-
+        
         $stock_quantity = new StockQuantity();
         $stock_quantity->item_id = $request->item_id;
         $stock_quantity->business_id = $request->business_id;
