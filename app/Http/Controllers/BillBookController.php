@@ -18,9 +18,9 @@ class BillBookController extends Controller
         $bill->detail = $request->detail;
         $bill->date = $request->date;
         $bill->party = $request->party;
-        $bill->item = implode(',' , $request->items);
-        $bill->quantity = $request->quantity;
-        $bill->rate = $request->rate;
+        $bill->item = implode(',' , $request->item_name);
+        $bill->quantity = implode(',' , $request->item_quantity);
+        $bill->rate = implode(',' , $request->item_rate);
         $bill->method = $request->method;
         // return $request;
         $bill->save();

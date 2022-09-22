@@ -1,9 +1,6 @@
 @extends('layout.business')
 @section('content')
 <style>
-    .showthis {
-    display: none;
-    }
 </style>
 @php
         use Carbon\Carbon;
@@ -618,17 +615,29 @@
                                     <tbody>
                                       <tr>
                                         @php
-                                            $items = explode(',',$item->item);
+                                            $item_name = explode(',',$item->item);
+                                            $item_quantity = explode(',',$item->quantity);
+                                            $item_rate = explode(',',$item->rate);
                                         @endphp
                                         <th scope="row">
-                                            @foreach ($items as $element)
+                                            @foreach ($item_name as $element)
                                                 {{ $element }}<br>
                                             @endforeach
                                             {{-- {{$item->item}} --}}
                                         </th>
-                                        <td>{{$item->quantity}}</td>
-                                        <td>{{$item->rate}}</td>
-                                        <td>{{$item->amount}}</td>
+                                        <td>
+                                            @foreach ($item_quantity as $element)
+                                                {{ $element }}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach ($item_rate as $element)
+                                                {{ $element }}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            {{-- {{$item->amount}} --}}
+                                        </td>
                                       </tr>
                                     </tbody>
                                     <tfoot>
@@ -647,13 +656,12 @@
                                     <p>{{$item->detail}}</p>
                                 </div>
                                 <div class="row text-center justify-content-center">
-                                    <div class="col-md-6">
+                                    {{-- <div class="col-md-6">
                                         <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a>
-                                    </div>
-                                    <div class="col-md-6">
+                                    </div> --}}
+                                    {{-- <div class="col-md-6"> --}}
                                         <a href="{{ route('delete_bill',$item->id) }}" class="btn btn-outline-danger" style="width: 15rem">Delete Entry</a>
-                                    </div>
-                                    {{-- <a href="" class="btn btn-outline-success" style="width: 15rem"><i class="fa fa-pencil"></i>Edit Entry</a> --}}
+                                    {{-- </div> --}}
                                 </div>
                                 
                             </div>
@@ -1021,26 +1029,18 @@
                     <label for="Date">Date</label>
                     <input type="date" class="form-control" name="date" id="date" placeholder="Enter Date">
                 </div>
-                <a class="btn btn-outline-primary" data-bs-toggle="modal"
-                    data-bs-target="#add_items">Add items</a>
                 <div class="mb-3">
-                    <label for="Date">Select Item</label>
-                    <select name="items[]" id="" multiple>
-                        <option value="">Select Item</option>
-                        @foreach ($stock as $item)
-                            <option value="{{ $item->item_name }}">{{ $item->item_name }}</option>
-                        @endforeach
-                    </select>
+                    <div class="input_fields_wrap">
+                        <button class="add_field_button btn btn-outline-primary">Add Items</button>
+                        {{-- <div><input type="text" name="mytext[]"></div> --}}
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="Date">Select party</label>
-                    <select name="party" id="">
-                        <option value="">Select Party</option>
-                        @foreach ($all_customers as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                        @endforeach
-                    </select>
+                <div id="items_array">
+
                 </div>
+                {{-- <button id="1" onClick="reply_click(this.id)">B1</button>
+                <button id="2" onClick="reply_click(this.id)">B2</button>
+                <button id="3" onClick="reply_click(this.id)">B3</button> --}}
                 <div>
                     <input type="checkbox" value="cash" name="method" id=""> Cash
                     <input type="checkbox" name="method" value="credit" class="openmodal" value="">Credit
@@ -1532,64 +1532,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="add_items" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Select Items</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form >
-                        <input type="hidden" name="counter" id="counter" value="{{ $stock->count() }}">
-                        @foreach ($stock as $key => $item)
-                            <input type="checkbox" id="trigger{{ $key }}" name="{{$item->item_name}}" value=""> <label>{{$item->item_name}}</label><br>
-                           
-                            <div id="showthis{{ $key }}" style="display: none">
-                                <div class="row">
-                                    <input type="text">
-                                    {{-- <div class="col-sm-4">
-                                        <label for="quantity">Quantity</label>
-                                        <input type="text" class="form-control" name="">
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="rate">Rate</label>
-                                        <input type="text" class="form-control" name="">
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="amount">Amount</label>
-                                        <input type="text" class="form-control" name="">
-                                    </div> --}}
-                                </div>
-                            </div>
-                        @endforeach
-                        {{-- <input type="checkbox" id="trigger"  name="item[]" value=""> <label>{{$item->item_name}}</label><br>
-                        <div class="showthis">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <label for="quantity">Quantity</label>
-                                    <input type="text" class="form-control" name="quantity">
-                                </div>
-                                <div class="col-sm-4">
-                                    <label for="rate">Rate</label>
-                                    <input type="text" class="form-control" name="rate">
-                                </div>
-                                <div class="col-sm-4">
-                                    <label for="amount">Amount</label>
-                                    <input type="text" class="form-control" name="showhideinput">
-                                </div>
-                            </div>
-                        </div> --}}
-                        @csrf
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Create Customer</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
+        
     <!-- Modal -->
     @foreach ($payment as $pay)
         <?php
@@ -1859,6 +1802,50 @@
         document.getElementById("defaultOpen").click();
     </script>
     <script>
+        $(document).ready(function() {
+        var max_fields      = 10; //maximum input boxes allowed
+        var wrapper   		= $(".input_fields_wrap"); //Fields wrapper
+        var add_button      = $(".add_field_button"); //Add button ID
+        var items_array = 0;
+        
+        var x = 1; //initlal text box count
+        $(add_button).click(function(e){ //on add input button click
+            e.preventDefault();
+            if(x < max_fields){ //max input box allowed
+                x++; //text box increment
+                $('#items_array').append( `<div class="row">
+                                        <a href="#" class="remove_field">Remove</a>
+                                        <div class="col-md-4">
+                                            <label for="Itemname">Item </label>
+                                            <input type="text" class="form-control" name="item_name[]" placeholder="Enter Quantity">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="Itemquantity">Quantity</label>
+                                            <input type="text" class="form-control" name="item_quantity[]">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="Itemrate">Rate</label>
+                                            <input type="text" class="form-control" name="item_rate[]">
+                                        </div>
+                                    </div>`); //add input box
+                // $(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
+            }
+        });
+        
+        $('#items_array').on("click",".remove_field", function(e){ //user click on remove text
+            e.preventDefault(); $(this).parent('div').remove(); x--;
+        })
+    });
+    </script>
+    <script type="text/javascript">
+    function reply_click(clicked_id)
+    {   
+        var id = clicked_id;
+        $("#showme" + id).toggle();
+        alert(clicked_id);
+    }
+    </script>
+    {{-- <script>
         $('.openmodal').click(function() {
             if ($(this).is(':checked')) {
                 $('#myModal').modal('show');
@@ -1868,13 +1855,7 @@
                     $('.openmodal').removeAttr('checked')
                 });
             }
-
-            // });
-            // $('#myModal').on('hide.bs.modal', function () { 
-            //      $('.openmodal').removeAttr('checked')
         });
-
-
         // the selector will match all input controls of type :checkbox
         // and attach a click event handler 
         $("input:checkbox").on('click', function() {
@@ -1892,8 +1873,8 @@
                 $box.prop("checked", false);
             }
         });
-    </script>
-    <script type="text/javascript">
+    </script> --}}
+    {{-- <script type="text/javascript">
         $(function() {
             var counter = document.getElementById('counter').value;
             counter = parseInt(counter);
@@ -1906,5 +1887,5 @@
                 })
             }
         });
-    </script>
+    </script> --}}
 @endsection
