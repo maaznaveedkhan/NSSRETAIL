@@ -329,9 +329,16 @@
                                         @endphp
                                         <div class="header-amount">
                                             <span class="">
-                                                <h6>
-                                                    Quantity in Hand - {{ $balance->balance }}
-                                                </h6>
+                                                @if (!empty($balance->balance))
+                                                    <h6>
+                                                        Quantity in Hand - {{ $balance->balance }}
+                                                    </h6>
+                                                @else
+                                                    <h6>
+                                                        Quantity in Hand - 0
+                                                    </h6>
+                                                @endif
+                                                
                                             </span>
                                         </div>        
                                     </div>
