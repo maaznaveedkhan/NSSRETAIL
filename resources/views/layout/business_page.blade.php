@@ -123,18 +123,20 @@
                         </div>
                     </div>
                     <!--End Buttons Main -->
-                    @forelse($all_customers as $all_customer)
-                        <div class="profile-span mb-1">
-                            <a href="{{ route('customer', ['id' => $all_customer->id, 'business_id' => $b]) }}"
-                                type="button" class="btn btn-div mb-2">
-                                <div class="mb-1 mt-1 profile-image-div">
-                                    <img class="profile-image" src="{{ asset('E-khata') }}/images/logo/profile.png">
-                                    <span class="business-name">{{ $all_customer->name }}</span>
-                                </div>
-                            </a>
-                        </div>
-                    @empty
-                    @endforelse
+                    <div style="overflow: auto; height: 23rem;">
+                        @forelse($all_customers as $all_customer)
+                            <div class="profile-span mb-1">
+                                <a href="{{ route('customer', ['id' => $all_customer->id, 'business_id' => $b]) }}"
+                                    type="button" class="btn btn-div mb-2">
+                                    <div class="mb-1 mt-1 profile-image-div">
+                                        <img class="profile-image" src="{{ asset('E-khata') }}/images/logo/profile.png">
+                                        <span class="business-name">{{ $all_customer->name }}</span>
+                                    </div>
+                                </a>
+                            </div>
+                        @empty
+                        @endforelse
+                    </div>
                     <div class="text-center buttons">
                         <!-- Button trigger modal -->
                         <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal"
@@ -318,20 +320,22 @@
                                                 <h3 style="margin-bottom:0rem">{{ $item->item_name }}</h3>
                                             </span>
                                         </div>
+                                        @php
+                                            $item_id = $item->id;
+                                            $stock_detail = StockQuantity::where('item_id',$item->id)->get();
+                                            $balance = StockQuantity::where('item_id',$item->id)->orderby('id', 'DESC')->first();
+                                            $qty_out = $stock_detail->sum('qty_out');
+                                            $qty_in = $stock_detail->sum('qty_in');
+                                        @endphp
                                         <div class="header-amount">
                                             <span class="">
                                                 <h6>
-                                                    Quantity in Hand
+                                                    Quantity in Hand - {{ $balance->balance }}
                                                 </h6>
                                             </span>
                                         </div>        
                                     </div>
-                                    @php
-                                        $item_id = $item->id;
-                                        $stock_detail = StockQuantity::where('item_id',$item->id)->get();
-                                        $qty_out = $stock_detail->sum('qty_out');
-                                        $qty_in = $stock_detail->sum('qty_in');
-                                    @endphp
+                                    
                                     <ul  class="responsive-table">
                                         <li class="table-header mb-2">
                                             <div class="col">ENTRIES<br>
@@ -455,7 +459,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="staticBackdropLabel">
-                                                    Quantity In</h5>
+                                                    Quantity Out</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body" style="width:100%">

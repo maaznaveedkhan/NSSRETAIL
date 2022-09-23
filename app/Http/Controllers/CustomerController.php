@@ -35,6 +35,7 @@ class CustomerController extends Controller
     public function CustomerPage(Request $request, $id){
 
         $b = $request->business_id;
+        $business = Business::where('id',$b)->first();
         $all_customers = Customer::where('business_id', $request->business_id)->get();
         $customer = Customer::where('id', $id)->latest()->first();
         $payment = DB::table('bussinesses_customers')->select('*')->where('customer_id', $customer->id)->get();
@@ -46,7 +47,7 @@ class CustomerController extends Controller
         $details = DB::table('customers')
                 ->join('bussinesses_customers', 'customers.id', '=', 'bussinesses_customers.customer_id')
                 ->get();                
-        return view('layout.business_page', compact('customer', 'all_customers', 'b', 'payment', 'details','bills','cash','suppliers','stock','bank_accounts'));
+        return view('layout.business_page', compact('customer', 'all_customers', 'b', 'payment', 'details','bills','cash','suppliers','stock','bank_accounts','business'));
     }
 
     public function GivenAmount(Request $request){

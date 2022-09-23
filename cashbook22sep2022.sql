@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 16, 2022 at 01:09 PM
+-- Generation Time: Sep 22, 2022 at 01:19 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -81,7 +81,7 @@ CREATE TABLE `bill_books` (
 
 INSERT INTO `bill_books` (`id`, `business_id`, `amount`, `detail`, `date`, `party`, `item`, `quantity`, `rate`, `method`, `to_be2`, `created_at`, `updated_at`) VALUES
 (1, '2', '5000', 'Test Amount', '2022-09-06', NULL, NULL, NULL, NULL, 'cash', NULL, '2022-09-13 09:10:57', '2022-09-13 09:10:57'),
-(3, '2', '2000', 'Amount', '2022-09-08', '1', NULL, NULL, NULL, 'cash', NULL, '2022-09-14 09:17:49', '2022-09-14 09:17:49');
+(6, '2', '5000', 'cash', '2022-09-22', NULL, 'test,Item', '10,10', '250,250', 'cash', NULL, '2022-09-22 09:52:37', '2022-09-22 09:52:37');
 
 -- --------------------------------------------------------
 
@@ -234,6 +234,13 @@ CREATE TABLE `cash_books` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cash_books`
+--
+
+INSERT INTO `cash_books` (`id`, `business_id`, `date`, `amount`, `cash_in`, `cash_out`, `bill_no`, `party`, `detail`, `daily_balance`, `balance`, `created_at`, `updated_at`) VALUES
+(1, '2', '2022-09-16', '5000', '5000.00', NULL, '41', 'Test Supplier', 'cash', NULL, NULL, '2022-09-16 11:24:39', '2022-09-16 11:24:39');
 
 -- --------------------------------------------------------
 
@@ -388,8 +395,7 @@ CREATE TABLE `stocks` (
 --
 
 INSERT INTO `stocks` (`id`, `item_name`, `item_unit`, `purchase_rate`, `sale_rate`, `created_at`, `updated_at`, `business_id`) VALUES
-(1, 'Rice', 'Kilogram(Kg)', '220.00', '240.00', '2022-09-16 04:08:13', '2022-09-16 04:08:13', 2),
-(2, 'Sugar', 'Kilogram(Kg)', '105.00', '120.00', '2022-09-16 05:21:39', '2022-09-16 05:21:39', 2);
+(1, 'Rice', 'kg', '220.00', '240.00', '2022-09-22 11:04:14', '2022-09-22 11:04:14', 2);
 
 -- --------------------------------------------------------
 
@@ -420,20 +426,8 @@ CREATE TABLE `stock_quantities` (
 --
 
 INSERT INTO `stock_quantities` (`id`, `business_id`, `item_id`, `sale_rate`, `purchase_rate`, `qty_in`, `qty_out`, `detail`, `date`, `bill_no`, `amount`, `party`, `balance`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, NULL, '240.00', '25.00', NULL, 'cash', '2022-09-16', '3', '50000.00', 'Test Supplier 2', NULL, '2022-09-16 05:16:19', '2022-09-16 05:16:19'),
-(2, 2, 1, '240.00', NULL, NULL, '20.00', 'cash', '2022-09-22', '4', '1000.00', 'Zahid', NULL, '2022-09-16 05:21:18', '2022-09-16 05:21:18'),
-(3, 2, 2, NULL, '240.00', '50.00', NULL, 'Amount', '2022-09-16', '3', '10000.00', 'Test Supplier 2', NULL, '2022-09-16 05:22:27', '2022-09-16 05:22:27'),
-(4, 2, 2, NULL, '240.00', '25.00', NULL, 'cash', '2022-09-16', '3', '1000.00', 'Test Supplier 2', NULL, '2022-09-16 05:23:04', '2022-09-16 05:23:04'),
-(5, 2, 2, NULL, '240.00', '25.00', NULL, 'Test Amount', '2022-09-16', '3', '5000.00', 'Test Supplier', NULL, '2022-09-16 05:23:39', '2022-09-16 05:23:39'),
-(6, 2, 2, '240.00', NULL, NULL, '20.00', 'Test Amount', '2022-09-16', '3', '50000.00', 'Zahid', NULL, '2022-09-16 05:27:05', '2022-09-16 05:27:05'),
-(7, 2, 2, NULL, '240.00', '25.00', NULL, 'cash', '2022-09-16', '3', '5000.00', 'Test Supplier 2', NULL, '2022-09-16 05:30:44', '2022-09-16 05:30:44'),
-(8, 2, 1, NULL, '240.00', '25.00', NULL, 'Test Amount', '2022-09-16', '3', '5000.00', 'Test Supplier 2', NULL, '2022-09-16 05:33:43', '2022-09-16 05:33:43'),
-(9, 2, 1, '250.00', NULL, NULL, '20.00', 'Test Qty', '2022-09-16', '4', '10000.00', 'Zahid', NULL, '2022-09-16 05:36:11', '2022-09-16 05:36:11'),
-(10, 2, 1, NULL, '850.00', '35.00', NULL, 'yhrg', '2022-09-07', '536', '968410.00', 'Test Supplier', NULL, '2022-09-16 05:42:18', '2022-09-16 05:42:18'),
-(11, 2, 2, NULL, '150.00', '960.00', NULL, 'asde', '2022-09-02', '850', '19850.00', 'Test Supplier 2', NULL, '2022-09-16 05:43:32', '2022-09-16 05:43:32'),
-(12, 2, 1, '10.00', NULL, NULL, '13.00', 'Final', '2022-09-01', '35', '130.00', 'Zahid', NULL, '2022-09-16 06:03:17', '2022-09-16 06:03:17'),
-(13, 2, 2, '20.00', NULL, NULL, '85.00', 'Check', '2022-09-02', '41', '1700.00', 'Ramaz', NULL, '2022-09-16 06:03:59', '2022-09-16 06:03:59'),
-(14, 2, 1, NULL, '10.00', '96.00', NULL, 'Test', '2022-09-03', '85', '960.00', 'Test Supplier 2', NULL, '2022-09-16 06:04:31', '2022-09-16 06:04:31');
+(1, 2, 1, NULL, '240.00', '25.00', NULL, 'Test', '2022-09-22', '35', '6000.00', 'Test Supplier 2', NULL, '2022-09-22 11:05:41', '2022-09-22 11:05:41'),
+(2, 2, 1, '25.00', NULL, NULL, '10.00', 'Dolor qui cum quisqu', '1998-03-10', '31-Jul-2003', '840.00', 'Mehboob', NULL, '2022-09-22 11:09:04', '2022-09-22 11:09:04');
 
 -- --------------------------------------------------------
 
@@ -649,7 +643,7 @@ ALTER TABLE `bank_accounts`
 -- AUTO_INCREMENT for table `bill_books`
 --
 ALTER TABLE `bill_books`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `businesses`
@@ -685,7 +679,7 @@ ALTER TABLE `cashes`
 -- AUTO_INCREMENT for table `cash_books`
 --
 ALTER TABLE `cash_books`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customers`
@@ -721,13 +715,13 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `stocks`
 --
 ALTER TABLE `stocks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `stock_quantities`
 --
 ALTER TABLE `stock_quantities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
