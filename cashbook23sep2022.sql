@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 22, 2022 at 01:19 PM
+-- Generation Time: Sep 23, 2022 at 01:04 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -56,6 +56,31 @@ INSERT INTO `bank_accounts` (`id`, `business_id`, `date`, `account`, `account_ho
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bills`
+--
+
+CREATE TABLE `bills` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `business_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `detail` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `payment_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bills`
+--
+
+INSERT INTO `bills` (`id`, `business_id`, `amount`, `detail`, `date`, `payment_type`, `created_at`, `updated_at`) VALUES
+(1, '2', '50000', 'cash', '2022-09-23', 'cash', '2022-09-23 10:31:50', '2022-09-23 10:31:50'),
+(2, '2', '1000', 'credit', '2022-09-17', 'credit', '2022-09-23 10:32:16', '2022-09-23 10:32:16');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `bill_books`
 --
 
@@ -82,6 +107,37 @@ CREATE TABLE `bill_books` (
 INSERT INTO `bill_books` (`id`, `business_id`, `amount`, `detail`, `date`, `party`, `item`, `quantity`, `rate`, `method`, `to_be2`, `created_at`, `updated_at`) VALUES
 (1, '2', '5000', 'Test Amount', '2022-09-06', NULL, NULL, NULL, NULL, 'cash', NULL, '2022-09-13 09:10:57', '2022-09-13 09:10:57'),
 (6, '2', '5000', 'cash', '2022-09-22', NULL, 'test,Item', '10,10', '250,250', 'cash', NULL, '2022-09-22 09:52:37', '2022-09-22 09:52:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bill_details`
+--
+
+CREATE TABLE `bill_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `business_id` int(11) DEFAULT NULL,
+  `bill_id` int(11) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `item_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `quantity` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `party` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `detail` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rate` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `balance` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bill_details`
+--
+
+INSERT INTO `bill_details` (`id`, `business_id`, `bill_id`, `date`, `item_name`, `quantity`, `party`, `detail`, `rate`, `amount`, `balance`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, NULL, '1', '12', 'Test Supplier', NULL, '250', '3000', NULL, '2022-09-23 10:32:32', '2022-09-23 10:32:32'),
+(2, 2, 2, NULL, '2', '10', 'Test Supplier 2', NULL, '150', '1500', NULL, '2022-09-23 10:33:40', '2022-09-23 10:33:40'),
+(3, 2, 2, NULL, '2', '6', 'Test Supplier', NULL, '150', '900', NULL, '2022-09-23 10:41:50', '2022-09-23 10:41:50');
 
 -- --------------------------------------------------------
 
@@ -166,7 +222,8 @@ INSERT INTO `bussinesses_customers` (`id`, `date`, `customer_id`, `detail`, `giv
 (9, NULL, 3, NULL, 0.00, 50000.00, NULL, '58000.00', '2022-05-12 19:00:00', '2022-05-12 19:00:00'),
 (10, '2022-06-23', 4, 'Test Amount', 2000.00, 0.00, 'no', '2000.00', NULL, NULL),
 (11, '2022-06-16', 4, 'Test Amount', 0.00, 5000.00, 'no', '3000.00', NULL, NULL),
-(12, NULL, 2, NULL, 60000.00, 0.00, NULL, '9000.00', NULL, NULL);
+(12, NULL, 2, NULL, 60000.00, 0.00, NULL, '9000.00', NULL, NULL),
+(13, '2022-09-23', 6, 'Test Amount', 500.00, 0.00, '52', '500.00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -240,7 +297,8 @@ CREATE TABLE `cash_books` (
 --
 
 INSERT INTO `cash_books` (`id`, `business_id`, `date`, `amount`, `cash_in`, `cash_out`, `bill_no`, `party`, `detail`, `daily_balance`, `balance`, `created_at`, `updated_at`) VALUES
-(1, '2', '2022-09-16', '5000', '5000.00', NULL, '41', 'Test Supplier', 'cash', NULL, NULL, '2022-09-16 11:24:39', '2022-09-16 11:24:39');
+(1, '2', '2022-09-16', '5000', '5000.00', NULL, '41', 'Test Supplier', 'cash', NULL, NULL, '2022-09-16 11:24:39', '2022-09-16 11:24:39'),
+(2, '2', '2022-09-23', '50000', '50000.00', NULL, NULL, 'Test Supplier', NULL, NULL, NULL, '2022-09-23 06:30:12', '2022-09-23 06:30:12');
 
 -- --------------------------------------------------------
 
@@ -266,7 +324,10 @@ INSERT INTO `customers` (`id`, `business_id`, `name`, `phone_number`, `created_a
 (2, 2, 'Zahid', '123456789', NULL, NULL),
 (3, 2, 'Ramaz', '123456789', NULL, NULL),
 (4, 2, 'Test', '03008949530', '2022-06-22 23:51:58', '2022-06-22 23:51:58'),
-(5, 5, 'Haider', '03004589631', '2022-09-09 07:20:07', '2022-09-09 07:20:07');
+(5, 5, 'Haider', '03004589631', '2022-09-09 07:20:07', '2022-09-09 07:20:07'),
+(6, 2, 'Check Customer', '03008949530', '2022-09-23 04:29:20', '2022-09-23 04:29:20'),
+(7, 4, 'Haider', '5469781132', '2022-09-23 05:29:21', '2022-09-23 05:29:21'),
+(8, 2, 'Haider', '5469781132', '2022-09-23 05:33:52', '2022-09-23 05:33:52');
 
 -- --------------------------------------------------------
 
@@ -322,7 +383,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (92, '2022_09_13_132931_create_bill_books_table', 7),
 (100, '2022_09_15_100956_create_cash_books_table', 8),
 (101, '2022_09_15_163726_create_stock_quantities_table', 8),
-(107, '2022_09_16_111548_create_bank_accounts_table', 9);
+(107, '2022_09_16_111548_create_bank_accounts_table', 9),
+(112, '2022_09_23_125448_create_bills_table', 10),
+(113, '2022_09_23_125825_create_bill_details_table', 10);
 
 -- --------------------------------------------------------
 
@@ -395,7 +458,8 @@ CREATE TABLE `stocks` (
 --
 
 INSERT INTO `stocks` (`id`, `item_name`, `item_unit`, `purchase_rate`, `sale_rate`, `created_at`, `updated_at`, `business_id`) VALUES
-(1, 'Rice', 'kg', '220.00', '240.00', '2022-09-22 11:04:14', '2022-09-22 11:04:14', 2);
+(1, 'Rice', 'kg', '220.00', '240.00', '2022-09-22 11:04:14', '2022-09-22 11:04:14', 2),
+(2, 'Flour', 'Kilogram (Kg)', '200.00', '240.00', '2022-09-23 06:16:01', '2022-09-23 06:16:01', 2);
 
 -- --------------------------------------------------------
 
@@ -426,8 +490,8 @@ CREATE TABLE `stock_quantities` (
 --
 
 INSERT INTO `stock_quantities` (`id`, `business_id`, `item_id`, `sale_rate`, `purchase_rate`, `qty_in`, `qty_out`, `detail`, `date`, `bill_no`, `amount`, `party`, `balance`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, NULL, '240.00', '25.00', NULL, 'Test', '2022-09-22', '35', '6000.00', 'Test Supplier 2', NULL, '2022-09-22 11:05:41', '2022-09-22 11:05:41'),
-(2, 2, 1, '25.00', NULL, NULL, '10.00', 'Dolor qui cum quisqu', '1998-03-10', '31-Jul-2003', '840.00', 'Mehboob', NULL, '2022-09-22 11:09:04', '2022-09-22 11:09:04');
+(1, NULL, 1, NULL, '200.00', '50.00', NULL, 'Test Quantity', '2022-09-16', '850', '10000.00', 'Test Supplier', '38.00', '2022-09-23 10:30:48', '2022-09-23 10:32:32'),
+(2, NULL, 2, NULL, '100.00', '60.00', NULL, 'Test Qty', '2022-09-23', NULL, '6000.00', 'Test Supplier 2', '44.00', '2022-09-23 10:31:33', '2022-09-23 10:41:50');
 
 -- --------------------------------------------------------
 
@@ -516,9 +580,21 @@ ALTER TABLE `bank_accounts`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `bills`
+--
+ALTER TABLE `bills`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `bill_books`
 --
 ALTER TABLE `bill_books`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `bill_details`
+--
+ALTER TABLE `bill_details`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -640,10 +716,22 @@ ALTER TABLE `bank_accounts`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `bills`
+--
+ALTER TABLE `bills`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `bill_books`
 --
 ALTER TABLE `bill_books`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `bill_details`
+--
+ALTER TABLE `bill_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `businesses`
@@ -661,7 +749,7 @@ ALTER TABLE `businesses_stocks`
 -- AUTO_INCREMENT for table `bussinesses_customers`
 --
 ALTER TABLE `bussinesses_customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `bussinesses_suppliers`
@@ -679,13 +767,13 @@ ALTER TABLE `cashes`
 -- AUTO_INCREMENT for table `cash_books`
 --
 ALTER TABLE `cash_books`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -697,7 +785,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -715,7 +803,7 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `stocks`
 --
 ALTER TABLE `stocks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `stock_quantities`

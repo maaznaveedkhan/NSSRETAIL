@@ -25,6 +25,6 @@ class ReportController extends Controller
             AND businesses.`id` = customers.`business_id`
             AND businesses.`id` = ?', [$id]);
                     
-        return view('layout/view_report', compact('business', 'details', 'all_customers', 'id', 'payment'));
+        return view('layout.view_report', compact('business', 'details', 'all_customers', 'id', 'payment'));
     }
 }

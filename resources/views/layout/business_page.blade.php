@@ -120,12 +120,12 @@
                             <a href="{{ route('all_suppliers', ['business_id' => $b]) }}"
                                 class="button_main btn btn-outline-danger p-1">Suplliers</a>
                         </div>
-                        <div class="col">
+                        {{-- <div class="col">
                             <a href="" class="button_main btn btn-outline-danger p-1">All</a>
-                        </div>
+                        </div> --}}
                     </div>
                     <!--End Buttons Main -->
-                    <div style="overflow: auto; height: 23rem;">
+                    <div style="overflow: auto; height: 20rem;">
                         @forelse($all_customers as $all_customer)
                             <div class="profile-span mb-1">
                                 <a href="{{ route('customer', ['id' => $all_customer->id, 'business_id' => $b]) }}"
@@ -277,7 +277,7 @@
                     </div>
                     <!-- Buttons Main -->
                     <div class="row m-2 mt-3">
-                        <h3>Total Items - 1</h3>
+                        <h3>Total Items - {{ $stock->count() }}</h3>
                     </div>
                     <!--End Buttons Main -->
                     <!-- Add new item Start -->
@@ -295,20 +295,22 @@
                         </div>
                     </div>
                     <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
-                        @foreach ($stock as $item)
-                            <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#stock{{ $item->id }}" aria-controls="stock{{ $item->id }}" role="tab" aria-selected="true" data-bs-toggle="tab">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
+                        <div style="overflow: auto; height: 20rem;">
+                            @foreach ($stock as $item)
+                                <a style="background-color: #f37111; color:black;" class="nav-link mb-2" href="#stock{{ $item->id }}" aria-controls="stock{{ $item->id }}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <span style="">{{ $item->created_at->format('Y-m-d')  }}</span>
+                                        </div>
+                                        {{-- <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
+                                        <span style="font-size: 0.75rem;">{{ $item->created_at }}</span> --}}
                                     </div>
-                                    <div class="col-md-8">
-                                        <span style="">{{ $item->created_at->format('Y-m-d')  }}</span>
-                                    </div>
-                                    {{-- <h5 class="font-weight-bold">{{ $item->item_name }}</h5>
-                                    <span style="font-size: 0.75rem;">{{ $item->created_at }}</span> --}}
-                                </div>
-                            </a>
-                        @endforeach
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-9 second-div">
@@ -611,6 +613,34 @@
                                     <div class="bg-light bg-gradient header-info p-0">
                                         <div class="header-profile">
                                             <span style="margin-left: 15px;">
+                                                <h3 style="margin-bottom:0rem">NSS Store</h3>
+                                            </span>
+                                        </div>
+                                        <div class="header-profile">
+                                            <span style="margin-left: 15px;">
+                                                <h3 style="margin-bottom:0rem">030000000</h3>
+                                            </span>
+                                        </div>
+                                        @php
+                                            $item_id = $item->id;
+                                            $bill_detail = BillDetail::where('bill_id',$item->id)->get();
+                                            // $balance = BillDetail::where('item_id',$item->id)->orderby('id', 'DESC')->first();
+                                            // $qty_out = $stock_detail->sum('qty_out');
+                                            // $qty_in = $stock_detail->sum('qty_in');
+                                        @endphp
+                                        {{-- <div class="header-amount">
+                                            <span class="">
+                                                <h6>
+                                                    <span class="display-6">
+                                                        030000000
+                                                    </span>
+                                                </h6>
+                                            </span>
+                                        </div>  --}}
+                                    </div>
+                                    {{-- <div class="bg-light bg-gradient header-info p-0">
+                                        <div class="header-profile">
+                                            <span style="margin-left: 15px;">
                                                 <h3 style="margin-bottom:0rem">{{ $item->item_name }}</h3>
                                             </span>
                                         </div>
@@ -622,31 +652,31 @@
                                             // $qty_in = $stock_detail->sum('qty_in');
                                         @endphp
                                         <div class="header-amount">
+                                            @if (!empty($balance->balance))
+                                                <h6>
+                                                    Quantity in Hand - {{ $balance->balance }}
+                                                </h6>
+                                            @else 
+                                            @endif 
+                                                <h6>
+                                                    NSS Store
+                                                </h6>
+                                        </div>       
+                                        <div class="header-amount">
                                             <span class="">
-                                                {{-- @if (!empty($balance->balance))
                                                     <h6>
-                                                        Quantity in Hand - {{ $balance->balance }}
+                                                        0300000000
                                                     </h6>
-                                                @else 
-                                                @endif --}}
-                                                    <h6>
-                                                        Bill Detail
-                                                    </h6>
-                                                
+                                                    
                                             </span>
-                                        </div>        
-                                    </div>
+                                        </div>   
+                                    </div>--}}
                                     
                                     <ul  class="responsive-table">
                                         <li class="table-header mb-2">
-                                            <div class="col">Item<br>
-                                                
-                                            </div>
-                                            
-                                            <div class="col">Quantity
-                                            </div>
-                                            <div class="col">Rate
-                                            </div>
+                                            <div class="col">Item<br></div>
+                                            <div class="col">Quantity</div>
+                                            <div class="col">Rate</div>
                                             <div class="col">Amount</div>                                            
                                             {{-- <div class="col">BALANCE</div> --}}
                                         </li>
@@ -659,18 +689,17 @@
                                                     $item_name = Stock::where('id',$element->item_name)->first();
                                                 @endphp
                                                     <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $element->id }} ">
-                                                        
                                                         <li class="table-row">
                                                             <div class="col div-one" data-label="Entries"><small>{{ $item_name['item_name'] }}</small>
                                                             </div>
                                                             <div class="col div-two" data-label="You Give">
-                                                                <small>{{ $element->quantity }}</small>
+                                                                <small>{{ $element->quantity }} {{ $item_name['item_unit'] }}</small>
                                                             </div>
                                                             <div class="col div-three" data-label="You Got">
-                                                                <small>{{ $element->rate }}</small>
+                                                                <small>Rs. {{ $element->rate }}</small>
                                                             </div>
                                                             
-                                                            <div class="col div-one" data-label="Detail"><small>{{ $element->amount }}</small>
+                                                            <div class="col div-one" data-label="Detail"><small>Rs. {{ $element->amount }}</small>
                                                             </div>
                                                             {{-- <div class="col div-one" data-label="Balance">
                                                                 <small>
@@ -981,7 +1010,7 @@
                                 @empty
                             @endforelse
                         </div> --}}
-                    <div class="row m-2 mt-3">
+                    {{-- <div class="row m-2 mt-3">
                         <div class="col-md-4">
                             <h6>Date</h6>
                         </div>
@@ -991,11 +1020,12 @@
                         <div class="col-md-4">
                             <h6>Balance</h6>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="nav flex-column nav-pills  ms-2 me-2" role="tablist" aria-orientation="vertical">
                         @foreach ($cash as $item)
-                        <a style="background-color: #f37111; color:black;" class="nav-link {{ $item->date == 1 ? 'active' : '' }} mb-2" href="#cash{{ $item->date }}" aria-controls="cash{{$item->date}}" role="tab" aria-selected="true" data-bs-toggle="tab">
-                            <div class="row ms-1 me-1">
+                        <a style="background-color: #f37111; color:black;" class=" text-center p-2 nav-link {{ $item->date == 1 ? 'active' : '' }} mb-2" href="#cash{{ $item->date }}" aria-controls="cash{{$item->date}}" role="tab" aria-selected="true" data-bs-toggle="tab">
+                            <h6>{{ $item->date }}</h6>
+                            {{-- <div class="row ms-1 me-1">
                                 <div class="col-md-4">
                                     <h6>{{ $item->date }}</h6>
                                 </div>
@@ -1005,7 +1035,7 @@
                                 <div class="col-md-4">
                                     <h6>Rs. 0</h6>
                                 </div>
-                            </div>
+                            </div> --}}
                         </a>
                         {{-- @endforeach --}}
                         @endforeach
@@ -1022,7 +1052,7 @@
                                                 <h3 style="margin-bottom:0rem">{{ $item->date }}</h3>
                                             </span>
                                         </div>
-                                        <div class="header-amount">
+                                        {{-- <div class="header-amount">
                                             <span class="">
                                                 <h6>
                                                     <span class="display-6">
@@ -1030,7 +1060,7 @@
                                                     </span>
                                                 </h6>
                                             </span>
-                                        </div>        
+                                        </div>  --}}
                                     </div>
                                     @php
                                         $cash_detail = CashBook::where('date',$item->date)->get();
@@ -1054,7 +1084,7 @@
                                                 {{-- <div class="col">BALANCE</div> --}}
                                             </li>
                                                 @forelse ($cash_detail  as $element)
-                                                    <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id }} ">
+                                                    <a href="" data-bs-toggle="modal" data-bs-target="#">
                                                         <li class="table-row">
                                                             <div class="col div-one" data-label="Entries"><small>{{ $element->date }}</small>
                                                             </div>
@@ -1260,12 +1290,11 @@
                     <label for="Date">Date</label>
                     <input type="date" class="form-control" name="date" id="date" placeholder="Enter Date">
                 </div>
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <div class="input_fields_wrap">
                         <button class="add_field_button btn btn-outline-primary">Add Items</button>
-                        {{-- <div><input type="text" name="mytext[]"></div> --}}
                     </div>
-                </div>
+                </div> --}}
                 {{-- <div id="items_array"></div> --}}
                 <div>
                     <input type="checkbox" name="method" value="cash"> Cash
