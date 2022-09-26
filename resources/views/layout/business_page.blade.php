@@ -671,7 +671,9 @@
                                             </span>
                                         </div>   
                                     </div>--}}
-                                    
+                                    <div class="row p-2">
+                                        <h4>{{ Carbon::today()->toDateString() }}</h4>
+                                    </div>
                                     <ul  class="responsive-table">
                                         <li class="table-header mb-2">
                                             <div class="col">Item<br></div>
