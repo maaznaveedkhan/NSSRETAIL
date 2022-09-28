@@ -17,10 +17,10 @@
                     <h2>Stock Book</h2>
                 </div>
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <h4>Total Items - 1</h4>
+                    <h4>Total Items - {{ $stocks->count() }}</h4>
                 </div>
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#add_item">
+                    <button type="button" class="btn btn-block btn-primary mt-2" data-toggle="modal" data-target="#add_item">
                         Add Items
                     </button>
                     {{-- <button>Add New Items</button> --}}
@@ -28,7 +28,7 @@
                 {{-- <div class="row p-2 justify-content-start" style="background-color: white;">
                     <button class="btn btn-block btn-primary">Sugar</button>
                 </div> --}}
-                <ul class="" style="">
+                <ul class="list-unstyled" style="">
                     @foreach ($stocks as $item)
                         <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
                             <a class="btn btn-primary btn-block" href="#{{ $item->id == 1 }}{{ $item->item_name }}" data-toggle="tab">{{ $item->item_name }}</a>
@@ -289,6 +289,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('add_item') }}" method="POST">
+                    @csrf
                     <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
