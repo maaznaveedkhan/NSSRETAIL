@@ -12,8 +12,7 @@
     <link rel="stylesheet" href="{{ asset('dashboard/assets/css/backend.css?v=1.0.0')}}">
     <link rel="stylesheet" href="{{ asset('dashboard/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}">
     <link rel="stylesheet" href="{{ asset('dashboard/assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('dashboard/assets/vendor/remixicon/fonts/remixicon.css')}}"> 
-</head>
+    <link rel="stylesheet" href="{{ asset('dashboard/assets/vendor/remixicon/fonts/remixicon.css')}}"> </head>
 
 <body class="  ">
     <!-- loader Start -->
@@ -25,8 +24,8 @@
     <!-- Wrapper Start -->
     <div class="wrapper">
 
-    @include('dashboard.layouts.sidebar')
-    @include('dashboard.layouts.topbar')
+    @include('frontend.layouts.sidebar')
+    @include('frontend.layouts.topbar')
 
     @yield('content')
 

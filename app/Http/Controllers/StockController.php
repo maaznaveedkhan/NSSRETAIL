@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Business;
+use App\Models\Customer;
 use App\Models\Stock;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -11,6 +13,16 @@ use Illuminate\Support\Facades\Redirect;
 class StockController extends Controller
 {
     //
+    public function stock_book($id){
+        $b = $id;
+        $stocks = Stock::where('business_id', $id)->get();
+        $stock_details = DB::table('businesses_stocks')->get();
+        $suppliers = Supplier::where('business_id',$b)->get();
+        $customers = Customer::where('business_id',$b)->get();
+
+        return view('frontend.stockbook',compact('stocks','stock_details','b','suppliers','customers'));
+    }   
+
     public function index($id){
 
         $stocks = Stock::where('business_id', $id)->get();

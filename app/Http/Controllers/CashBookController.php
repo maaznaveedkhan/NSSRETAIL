@@ -7,6 +7,7 @@ use App\Models\CashBook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class CashBookController extends Controller
 {
@@ -24,7 +25,7 @@ class CashBookController extends Controller
         $cash_in->party = $request->party;      
         // dd($cash_in);   
         $cash_in->save();     
-        
+
         return redirect()->back()->with('success','Entry has been created!');
     }
 
@@ -40,7 +41,6 @@ class CashBookController extends Controller
         $cash_out->party = $request->party;    
         // dd($cash_out);      
         $cash_out->save();     
-        
         return redirect()->back()->with('success','Entry has been created!');
     }
 }

@@ -22,7 +22,8 @@ class BusinessController extends Controller
     public function AllBusinesses(Request $request){
         $user_id = Auth::id();
         $all_businesses = Business::where('user_id',$user_id)->get();
-        return view('layout.all_business', compact('all_businesses'));
+        // return view('layout.all_business', compact('all_businesses'));
+        return view('frontend.dashboard', compact('all_businesses'));
     }
 
     public function NewBusiness(Request $request){
@@ -59,7 +60,8 @@ class BusinessController extends Controller
 
         }
         if($customer != null){
-            return view('layout.business_page', compact('business','customer', 'all_customers', 'b', 'payment', 'details','suppliers','bills','cash','stock','bank_accounts'));
+            return view('frontend.business_page', compact('business','customer', 'all_customers', 'b', 'payment', 'details','suppliers','bills','cash','stock','bank_accounts'));
+            // return view('layout.business_page', compact('business','customer', 'all_customers', 'b', 'payment', 'details','suppliers','bills','cash','stock','bank_accounts'));
         }else{
             return view('layout.all_customers', compact('b'));
         }

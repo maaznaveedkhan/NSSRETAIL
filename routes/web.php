@@ -25,10 +25,13 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return redirect()->route('home');
 });
+// Route::get('/', function () {
+//     return view('frontend.dashboard');
+// });
 // Route::get('logout',[App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
-
+Route::get('stock_book/{id}',[App\Http\Controllers\StockController::class,'stock_book'])->name('stock_book');
 
 Route::get('login', function () {
     return view('layout.login');

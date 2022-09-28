@@ -85,9 +85,6 @@
             <div class="col">
               <a href="{{route('all_suppliers', ['business_id'=>$b])}}" class="set_btn_t button_main btn btn-outline-info p-1">Suplliers</a>
             </div>
-            <div class="col">
-              <a href="" class="button_main btn btn-outline-info p-1">All</a>
-            </div>
           </div>
           <!--End Buttons Main -->
 

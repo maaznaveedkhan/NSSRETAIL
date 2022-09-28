@@ -3,13 +3,14 @@
 <style>
 </style>
 @php
-        use Carbon\Carbon;
-        use App\Models\CashBook;
-        use App\Models\Stock;
-        use App\Models\StockQuantity;
-        use App\Models\BillDetail;
-        use App\Models\BankAccount;
-    @endphp
+use Illuminate\Support\Facades\Session;
+    use Carbon\Carbon;
+    use App\Models\CashBook;
+    use App\Models\Stock;
+    use App\Models\StockQuantity;
+    use App\Models\BillDetail;
+    use App\Models\BankAccount;
+@endphp
     <?php
     $total_given_amount = $total_got_amount = 0;
     ?>
@@ -24,7 +25,7 @@
         {{-- <h2>Vertical Tabs</h2>
 		<p>Click on the buttons inside the tabbed menu:</p> --}}
 
-        <div class="tab">
+        <div class="tab" id="">
             <button class="tablinks" onclick="openCity(event, 'Main')" id="defaultOpen">Retail</button>
             <button class="tablinks" onclick="openCity(event, 'Stockbook')">Stock Book</button>
             <button class="tablinks" onclick="openCity(event, 'Billbook')">Bill book</button>
@@ -60,49 +61,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row amount mb-2">
-                        @if (isset($details))
-                            <?php
-                            $amount_remaning_got = $amount_remaning_given = $amount_remaning_balance = 0;
-                            ?>
-                            @foreach ($details as $detail)
-                                <?php
-                                $amount_remaning_given += $detail->given_amount;
-                                $amount_remaning_got += $detail->got_amount;
-                                $amount_remaning_balance += $detail->balance;
-                                ?>
-                            @endforeach
-                            <div class="col given_amount float-right text-center" style="width:30%">
-                                @if ($amount_remaning_given > $amount_remaning_got)
-                                    <span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
-                                @endif
-                                <small>You Will Give</small>
-                            </div>
-                            <div class="col text-center">
-                                @if ($amount_remaning_balance < $amount_remaning_got)
-                                    <span>{{ abs($amount_remaning_balance - $amount_remaning_got) }}</span>
-                                @endif
-                                <small>You Will Get</small>
-                            </div>
-                        @else
-                            <div class="col given_amount text-center">
-                                <span>0</span>
-                                <small>You Will Give</small>
-                            </div>
-                            <div class="col float-right text-center" style="width:30%">
-                                <span>0</span>
-                                <small>You Will Get</small>
-                            </div>
-                        @endif
-                    </div>
                     <!-- Report View -->
-                    <div class="row text-center">
+                    {{-- <div class="row text-center">
                         <div>
                             <a href="{{ route('view_report', ['id' => $b]) }}" class="btn view_report text-uppercase">View
                                 Report
                                 &nbsp;<i class="fa-solid fa-angle-right"></i></a>
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- Search Bar -->
                     <div class="row bg-light p-2 m-0">
                         <div class="col">
@@ -125,7 +91,7 @@
                         </div> --}}
                     </div>
                     <!--End Buttons Main -->
-                    <div style="overflow: auto; height: 20rem;">
+                    <div style="overflow: auto; height: 23rem;">
                         @forelse($all_customers as $all_customer)
                             <div class="profile-span mb-1">
                                 <a href="{{ route('customer', ['id' => $all_customer->id, 'business_id' => $b]) }}"
@@ -1362,7 +1328,6 @@
         </div>
       </div>
     </div>
-
     <!-- Modal For Customer Form -->
     <!-- Modal -->
     <div class="modal fade" id="customer-add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -1393,7 +1358,6 @@
             </div>
         </div>
     </div>
-    
     <!-- Modal -->
     <div class="modal fade" id="yougave" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -1799,98 +1763,46 @@
                 </div>
                 <div class="modal-body" style="width:100%">
                     <div style="width:100%">
-                        {{-- <div class="row"> --}}
-                                <form action="{{ route('cash_out') }}" method="POST">
-                                    @csrf()
-                                    <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
-                                    <div>
-                                        <label for="amount" class="col-sm-2 col-form-label">Amount</label>
-                                        <input type="text" name="amount" id="amount" class="form-control"
-                                            value="">
-                                    </div>
-                                    <div>
-                                        <label for="detail" class="col-sm-2 col-form-label">Detail</label>
-                                        <input type="text" name="detail" id="detail" class="form-control">
-                                    </div>
-                                    <div>
-                                        <label for="date" class="col-sm-2 col-form-label">Date</label>
-                                        <input type="date" name="date" id="date" class="form-control">
-                                    </div>
-                                    <div>
-                                        <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
-                                        <input type="text" name="bill_no" id="bill" class="form-control">
-                                        <input type="hidden" name="customer_id" id="customer_id" class="form-control"
-                                            value="{{ $customer['id'] }}">
-                                    </div>
-                                    <div>
-                                        <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
-                                        <select name="party" id="">
-                                            @foreach ($suppliers as $item)
-                                                <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        
-                                    </div>
-                            {{-- <div class="col-sm-7">
-                                <div class="calculator card">
-                                    <!-- <input type="text" class="calculator-screen z-depth-1" value="" disabled /> -->
-                                    <div class="calculator-keys">
-
-                                        <button type="button" class="operator btn btn-info" value="+">+</button>
-                                        <button type="button" class="operator btn btn-info" value="-">-</button>
-                                        <button type="button" class="operator btn btn-info"
-                                            value="*">&times;</button>
-                                        <button type="button" class="operator btn btn-info"
-                                            value="/">&divide;</button>
-
-                                        <button type="button" value="7"
-                                            class="btn btn-light waves-effect">7</button>
-                                        <button type="button" value="8"
-                                            class="btn btn-light waves-effect">8</button>
-                                        <button type="button" value="9"
-                                            class="btn btn-light waves-effect">9</button>
-
-
-                                        <button type="button" value="4"
-                                            class="btn btn-light waves-effect">4</button>
-                                        <button type="button" value="5"
-                                            class="btn btn-light waves-effect">5</button>
-                                        <button type="button" value="6"
-                                            class="btn btn-light waves-effect">6</button>
-
-
-                                        <button type="button" value="1"
-                                            class="btn btn-light waves-effect">1</button>
-                                        <button type="button" value="2"
-                                            class="btn btn-light waves-effect">2</button>
-                                        <button type="button" value="3"
-                                            class="btn btn-light waves-effect">3</button>
-
-
-                                        <button type="button" value="0"
-                                            class="btn btn-light waves-effect">0</button>
-                                        <button type="button" class="decimal function btn btn-secondary"
-                                            value=".">.</button>
-                                        <button type="button" class="all-clear function btn btn-danger btn-sm"
-                                            value="all-clear">AC</button>
-
-                                        <button type="button" class="equal-sign operator btn btn-default"
-                                            value="=">=</button>
-                                    </div>
-                                </div>
-                            </div> --}}
-                        {{-- </div> --}}
+                    <form action="{{ route('cash_out') }}" method="POST">
+                        @csrf()
+                        <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                        <div>
+                            <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                            <input type="text" name="amount" id="amount" class="form-control"
+                                value="">
+                        </div>
+                        <div>
+                            <label for="detail" class="col-sm-2 col-form-label">Detail</label>
+                            <input type="text" name="detail" id="detail" class="form-control">
+                        </div>
+                        <div>
+                            <label for="date" class="col-sm-2 col-form-label">Date</label>
+                            <input type="date" name="date" id="date" class="form-control">
+                        </div>
+                        <div>
+                            <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
+                            <input type="text" name="bill_no" id="bill" class="form-control">
+                            <input type="hidden" name="customer_id" id="customer_id" class="form-control"
+                                value="{{ $customer['id'] }}">
+                        </div>
+                        <div>
+                            <label for="bill" class="col-sm-2 col-form-label">Select Party</label>
+                            <select name="party" id="">
+                                @foreach ($suppliers as $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit	" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                     </form>
-
                 </div>
             </div>
         </div>
-    </div>
-        
+    </div> 
     <!-- Modal -->
     @foreach ($payment as $pay)
         <?php
@@ -2141,6 +2053,7 @@
             });
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
         function openCity(evt, cityName) {
             var i, tabcontent, tablinks;
@@ -2158,42 +2071,6 @@
 
         // Get the element with id="defaultOpen" and click on it
         document.getElementById("defaultOpen").click();
-    </script>
-    <script>
-        $(document).ready(function() {
-        var max_fields      = 10; //maximum input boxes allowed
-        var wrapper   		= $(".input_fields_wrap"); //Fields wrapper
-        var add_button      = $(".add_field_button"); //Add button ID
-        var items_array = 0;
-        
-        var x = 1; //initlal text box count
-        $(add_button).click(function(e){ //on add input button click
-            e.preventDefault();
-            if(x < max_fields){ //max input box allowed
-                x++; //text box increment
-                $('#items_array').append(`<div class="row">
-                                        <a href="#" class="remove_field">Remove</a>
-                                        <div class="col-md-4">
-                                            <label for="Itemname">Item </label>
-                                            <input type="text" class="form-control" name="item_name[]" placeholder="Enter Quantity">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="Itemquantity">Quantity</label>
-                                            <input type="text" class="form-control" name="item_quantity[]">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="Itemrate">Rate</label>
-                                            <input type="text" class="form-control" name="item_rate[]">
-                                        </div>
-                                    </div>`); //add input box
-                // $(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
-            }
-        });
-        
-        $('#items_array').on("click",".remove_field", function(e){ //user click on remove text
-            e.preventDefault(); $(this).parent('div').remove(); x--;
-        })
-    });
     </script>
     <script type="text/javascript">
     function reply_click(clicked_id)
