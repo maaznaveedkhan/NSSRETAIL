@@ -20,13 +20,14 @@
                     <h4>Total Items - 1</h4>
                 </div>
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Add New Items</button>
-
+                    <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#add_item">
+                        Add Items
+                    </button>
                     {{-- <button>Add New Items</button> --}}
                 </div>
-                <div class="row p-2 justify-content-start" style="background-color: white;">
+                {{-- <div class="row p-2 justify-content-start" style="background-color: white;">
                     <button class="btn btn-block btn-primary">Sugar</button>
-                </div>
+                </div> --}}
                 <ul class="" style="">
                     @foreach ($stocks as $item)
                         <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
@@ -274,6 +275,45 @@
                     </div>
                 </div> --}}
             </div>
+        </div>
+    </div>
+    <!-- Modal Quantity In -->
+    <div class="modal fade" id="add_item" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('add_item') }}" method="POST">
+                    <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                          <label for="item_name">Item Name</label>
+                          <input type="text" name="item_name" class="form-control" id="item_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="item_unit">Item Unit</label>
+                          <input type="text" name="item_unit" class="form-control" id="validationDefault02" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="sale_rate">Rate Sale</label>
+                          <input type="text" name="sale_rate" class="form-control" id="validationDefault03" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="purchase_rate">Rate Purchase</label>
+                            <input type="text" name="purchase_rate" value="" class="form-control" id="validationDefault03" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                       <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                 </form>
+            </div>
+        </div>
         </div>
     </div>
 </div>
