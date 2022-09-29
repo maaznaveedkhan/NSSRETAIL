@@ -14,43 +14,39 @@
         <div class="row">
             <div class="col-lg-3" style="border: 2px solid black;">
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <h2>Stock Book</h2>
+                    <h2>Bil Book</h2>
                 </div>
+                {{-- <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
+                    <h4>Total Sale for - {{ $stocks->count() }}</h4>
+                </div> --}}
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <h4>Total Items - {{ $stocks->count() }}</h4>
+                    <a href="{{ route('new_bill',$b) }}">Create New Bill</a>
+                    {{-- <button type="button" class="btn btn-block btn-primary mt-2" data-toggle="modal" data-target="#create_new_bill">
+                        Create New Bill
+                    </button> --}}
                 </div>
-                <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <button type="button" class="btn btn-block btn-primary mt-2" data-toggle="modal" data-target="#add_item">
-                        Add Items
-                    </button>
-                </div>
-                {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
-                    <ul class="nav nav-tabs" >
-                        @foreach ($stocks as $item)
-                            <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2">
-                                <a class="btn btn-primary btn-block" href="#item{{ $item->id }}" data-toggle="tab">{{ $item->item_name }}</a>
-                            </li>
-                        @endforeach
-                    </ul> 
-                {{-- </div> --}}
+                <ul class="list-unstyled" style="">
+                    @foreach ($bills as $item)
+                        <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
+                            <a class="btn btn-primary btn-block" href="#item{{ $item->id }}" data-toggle="tab">Bill: {{ $item->bill_no }}</a>
+                        </li>
+                    @endforeach
+                </ul> 
             </div>
             <div class="col-lg-9">
                 <div class="tab-content">
-                    @foreach ($stocks as $item)
+                    @foreach ($bills as $item)
                         <div class="tab-pane {{ $item->id == 1 ? 'active' : ''  }}" id="item{{ $item->id }}" class="active">
                             @php
                                 $item_id = $item->id;
                                 $sale_rate = $item->sale_rate;
-                                $stock_detail = StockQuantity::where('item_id',$item->id)->get();
-                                $balance = StockQuantity::where('item_id',$item->id)->orderby('id', 'DESC')->first();
-                                $qty_out = $stock_detail->sum('qty_out');
-                                $qty_in = $stock_detail->sum('qty_in');                                
+                                $bill_detail = BillDetail::where('bill_id',$item->id)->get();                                                         
                             @endphp
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h4 class="card-title">{{ $item->item_name }}</h4>
+                                            <h4 class="card-title">Bill No # {{ $item->bill_no }}</h4>
                                         </div>
                                         <div class="col-md-6">
                                             {{-- @foreach ($balance as $value)
@@ -64,42 +60,25 @@
                                    <table class="table">
                                       <thead>
                                          <tr class="ligth">
-                                            <th scope="col">Enteries <br> ({{ sizeof($stock_detail) }})</th>
-                                            <th scope="col">Detail <br></th>
-                                            <th scope="col">IN <br>({{ $qty_in }}) </th>
-                                            <th scope="col">Out <br> ({{ $qty_out }})</th>
-                                            <th scope="col">Balance <br></th>
+                                            <th scope="col">Item </th>
+                                            <th scope="col">Quantity </th>
+                                            <th scope="col">Rate </th>
+                                            <th scope="col">Amount <br></th>
                                          </tr>
                                       </thead>
                                       <tbody>
-                                        @if (sizeof($stock_detail) != 0)
-                                            @forelse ($stock_detail  as $element)
+                                        @if (sizeof($bill_detail) != 0)
+                                            @forelse ($bill_detail  as $element)
+                                                @php
+                                                    $item_name = Stock::where('id',$element->item_name)->first();
+                                                @endphp
                                                 <tr>
-                                                    <th scope="row">{{ $element->created_at }}</th>
-                                                    <td>{{ $element->detail }}</td>
-                                                    <td>{{ $element->qty_in }} </td>
-                                                    <td>{{ $element->qty_out }}</td>
-                                                    <td>{{ $element->balance }}</td>
-                                                    {{-- <div class="col div-one" data-label="Balance">
-                                                                <small>
-                                                                    {{ $amount_remaning_balance }}
-                                                                </small>
-                                                            </div> --}}
+                                                    <th scope="row">{{ $item_name['item_name'] }}</th>
+                                                    <td>{{ $element->quantity }} {{ $item_name['item_unit'] }}</td>
+                                                    <td>Rs. {{ $element->sale_rate }} </td>
+                                                    <td>{{ $element->amount }}</td>
+                                                    {{-- <td>{{ $element->balance }}</td> --}}
                                                 </tr>
-                                                {{-- <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $element->id }} ">
-                                                    <li class="table-row">
-                                                        <div class="col div-one" data-label="Entries"><small>{{ $element->created_at }}</small>
-                                                        </div>
-                                                        <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
-                                                        </div>
-                                                        <div class="col div-three" data-label="You Got">
-                                                            <small>{{ $element->qty_in }}</small>
-                                                        </div>
-                                                        <div class="col div-two" data-label="You Give">
-                                                            <small>{{ $element->qty_out }}</small>
-                                                        </div>
-                                                    </li>
-                                                </a> --}}
                                             @empty
                                             @endforelse
                                         @endif
@@ -107,14 +86,11 @@
                                    </table>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#qty_in{{ $item->id }}">
-                                Quantity IN
-                            </button>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#qty_out{{ $item_id }}">
-                                Quantity OUT
+                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#add_items{{ $item_id }}">
+                                Add Items
                             </button>
                             <!-- Modal Quantity In -->
-                            <div class="modal fade" id="qty_in{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="add_items{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -124,16 +100,29 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ route('qty_in') }}" method="POST">
+                                        <form action="{{ route('add_items') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
-                                            <input type="hidden" name="item_id" id="item_id" value="{{ $item->id}}">
+                                            <input type="hidden" name="bill_id" id="bill_id" value="{{ $item_id }}">
                                             <div class="form-row">
-                                                <div class="col-md-6 mb-3">
-                                                  <label for="qty_in">Quantity</label>
-                                                  <input type="text" name="qty_in" class="form-control" id="validationDefault01" required>
+                                                <div class="col-md-12 mb-3">
+                                                    <label for="validationDefault04">Select item</label>
+                                                    <select name="item" class="form-control" id="item" required>
+                                                        <option selected disabled value="">Choose...</option>
+                                                            @foreach ($stocks as $item)
+                                                                @php
+                                                                    $item_detail = StockQuantity::where('item',$item->id)->orderby('id', 'DESC')->first();
+                                                                @endphp
+                                                                <input type="hidden" name="rate" value="{{}}" id="">
+                                                                <option value="{{ $item->id }}">{{ $item->item_name }}</option>
+                                                            @endforeach
+                                                    </select>
                                                 </div>
-                                                <div class="col-md-6 mb-3">
+                                                <div class="col-md-12 mb-3">
+                                                  <label for="quantity">Quantity</label>
+                                                  <input type="text" name="quantity" class="form-control" id="validationDefault01" required>
+                                                </div>
+                                                {{-- <div class="col-md-6 mb-3">
                                                   <label for="rate">Rate</label>
                                                   <input type="text" name="rate" value="{{ $item->purchase_rate }}" class="form-control" id="validationDefault02" required>
                                                 </div>
@@ -148,16 +137,8 @@
                                                 <div class="col-md-6 mb-3">
                                                     <label for="Bill">Bill No</label>
                                                     <input type="text" name="bill_no" class="form-control" id="validationDefault03" required>
-                                                  </div>
-                                                <div class="col-md-12 mb-3">
-                                                  <label for="validationDefault04">Select Party</label>
-                                                  <select name="party" class="form-control" id="party" required>
-                                                     <option selected disabled value="">Choose...</option>
-                                                        @foreach ($suppliers as $item)
-                                                            <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                                        @endforeach
-                                                  </select>
-                                                </div>
+                                                  </div> --}}
+                                                
                                             </div>
                                             <div class="form-group">
                                                <button class="btn btn-primary" type="submit">Save</button>
@@ -212,7 +193,7 @@
                                                   <select name="party" class="form-control" id="party" required>
                                                      <option selected disabled value="">Choose...</option>
                                                         @foreach ($customers as $item)
-                                                            <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                                            <option>{{ $item->name }}</option>
                                                         @endforeach
                                                   </select>
                                                 </div>
@@ -281,7 +262,7 @@
         </div>
     </div>
     <!-- Modal Quantity In -->
-    <div class="modal fade" id="add_item" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="create_new_bill" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -295,7 +276,7 @@
                     @csrf
                     <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
                     <div class="form-row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                           <label for="item_name">Item Name</label>
                           <input type="text" name="item_name" class="form-control" id="item_name" required>
                         </div>
@@ -311,6 +292,10 @@
                             <label for="purchase_rate">Rate Purchase</label>
                             <input type="text" name="purchase_rate" value="" class="form-control" id="validationDefault03" required>
                         </div>
+                        <div class="col-md-12 mb-3">
+                            <input type="checkbox" name="method" value="cash"> Cash
+                            <input type="checkbox" name="method" value="credit">Credit
+                        </div>
                     </div>
                     <div class="form-group">
                        <button class="btn btn-primary" type="submit">Save</button>
@@ -321,4 +306,24 @@
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    // the selector will match all input controls of type :checkbox
+    // and attach a click event handler 
+    $("input:checkbox").on('click', function() {
+    // in the handler, 'this' refers to the box clicked on
+    var $box = $(this);
+    if ($box.is(":checked")) {
+        // the name of the box is retrieved using the .attr() method
+        // as it is assumed and expected to be immutable
+        var group = "input:checkbox[name='" + $box.attr("name") + "']";
+        // the checked state of the group/box on the other hand will change
+        // and the current value is retrieved using .prop() method
+        $(group).prop("checked", false);
+        $box.prop("checked", true);
+    } else {
+        $box.prop("checked", false);
+    }
+    });
+</script>
 @endsection

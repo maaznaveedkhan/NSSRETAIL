@@ -32,6 +32,10 @@ Route::get('/', function () {
 // });
 // Route::get('logout',[App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 Route::get('stock_book/{id}',[App\Http\Controllers\StockController::class,'stock_book'])->name('stock_book');
+Route::get('bill_book/{id}',[App\Http\Controllers\BillController::class,'bill_book'])->name('bill_book');
+Route::get('new_bill/{id}',[App\Http\Controllers\BillController::class,'new_bill'])->name('new_bill');
+Route::post('create_bill',[App\Http\Controllers\BillController::class,'create_bill'])->name('create_bill');
+Route::post('add_items', [App\Http\Controllers\BillDetailController::class, 'bill_detail'])->name('add_items');
 
 Route::get('login', function () {
     return view('layout.login');
@@ -83,7 +87,7 @@ Route::group(['middleware' => ['user', 'auth']], function () {
     Route::get('all_business' , [BusinessController::class, 'AllBusinesses'])->name('all_business');
     Route::get('cash' , [CashBookController::class, 'cash'])->name('cash');
     Route::post('create_bill',[App\Http\Controllers\BillController::class,'create_bill'])->name('create_bill');
-    Route::post('add_items', [App\Http\Controllers\BillDetailController::class, 'bill_detail'])->name('add_items');
+    // Route::post('add_items', [App\Http\Controllers\BillDetailController::class, 'bill_detail'])->name('add_items');
     // Route::post('create_bill',[App\Http\Controllers\BillBookController::class,'add_bill'])->name('create_bill');
     Route::get('edit_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'edit_bill'])->name('edit_bill');
     Route::get('update_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'update_bill'])->name('update_bill');
