@@ -7,7 +7,12 @@ use Illuminate\Http\Request;
 
 class BankAccountController extends Controller
 {
+    public function bank_accounts($id){
+        $b = $id;
+        $bank_accounts = BankAccount::where('business_id',$b)->select('account')->distinct()->get();
 
+        return view('frontend.bank_accounts',compact('b','bank_accounts'));
+    }
 
     public function add_bank_ac(Request $request){
 

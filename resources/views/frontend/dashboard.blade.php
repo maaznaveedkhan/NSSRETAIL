@@ -39,7 +39,7 @@
                 <nav class="iq-sidebar-menu">
                     <ul id="iq-sidebar-toggle" class="iq-menu">
                         <li class="active">
-                            <a href="svg-icon">
+                            <a href="">
                                 <svg class="svg-icon" id="p-dash1" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                   <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>
                               </svg>
@@ -935,15 +935,15 @@
         <div class="content-page">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-12">
                         <div class="card card-transparent card-block card-stretch card-height border-none">
                             <div class="card-body p-0 mt-lg-2 mt-0">
                                 <h3 class="mb-3">Hi Test, Good Morning</h3>
-                                <p class="mb-0 mr-4">Your dashboard gives you views of key performance or business process.</p>
+                                <p class="mb-0 mr-4">Select a Business to view details</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8">
+                    {{-- <div class="col-lg-8">
                         <div class="row">
                             <div class="col-lg-4 col-md-4">
                                 <div class="card card-block card-stretch card-height">
@@ -1003,8 +1003,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
+                    </div> --}}
+                    {{-- <div class="col-lg-6">
                         <div class="card card-block card-stretch card-height">
                             <div class="card-header d-flex justify-content-between">
                                 <div class="header-title">
@@ -1274,7 +1274,7 @@
                                 <div id="layout1-chart-5"></div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <!-- Page end  -->
             </div>

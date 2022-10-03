@@ -12,10 +12,10 @@
 </style>
 
 @if(isset($details))
-            <?php 
+            <?php
               $amount_purchase = $amount_payment = $amount_remaning_balance =0;
             ?>
-            @foreach($details as $detail)          
+            @foreach($details as $detail)
               <?php
                 $amount_purchase += $detail->purchase;
                 $amount_payment += $detail->payment;
@@ -38,13 +38,13 @@
                   <div class="drop mb-2"><a href=""> Filter Customer List </a></div>
                   <div class="drop mb-2"><a href=""> Customer List PDF </a></div>
                   <div class="drop mb-2"><a href=""> Profile </a></div>
-                  <div class="drop mb-2"><a href=""> About Us </a></div>                  
-                  <div class="drop mb-2"><a href=""> Language </a></div>                  
-                  <div class="drop mb-2"><a href=""> Help & Support </a></div>                  
-                  <div class="drop mb-2"><a href=""> Cash Register </a></div>                 
-                  <div class="drop mb-2"><a href=""> Recyle Bin </a></div>                  
-                  <div class="drop mb-2"><a href=""> EasyDokan </a></div>                 
-                  <div class="drop mb-2"><a href=""> Logout </a></div>                  
+                  <div class="drop mb-2"><a href=""> About Us </a></div>
+                  <div class="drop mb-2"><a href=""> Language </a></div>
+                  <div class="drop mb-2"><a href=""> Help & Support </a></div>
+                  <div class="drop mb-2"><a href=""> Cash Register </a></div>
+                  <div class="drop mb-2"><a href=""> Recyle Bin </a></div>
+                  <div class="drop mb-2"><a href=""> EasyDokan </a></div>
+                  <div class="drop mb-2"><a href=""> Logout </a></div>
                 </div>
               </div>
             </div>
@@ -52,7 +52,7 @@
           <div class="profile-span mb-2">
           </div>
           <div class="text-center bg-light bg-gradient buttons">
-            <!-- Button trigger modal -->      
+            <!-- Button trigger modal -->
             <button class="btn m-3 mt-2 mb-2 button-bussiness" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               <i class="fa fa-plus-circle" aria-hidden="true"></i><span class="m-2 text-white">Add Supplier</span>
             </button>
@@ -89,7 +89,7 @@
           <!--End Buttons Main -->
 
           @forelse($all_suppliers as $all_supplier)
-            <div class="profile-span mb-1">            
+            <div class="profile-span mb-1">
 
               <a href="{{route('supplier' , ['id'=>$all_supplier->id, 'business_id'=>$b])}}" type="button" class="btn btn-div mb-2">
                 <div class="mb-1 mt-1 profile-image-div">
@@ -126,14 +126,14 @@
                   <div class="drop mb-2"><a href=""> Customer Profile </a></div>
                   <div class="drop mb-2"><a href=""> Customer Ledger </a></div>
                   <div class="drop mb-2"><a href=""> Delete Customer </a></div>
-                  <div class="drop mb-2"><a href=""> Switch to Supplier </a></div>                  
-                  <div class="drop mb-2"><a href=""> Call </a></div>                  
+                  <div class="drop mb-2"><a href=""> Switch to Supplier </a></div>
+                  <div class="drop mb-2"><a href=""> Call </a></div>
                 </div>
               </div>
             </div>
           </div>
 
-          
+
 
           @isset($payment)
             @if(sizeof($payment) != 0)
@@ -151,7 +151,7 @@
                 @forelse($payment as $pay)
 
                       <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $pay->id}} ">
-                      <li class="table-row">                      
+                      <li class="table-row">
                           <div class="col div-one" data-label="Entries"><small>{{ $pay->date }}</small></div>
                           <div class="col div-one" data-label="Detail"><small>{{ $pay->detail }}</small></div>
                           <div class="col div-two" data-label="You Give"><small>{{ $pay->purchase }}</small></div>
@@ -160,16 +160,16 @@
                             <small>
                               {{ $pay->balance }}
                             </small>
-                          </div>                      
-                      </li>      </a>         
+                          </div>
+                      </li>      </a>
                       @empty
                 @endforelse
-                
+
               </ul>
             @endif
           @endisset
           <div class="text-center buttons btn-give-got">
-            <!-- Button trigger modal -->      
+            <!-- Button trigger modal -->
             <button class="btn m-3 mt-2 bg-success mb-2 button-bussiness" data-bs-toggle="modal" data-bs-target="#purchase">
               <span class="m-2 text-white">Purchase (Rs)</span>
             </button>
@@ -180,7 +180,7 @@
         </div>
       </div>
     </div>
-      
+
     <!-- Modal For Business Form -->
     <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -242,7 +242,7 @@
                       <input type="hidden" name="supplier_id" id="supplier_id" class="form-control" value="{{ $supplier['id'] }}">
                     </div>
                 </div>
-                <div class="col-sm-7">              
+                <div class="col-sm-7">
                   <div class="calculator card">
                     <div class="calculator-keys">
 
@@ -318,7 +318,7 @@
                       <input type="hidden" name="supplier_id" id="supplier_id" class="form-control" value="{{ $supplier['id'] }}">
                     </div>
                 </div>
-                <div class="col-sm-7">              
+                <div class="col-sm-7">
                   <div class="calculator card">
                     <div class="calculator-keys">
 
@@ -366,7 +366,7 @@
     @isset($payment)
       @foreach($payment as $pay)
         <?php
-          $query = DB::table('bussinesses_suppliers')->select('*')->where('id', '=', $pay->id)->first(); 
+          $query = DB::table('bussinesses_suppliers')->select('*')->where('id', '=', $pay->id)->first();
         ?>
         <div class="modal fade" id="id{{$pay->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog  modal-dialog-centered">
@@ -402,7 +402,7 @@
                           <input type="hidden" name="id" id="id" class="form-control" value="{{$query->id}}">
                         </div>
                     </div>
-                    <div class="col-sm-7">              
+                    <div class="col-sm-7">
                       <div class="calculator card">
                         <!-- <input type="text" class="calculator-screen z-depth-1" value="" disabled /> -->
                         <div class="calculator-keys">
@@ -563,7 +563,7 @@
 
     <script type="text/javascript">
       $(document).ready(function(){
-        $('.set_btn_t').css({"background-color": "#133d67", "color":"white"});       
+        $('.set_btn_t').css({"background-color": "#133d67", "color":"white"});
       });
     </script>
 

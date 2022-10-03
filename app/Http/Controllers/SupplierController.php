@@ -15,25 +15,26 @@ use Illuminate\Support\Facades\Redirect;
 
 class SupplierController extends Controller
 {
-    public function AllSuppliers($id){
+    public function all_suppliers($id){
         $b = $id;
         $customer = Business::where('id', '=',$id)->latest()->first();
         $supplier = Supplier::where('business_id', '=', $id)->latest()->first();
-        // dd($supplier);        
-        $all_suppliers = Supplier::where('business_id', '=', $id)->get();        
-        return view('layout/all_suppliers', compact('customer', 'b', 'all_suppliers', 'supplier'));            
+        // dd($supplier);
+        $all_suppliers = Supplier::where('business_id', '=', $id)->get();
+        return view('frontend.suppliers', compact('customer', 'b', 'all_suppliers', 'supplier'));
+        // return view('layout.all_suppliers', compact('customer', 'b', 'all_suppliers', 'supplier'));
 
     }
 
     public function AddSupplier(Request $request){
-        
+
         $id = $request->business_id;
         $data = new Supplier;
         $data->business_id = $id;
         $data->name = $request->name_supplier;
-        $data->phone_number = $request->phone_number;        
-        $data->save();     
-        
+        $data->phone_number = $request->phone_number;
+        $data->save();
+
         return Redirect::back();
     }
 
@@ -69,14 +70,14 @@ class SupplierController extends Controller
 
 
         if($balance_total != null){
-            
+
             if($got_amount_total < $given_amount_total){
                 $total = $balance_total->balance + $request->amount;
             }else{
 
                 $total = $balance_total->balance - $request->amount;
-            }    
-            
+            }
+
             $data_array = array(
                 'supplier_id'=> $request->supplier_id,
                 'detail'=>$request->detail,
@@ -109,9 +110,9 @@ class SupplierController extends Controller
     public function Payment(Request $request){
 
         $adds = DB::table('bussinesses_suppliers')->select('*')->where('supplier_id', '=', $request->supplier_id)->orderby('id', 'DESC')->get();
-        
+
         $balance_total = DB::table('bussinesses_suppliers')->select('*')->where('supplier_id', '=', $request->supplier_id)->orderby('id', 'DESC')->first();
-        
+
         $given_amount_total = $got_amount_total = 0;
         foreach($adds as $add){
             $given_amount_total += $add->purchase;
@@ -125,7 +126,7 @@ class SupplierController extends Controller
 
                 $total = $balance_total->balance - $request->amount;
             }
-            
+
             $data_array = array(
                 'supplier_id'=> $request->supplier_id,
                 'detail'=>$request->detail,
@@ -159,13 +160,13 @@ class SupplierController extends Controller
         $adds = DB::table('bussinesses_suppliers')->select('*')->where('supplier_id', '=', $request->supplier_id)->where('id', '!=', $request->id)->orderby('id', 'DESC')->get();
 
         $total_given_amount = $total_got_amount = $total_balance_amount = 0;
-        
+
         foreach($adds as $add){
             $total_given_amount += $add->purchase;
             $total_got_amount += $add->payment;
             $total_balance_amount += $add->balance;
         }
-        
+
         $balance_total = DB::table('bussinesses_suppliers')->select('*')->where('id', '=', $request->id)->orderby('id', 'DESC')->first();
 
         if($balance_total->purchase != 0){
@@ -177,7 +178,7 @@ class SupplierController extends Controller
                     'date'=>$request->date,
                     'bill'=>$request->bill,
                     'balance' => abs($total_given_amount+$request->amount),
-                );  
+                );
             }else{
                 $data_array = array(
                     'supplier_id'=> $request->supplier_id,
@@ -187,7 +188,7 @@ class SupplierController extends Controller
                     'bill'=>$request->bill,
                     'balance' => abs($total_given_amount+$request->amount),
                 );
-            }        
+            }
 
             DB::table('bussinesses_suppliers')->where('id', $request->id)->update($data_array);
 
@@ -207,16 +208,16 @@ class SupplierController extends Controller
                     'date'=>$request->date,
                     'bill'=>$request->bill,
                     'balance' => abs($given_sum-$got_sum),
-                );                
+                );
 
 
-                DB::table('bussinesses_suppliers')->where('id', $record->id)->update($record_array);            
+                DB::table('bussinesses_suppliers')->where('id', $record->id)->update($record_array);
             }
         }
         else{
             $query = DB::table('bussinesses_suppliers')->select('*')->where('id', $request->id)->orderby('id', 'DESC')->first();
 
-            
+
             $data_array = array(
                 'supplier_id'=> $request->supplier_id,
                 'detail'=>$request->detail,
@@ -247,9 +248,9 @@ class SupplierController extends Controller
                     'date'=>$request->date,
                     'bill'=>$request->bill,
                     'balance' => abs($given_sum-$got_sum),
-                );               
+                );
 
-                DB::table('bussinesses_suppliers')->where('id', $record->id)->update($record_array);            
+                DB::table('bussinesses_suppliers')->where('id', $record->id)->update($record_array);
             }
 
 
@@ -277,9 +278,9 @@ class SupplierController extends Controller
                 'date'=>$request->date,
                 'bill'=>$request->bill,
                 'balance' => abs($given_sum-$got_sum),
-            );               
+            );
 
-            DB::table('bussinesses_suppliers')->where('id', $record->id)->update($record_array);            
+            DB::table('bussinesses_suppliers')->where('id', $record->id)->update($record_array);
         }
 
         return Redirect::back();

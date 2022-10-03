@@ -8,98 +8,80 @@
     use App\Models\StockQuantity;
     use App\Models\BillDetail;
     use App\Models\BankAccount;
+    use App\Models\CashDetail;
 @endphp
 <div class="content-page">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-3" style="border: 2px solid black; height: 30rem; overflow: auto;">
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <h2>Stock Book</h2>
+                    <h2>Cash Book</h2>
                 </div>
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <h4>Total Items - {{ $stocks->count() }}</h4>
+                    <h4>Cash in Hand - 1</h4>
                 </div>
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <button type="button" class="btn btn-block btn-primary mt-2" data-toggle="modal" data-target="#add_item">
-                        Add Items
+                    <button type="button" class="btn btn-block btn-primary mt-2" data-toggle="modal" data-target="#add_entry">
+                        Add Cash Entery
                     </button>
                 </div>
                 {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
                     <ul class="nav nav-tabs" style="width: 5rem; margin-left:2rem; ">
-                        @foreach ($stocks as $item)
-                            <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
-                                <a class="btn btn-primary btn-block" style="width: 10rem" href="#item{{ $item->id }}" data-toggle="tab">{{ $item->item_name }}</a>
+                        @foreach ($cashes as $item)
+                            <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" style="width: 5rem; margin-left:2rem;">
+                                <a class="btn btn-primary btn-block" href="#item{{ $item->id }}" data-toggle="tab">{{ $item->party }}</a>
                             </li>
                         @endforeach
-                    </ul> 
+                    </ul>
                 {{-- </div> --}}
             </div>
             <div class="col-lg-9">
                 <div class="tab-content">
-                    @foreach ($stocks as $item)
+                    @foreach ($cashes as $item)
                         <div class="tab-pane {{ $item->id == 1 ? 'active' : ''  }}" id="item{{ $item->id }}" class="active">
                             @php
-                                $item_id = $item->id;
+                                $cash_id = $item->id;
                                 $sale_rate = $item->sale_rate;
-                                $stock_detail = StockQuantity::where('item_id',$item->id)->get();
-                                $balance = StockQuantity::where('item_id',$item->id)->orderby('id', 'DESC')->first();
-                                $qty_out = $stock_detail->sum('qty_out');
-                                $qty_in = $stock_detail->sum('qty_in');                                
+                                $cash_detail = CashDetail::where('cash_id',$item->id)->get();
+                                $balance = CashDetail::where('cash_id',$item->id)->orderby('id', 'DESC')->first();
+                                $cash_out = $cash_detail->sum('cash_out');
+                                $cash_in = $cash_detail->sum('cash_in');
                             @endphp
-                            <div class="card" style="height: 30rem; overflow: auto;">
+                            <div class="card">
                                 <div class="card-header">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h4 class="card-title">{{ $item->item_name }}</h4>
+                                            <h4 class="card-title">{{ $item->date }}</h4>
                                         </div>
                                         <div class="col-md-6">
                                             {{-- @foreach ($balance as $value)
                                                 <h4 class="card-title">Stock in hand - {{ $value }}</h4>
                                             @endforeach --}}
-                                            
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                   <table class="table" >
+                                   <table class="table">
                                       <thead>
                                          <tr class="ligth">
-                                            <th scope="col">Enteries <br> ({{ sizeof($stock_detail) }})</th>
+                                            <th scope="col">Enteries <br> ({{ sizeof($cash_detail) }})</th>
                                             <th scope="col">Detail <br></th>
-                                            <th scope="col">IN <br>({{ $qty_in }}) </th>
-                                            <th scope="col">Out <br> ({{ $qty_out }})</th>
+                                            <th scope="col">IN <br>({{ $cash_in }}) </th>
+                                            <th scope="col">Out <br> ({{ $cash_out }})</th>
                                             <th scope="col">Balance <br></th>
                                          </tr>
                                       </thead>
                                       <tbody>
-                                        @if (sizeof($stock_detail) != 0)
-                                            @forelse ($stock_detail  as $element)
+                                        @if (sizeof($cash_detail) != 0)
+                                            @forelse ($cash_detail  as $element)
                                                 <tr>
                                                     <th scope="row">{{ $element->created_at }}</th>
                                                     <td>{{ $element->detail }}</td>
-                                                    <td>{{ $element->qty_in }} </td>
-                                                    <td>{{ $element->qty_out }}</td>
+                                                    <td>{{ $element->cash_in }} </td>
+                                                    <td>{{ $element->cash_out }}</td>
                                                     <td>{{ $element->balance }}</td>
-                                                    {{-- <div class="col div-one" data-label="Balance">
-                                                                <small>
-                                                                    {{ $amount_remaning_balance }}
-                                                                </small>
-                                                            </div> --}}
                                                 </tr>
-                                                {{-- <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $element->id }} ">
-                                                    <li class="table-row">
-                                                        <div class="col div-one" data-label="Entries"><small>{{ $element->created_at }}</small>
-                                                        </div>
-                                                        <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
-                                                        </div>
-                                                        <div class="col div-three" data-label="You Got">
-                                                            <small>{{ $element->qty_in }}</small>
-                                                        </div>
-                                                        <div class="col div-two" data-label="You Give">
-                                                            <small>{{ $element->qty_out }}</small>
-                                                        </div>
-                                                    </li>
-                                                </a> --}}
                                             @empty
                                             @endforelse
                                         @endif
@@ -107,14 +89,14 @@
                                    </table>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#qty_in{{ $item->id }}">
-                                Quantity IN
+                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#cash_in{{ $item->id }}">
+                                Cash IN
                             </button>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#qty_out{{ $item_id }}">
-                                Quantity OUT
+                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#cash_out{{ $cash_id }}">
+                                Cash OUT
                             </button>
                             <!-- Modal Quantity In -->
-                            <div class="modal fade" id="qty_in{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="cash_in{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -124,18 +106,14 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ route('qty_in') }}" method="POST">
+                                        <form action="{{ route('cash_in') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
-                                            <input type="hidden" name="item_id" id="item_id" value="{{ $item->id}}">
+                                            <input type="hidden" name="cash_id" id="cash_id" value="{{ $item->id}}">
                                             <div class="form-row">
                                                 <div class="col-md-6 mb-3">
-                                                  <label for="qty_in">Quantity</label>
-                                                  <input type="text" name="qty_in" class="form-control" id="validationDefault01" required>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                  <label for="rate">Rate</label>
-                                                  <input type="text" name="rate" value="{{ $item->purchase_rate }}" class="form-control" id="validationDefault02" required>
+                                                  <label for="cash_in">Amount</label>
+                                                  <input type="text" name="cash_in" class="form-control" id="validationDefault01" required>
                                                 </div>
                                                 <div class="col-md-12 mb-3">
                                                   <label for="detail">Detail</label>
@@ -145,10 +123,6 @@
                                                     <label for="date">Date</label>
                                                     <input type="date" name="date" value="" class="form-control" id="validationDefault03" required>
                                                 </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="Bill">Bill No</label>
-                                                    <input type="text" name="bill_no" class="form-control" id="validationDefault03" required>
-                                                  </div>
                                                 <div class="col-md-12 mb-3">
                                                   <label for="validationDefault04">Select Party</label>
                                                   <select name="party" class="form-control" id="party" required>
@@ -172,28 +146,24 @@
                                 </div>
                             </div>
                             <!-- Modal Quantity Out-->
-                            <div class="modal fade" id="qty_out{{ $item_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="cash_out{{ $cash_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Quantity OUT</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Cash OUT</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ route('qty_out') }}" method="POST">
+                                        <form action="{{ route('cash_out') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
-                                            <input type="hidden" name="item_id" id="item_id" value="{{ $item_id}}">
+                                            <input type="hidden" name="cash_id" id="cash_id" value="{{ $cash_id}}">
                                             <div class="form-row">
                                                 <div class="col-md-6 mb-3">
-                                                  <label for="qty_in">Quantity</label>
-                                                  <input type="text" name="qty_out" class="form-control" id="validationDefault01" required>
-                                                </div>
-                                                <div class="col-md-6 mb-3">
-                                                  <label for="rate">Rate</label>
-                                                  <input type="text" name="rate" value="{{ $sale_rate }}" class="form-control" id="validationDefault02" required>
+                                                  <label for="qty_in">Amount</label>
+                                                  <input type="text" name="cash_out" class="form-control" id="validationDefault01" required>
                                                 </div>
                                                 <div class="col-md-12 mb-3">
                                                   <label for="detail">Detail</label>
@@ -203,10 +173,6 @@
                                                     <label for="date">Date</label>
                                                     <input type="date" name="date" class="form-control" id="validationDefault03" required>
                                                 </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="Bill">Bill No</label>
-                                                    <input type="text" name="bill_no" class="form-control" id="validationDefault03" required>
-                                                  </div>
                                                 <div class="col-md-12 mb-3">
                                                   <label for="validationDefault04">Select Party</label>
                                                   <select name="party" class="form-control" id="party" required>
@@ -230,7 +196,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     @endforeach
                 </div>
                 {{-- <div class="card">
@@ -281,35 +247,27 @@
         </div>
     </div>
     <!-- Modal Quantity In -->
-    <div class="modal fade" id="add_item" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="add_entry" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add New Entry</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('add_item') }}" method="POST">
+                <form action="{{ route('add_entry') }}" method="POST">
                     @csrf
                     <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
-                          <label for="item_name">Item Name</label>
-                          <input type="text" name="item_name" class="form-control" id="item_name" required>
+                          <label for="item_name">Party</label>
+                          <input type="text" name="party" class="form-control" id="item_name" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="item_unit">Item Unit</label>
-                          <input type="text" name="item_unit" class="form-control" id="validationDefault02" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label for="sale_rate">Rate Sale</label>
-                          <input type="text" name="sale_rate" class="form-control" id="validationDefault03" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="purchase_rate">Rate Purchase</label>
-                            <input type="text" name="purchase_rate" value="" class="form-control" id="validationDefault03" required>
+                          <label for="item_unit">Date</label>
+                          <input type="date" name="date" class="form-control" id="validationDefault02" required>
                         </div>
                     </div>
                     <div class="form-group">

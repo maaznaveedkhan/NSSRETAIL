@@ -163,7 +163,7 @@ use Illuminate\Support\Facades\Session;
                                 </span>
                             </div>
                         @endif
-    
+
                         {{-- <div class="menu-nav">
                             <div class="dropdown-container" tabindex="-1">
                                 <div class="three-dots"></div>
@@ -252,7 +252,7 @@ use Illuminate\Support\Facades\Session;
                             data-bs-target="#add_new_stock" aria-controls="add_new_stock">Add New Stock</button>
                     </div>
                     <!-- Add new item Bill End -->
-                    
+
                     <!-- Search Bar -->
                     <div class="row bg-light p-2 m-0">
                         <div class="col">
@@ -309,9 +309,9 @@ use Illuminate\Support\Facades\Session;
                                                     </h6>
                                                 @endif
                                             </span>
-                                        </div>        
+                                        </div>
                                     </div>
-                                    
+
                                     <ul  class="responsive-table">
                                         <li class="table-header mb-2">
                                             <div class="col">ENTRIES<br>
@@ -323,7 +323,7 @@ use Illuminate\Support\Facades\Session;
                                             </div>
                                             <div class="col">Quantity Out<br><small style="color:red">
                                                     {{ $qty_out }}</small>
-                                            </div>                                            
+                                            </div>
                                             {{-- <div class="col">BALANCE</div> --}}
                                         </li>
                                     </ul>
@@ -418,7 +418,7 @@ use Illuminate\Support\Facades\Session;
                                                                 <option value="{{ $item->name }}">{{ $item->name }}</option>
                                                             @endforeach
                                                         </select>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -480,7 +480,7 @@ use Illuminate\Support\Facades\Session;
                                                                 <option value="{{ $item->name }}">{{ $item->name }}</option>
                                                             @endforeach
                                                         </select>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -494,11 +494,11 @@ use Illuminate\Support\Facades\Session;
                             </div>
                         @endforeach
                     </div>
-                    
+
                 </div>
             </div>
         </div>
-    
+
         <div id="Billbook" class="tabcontent">
             <div class="row">
                 <div class="col-sm-3 main_div">
@@ -506,14 +506,14 @@ use Illuminate\Support\Facades\Session;
                         <div style="width: 100%;">
                             <span class="text-center">Bill Book</span>
                         </div>
-    
+
                     </div>
                     <!-- Buttons Main -->
                     {{-- <div class="row m-2 mt-3">
                         @if (!empty($bills))
                             <h3>Rs. {{ count($bills) }}</h3>
                         @endif
-    
+
                         <h6>Total Sale for {{ Carbon::now()->month }}</h6>
                     </div> --}}
                     <!--End Buttons Main -->
@@ -564,8 +564,8 @@ use Illuminate\Support\Facades\Session;
                                 </div>
                             </a>
                         @endforeach
-                        
-                        
+
+
                     </div>
                 </div>
                 <div class="col-sm-9 second-div">
@@ -622,20 +622,20 @@ use Illuminate\Support\Facades\Session;
                                                 <h6>
                                                     Quantity in Hand - {{ $balance->balance }}
                                                 </h6>
-                                            @else 
-                                            @endif 
+                                            @else
+                                            @endif
                                                 <h6>
                                                     NSS Store
                                                 </h6>
-                                        </div>       
+                                        </div>
                                         <div class="header-amount">
                                             <span class="">
                                                     <h6>
                                                         0300000000
                                                     </h6>
-                                                    
+
                                             </span>
-                                        </div>   
+                                        </div>
                                     </div>--}}
                                     <div class="row p-2">
                                         <h4>{{ Carbon::today()->toDateString() }}</h4>
@@ -645,7 +645,7 @@ use Illuminate\Support\Facades\Session;
                                             <div class="col">Item<br></div>
                                             <div class="col">Quantity</div>
                                             <div class="col">Rate</div>
-                                            <div class="col">Amount</div>                                            
+                                            <div class="col">Amount</div>
                                             {{-- <div class="col">BALANCE</div> --}}
                                         </li>
                                     </ul>
@@ -666,7 +666,7 @@ use Illuminate\Support\Facades\Session;
                                                             <div class="col div-three" data-label="You Got">
                                                                 <small>Rs. {{ $element->rate }}</small>
                                                             </div>
-                                                            
+
                                                             <div class="col div-one" data-label="Detail"><small>Rs. {{ $element->amount }}</small>
                                                             </div>
                                                             {{-- <div class="col div-one" data-label="Balance">
@@ -721,7 +721,7 @@ use Illuminate\Support\Facades\Session;
                                                                 <option value="{{ $item->id }}">{{ $item->item_name }}</option>
                                                             @endforeach
                                                         </select>
-                                                        
+
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-4">
@@ -759,7 +759,7 @@ use Illuminate\Support\Facades\Session;
                                                                 <option value="{{ $item->name }}">{{ $item->name }}</option>
                                                             @endforeach
                                                         </select>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -821,7 +821,7 @@ use Illuminate\Support\Facades\Session;
                                                                 <option value="{{ $item->name }}">{{ $item->name }}</option>
                                                             @endforeach
                                                         </select>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -874,7 +874,7 @@ use Illuminate\Support\Facades\Session;
                                             @endforeach
                                         </td>
                                         <td>
-                                            
+
                                         </td>
                                       </tr>
                                     </tbody>
@@ -883,7 +883,7 @@ use Illuminate\Support\Facades\Session;
                                             <th scope="row"></th>
                                             <td>Total</td>
                                         <td>
-                                            
+
                                         </td>
                                             <td>Rs. {{$item->amount}}</td>
                                         </tr>
@@ -896,7 +896,7 @@ use Illuminate\Support\Facades\Session;
                                 <div class="row text-center justify-content-center">
                                     <a href="{{ route('delete_bill',$item->id) }}" class="btn btn-outline-danger" style="width: 15rem">Delete Entry</a>
                                 </div>
-                                
+
                                 </div>
                                 <div class="modal fade" id="edit-bill" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -946,7 +946,7 @@ use Illuminate\Support\Facades\Session;
                         @endif --}}
                         <h3>Cash in Hand</h3>
                     </div>
-                    
+
                     <!--End Buttons Main -->
                     <!-- Search Bar -->
                     <div class="row bg-light p-2 m-0">
@@ -1035,7 +1035,7 @@ use Illuminate\Support\Facades\Session;
                                         $cash_out = $cash_detail->sum('cash_out');
                                         $cash_in = $cash_detail->sum('cash_in');
                                     @endphp
-                                    
+
                                     {{-- @if (sizeof($payment) != 0) --}}
                                         <ul class="responsive-table">
                                             <li class="table-header mb-2">
@@ -1073,10 +1073,10 @@ use Illuminate\Support\Facades\Session;
                                                     </a>
                                                 @empty
                                                 @endforelse
-                                         
+
                                         </ul>
                                     {{-- @endif --}}
-                                    
+
                                 {{-- </div> --}}
                             </div>
                         @endforeach
@@ -1114,7 +1114,7 @@ use Illuminate\Support\Facades\Session;
                             data-bs-target="#add_new_bankac" aria-controls="add_new_bankac">Add New Account</button>
                     </div>
                     <!-- Add new item Bill End -->
-                    
+
                     <!-- Search Bar -->
                     <div class="row bg-light p-2 m-0">
                         <div class="col">
@@ -1161,8 +1161,8 @@ use Illuminate\Support\Facades\Session;
                                             <tr>
                                                 <td>{{ $element->account_holder_name }}</td>
                                                 <td>{{ $element->amount }}</td>
-                                                <td> 
-                                                    <img src="{{ asset('images/cheque_images/'.$element->cheque_img) }}" alt="" class="img-fluid" height="80" width="80"> 
+                                                <td>
+                                                    <img src="{{ asset('images/cheque_images/'.$element->cheque_img) }}" alt="" class="img-fluid" height="80" width="80">
                                                 </td>
                                                 <td>{{ $element->cheque_no }}</td>
                                                 <td>{{ $element->account_holder_bank }}</td>
@@ -1180,7 +1180,7 @@ use Illuminate\Support\Facades\Session;
         </div>
     </div>
 
-    
+
     {{-- Create Bill --}}
     <div class="offcanvas offcanvas-end" tabindex="-1" id="add_new_bankac" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
@@ -1229,7 +1229,7 @@ use Illuminate\Support\Facades\Session;
                     <input type="text" class="form-control" name="account_holder_phone" id="account_holder_phone"
                         placeholder="Enter Account Holder Phone (Optional) ">
                 </div>
-                
+
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
@@ -1589,7 +1589,7 @@ use Illuminate\Support\Facades\Session;
                                                 <option value="{{ $item->name }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
-                                        
+
                                     </div>
                             {{-- <div class="col-sm-7">
                                 <div class="calculator card">
@@ -1691,7 +1691,7 @@ use Illuminate\Support\Facades\Session;
                                                 <option value="{{ $item->name }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
-                                        
+
                                     </div>
                             {{-- <div class="col-sm-7">
                                 <div class="calculator card">
@@ -1792,7 +1792,7 @@ use Illuminate\Support\Facades\Session;
                                     <option value="{{ $item->name }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -1802,7 +1802,7 @@ use Illuminate\Support\Facades\Session;
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- Modal -->
     @foreach ($payment as $pay)
         <?php
@@ -2074,7 +2074,7 @@ use Illuminate\Support\Facades\Session;
     </script>
     <script type="text/javascript">
     function reply_click(clicked_id)
-    {   
+    {
         var id = clicked_id;
         $("#showme" + id).toggle();
         alert(clicked_id);
@@ -2082,7 +2082,7 @@ use Illuminate\Support\Facades\Session;
     </script>
     <script>
         // the selector will match all input controls of type :checkbox
-        // and attach a click event handler 
+        // and attach a click event handler
         $("input:checkbox").on('click', function() {
         // in the handler, 'this' refers to the box clicked on
         var $box = $(this);
@@ -2111,7 +2111,7 @@ use Illuminate\Support\Facades\Session;
             }
         });
         // the selector will match all input controls of type :checkbox
-        // and attach a click event handler 
+        // and attach a click event handler
         $("input:checkbox").on('click', function() {
             // in the handler, 'this' refers to the box clicked on
             var $box = $(this);

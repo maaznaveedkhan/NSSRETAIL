@@ -36,6 +36,14 @@ Route::get('bill_book/{id}',[App\Http\Controllers\BillController::class,'bill_bo
 Route::get('new_bill/{id}',[App\Http\Controllers\BillController::class,'new_bill'])->name('new_bill');
 Route::post('create_bill',[App\Http\Controllers\BillController::class,'create_bill'])->name('create_bill');
 Route::post('add_items', [App\Http\Controllers\BillDetailController::class, 'bill_detail'])->name('add_items');
+Route::get('cash_book/{id}',[App\Http\Controllers\CashController::class,'cash_book'])->name('cash_book');
+Route::get('bank_accounts/{id}',[App\Http\Controllers\BankAccountController::class,'bank_accounts'])->name('bank_accounts');
+Route::post('add_bank_ac',[App\Http\Controllers\BankAccountController::class,'add_bank_ac'])->name('add_bank_ac');
+Route::post('add_entry',[App\Http\Controllers\CashController::class,'add_entry'])->name('add_entry');
+Route::post('cash_in',[App\Http\Controllers\CashController::class,'cash_in'])->name('cash_in');
+Route::post('cash_out',[App\Http\Controllers\CashController::class,'cash_out'])->name('cash_out');
+Route::get('all_customers/{id}',[App\Http\Controllers\CustomerController::class, 'all_customers'])->name('all_customers');
+Route::get('all_suppliers/{id}', [SupplierController::class, 'all_suppliers'])->name('all_suppliers');
 
 Route::get('login', function () {
     return view('layout.login');
@@ -53,11 +61,11 @@ Route::put('update_amount' , [CustomerController::class, 'UpdateAmount'])->name(
 Route::delete('delete_amount' , [CustomerController::class, 'DeleteAmount'])->name('delete_amount');
 
 
-Route::get('all_customers' , [CustomerController::class, 'AllCustomers'])->name('all_customers');
+// Route::get('all_customers' , [CustomerController::class, 'AllCustomers'])->name('all_customers');
 Route::post('add_customer' , [CustomerController::class, 'AddCustomer'])->name('add_customer');
 Route::get('customer/{id}' , [CustomerController::class, 'CustomerPage'])->name('customer');
 
-Route::get('all_suppliers/{business_id}', [SupplierController::class, 'AllSuppliers'])->name('all_suppliers');
+// Route::get('all_suppliers/{business_id}', [SupplierController::class, 'AllSuppliers'])->name('all_suppliers');
 Route::post('add_supplier' , [SupplierController::class, 'AddSupplier'])->name('add_supplier');
 Route::get('supplier/{id}' , [SupplierController::class, 'SupplierPage'])->name('supplier');
 
@@ -85,16 +93,16 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Auth::routes();
 Route::group(['middleware' => ['user', 'auth']], function () {
     Route::get('all_business' , [BusinessController::class, 'AllBusinesses'])->name('all_business');
-    Route::get('cash' , [CashBookController::class, 'cash'])->name('cash');
-    Route::post('create_bill',[App\Http\Controllers\BillController::class,'create_bill'])->name('create_bill');
+    // Route::get('cash' , [CashBookController::class, 'cash'])->name('cash');
+    // Route::post('create_bill',[App\Http\Controllers\BillController::class,'create_bill'])->name('create_bill');
     // Route::post('add_items', [App\Http\Controllers\BillDetailController::class, 'bill_detail'])->name('add_items');
     // Route::post('create_bill',[App\Http\Controllers\BillBookController::class,'add_bill'])->name('create_bill');
     Route::get('edit_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'edit_bill'])->name('edit_bill');
     Route::get('update_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'update_bill'])->name('update_bill');
     Route::get('delete_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'delete_bill'])->name('delete_bill');
-    Route::post('cash_in',[App\Http\Controllers\CashBookController::class,'cash_in'])->name('cash_in');
-    Route::post('cash_out',[App\Http\Controllers\CashBookController::class,'cash_out'])->name('cash_out');
-    Route::post('add_bank_ac',[App\Http\Controllers\BankAccountController::class,'add_bank_ac'])->name('add_bank_ac');
+    // Route::post('cash_in',[App\Http\Controllers\CashBookController::class,'cash_in'])->name('cash_in');
+    // Route::post('cash_out',[App\Http\Controllers\CashBookController::class,'cash_out'])->name('cash_out');
+    // Route::post('add_bank_ac',[App\Http\Controllers\BankAccountController::class,'add_bank_ac'])->name('add_bank_ac');
     // Route::get('/user_dashboard', [App\Http\Controllers\HomeController::class, 'user_dashboard'])->name('user_dashboard');
 });
 Route::group(['middleware' => ['admin', 'auth']], function () {

@@ -40,7 +40,7 @@ class BusinessController extends Controller
         $business = Business::where('id',$b)->first();
         $all_customers = Customer::where('business_id', $b)->get();
         if(sizeof($all_customers) == 0 ){
-            return view('layout.all_customers', compact('b'));            
+            return view('layout.all_customers', compact('b'));
         }
         $customer = Customer::where('id', '=',$id)->latest()->first();
         $payment = DB::table('bussinesses_customers')->select('*')->where('customer_id', '=', $customer->id)->get();

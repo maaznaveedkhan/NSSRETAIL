@@ -16,12 +16,9 @@ return new class extends Migration
         Schema::create('cashes', function (Blueprint $table) {
             $table->id();
             $table->string('business_id')->nullable();
-            $table->string('cash')->nullable();
-            $table->string('detail')->nullable();
-            $table->string('in')->nullable();
-            $table->string('out')->nullable();
-            $table->string('balance')->nullable();
-            $table->time('time')->nullable();
+            $table->string('party')->nullable();
+            $table->string('date')->nullable();
+            $table->string('to_be')->nullable();
             $table->timestamps();
         });
     }

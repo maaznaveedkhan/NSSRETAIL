@@ -12,7 +12,7 @@
 <div class="content-page">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3" style="border: 2px solid black;">
+            <div class="col-lg-3" style="border: 2px solid black; height: 30rem; overflow: auto;">
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
                     <h2>Bil Book</h2>
                 </div>
@@ -25,13 +25,15 @@
                         Create New Bill
                     </button> --}}
                 </div>
-                <ul class="list-unstyled" style="">
-                    @foreach ($bills as $item)
-                        <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
-                            <a class="btn btn-primary btn-block" href="#item{{ $item->id }}" data-toggle="tab">Bill: {{ $item->bill_no }}</a>
-                        </li>
-                    @endforeach
-                </ul> 
+                <div class="row p-2 justify-content-center">
+                    <ul class="nav nav-tabs" style="width: 10rem;">
+                        @foreach ($bills as $item)
+                            <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
+                                <a class="btn btn-primary btn-block" style="width: 10rem; marg" href="#item{{ $item->id }}" data-toggle="tab">Bill: {{ $item->bill_no }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
             <div class="col-lg-9">
                 <div class="tab-content">
@@ -40,23 +42,20 @@
                             @php
                                 $item_id = $item->id;
                                 $sale_rate = $item->sale_rate;
-                                $bill_detail = BillDetail::where('bill_id',$item->id)->get();                                                         
+                                $bill_detail = BillDetail::where('bill_id',$item->id)->get();
                             @endphp
-                            <div class="card">
+                            <div class="card" >
                                 <div class="card-header">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <h4 class="card-title">Bill No # {{ $item->bill_no }}</h4>
                                         </div>
                                         <div class="col-md-6">
-                                            {{-- @foreach ($balance as $value)
-                                                <h4 class="card-title">Stock in hand - {{ $value }}</h4>
-                                            @endforeach --}}
-                                            
+                                            <h4 class="card-title">{{ $item->party }}</h4>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body" style="height:20rem; overflow: auto;">
                                    <table class="table">
                                       <thead>
                                          <tr class="ligth">
@@ -75,7 +74,7 @@
                                                 <tr>
                                                     <th scope="row">{{ $item_name['item_name'] }}</th>
                                                     <td>{{ $element->quantity }} {{ $item_name['item_unit'] }}</td>
-                                                    <td>Rs. {{ $element->sale_rate }} </td>
+                                                    <td>Rs. {{ $element->rate }} </td>
                                                     <td>{{ $element->amount }}</td>
                                                     {{-- <td>{{ $element->balance }}</td> --}}
                                                 </tr>
@@ -83,10 +82,11 @@
                                             @endforelse
                                         @endif
                                       </tbody>
+                                      
                                    </table>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#add_items{{ $item_id }}">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_items{{ $item_id }}">
                                 Add Items
                             </button>
                             <!-- Modal Quantity In -->
@@ -107,18 +107,19 @@
                                             <div class="form-row">
                                                 <div class="col-md-12 mb-3">
                                                     <label for="validationDefault04">Select item</label>
-                                                    <select id="" name="item" class="form-control" id="item" required onchange='check()'>
+                                                    <select id="myselect" name="item_id" class="form-control" id="item" required>
                                                         <option selected disabled value="">Choose...</option>
-                                                            @foreach ($stocks as $item)
-                                                                <option value="{{ $item->id }}">{{ $item->item_name }}</option>
-                                                            @endforeach
+                                                        @foreach ($stocks as $stock)
+                                                            <option sale_rate="{{ $stock->sale_rate }}" value="{{ $stock->id }}" >{{ $stock->item_name }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
+                                                <input type="hidden" name="rate" id="rate" value="">
                                                 <div class="col-md-12 mb-3">
                                                   <label for="quantity">Quantity</label>
                                                   <input type="text" name="quantity" class="form-control" id="validationDefault01" required>
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="form-group">
                                                <button class="btn btn-primary" type="submit">Save</button>
@@ -182,7 +183,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
     // the selector will match all input controls of type :checkbox
-    // and attach a click event handler 
+    // and attach a click event handler
     $("input:checkbox").on('click', function() {
     // in the handler, 'this' refers to the box clicked on
     var $box = $(this);
@@ -199,9 +200,20 @@
     }
     });
 
+    // function getVal(sel){
+    //     var value = $('option:selected', this).attr('value');
+    //     var sale_rate = $('option:selected', this).attr('sale_rate');
+    //     // alert(sel.value);
+    //     alert(sale_rate);
+    //     console.log(sel.value);
+    // }
     $("select").on("change", function() {
-    var id = $(this).attr("id");
-    alert(id);
+        var value = $('option:selected', this).attr('value');
+        var sale_rate = $('option:selected', this).attr('sale_rate');
+        // alert(sel.value);
+        document.getElementById("rate").value = sale_rate;
+        console.log(sale_rate);
+        console.log(value);
     });
 </script>
 @endsection
