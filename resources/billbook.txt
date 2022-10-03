@@ -20,17 +20,17 @@
                     <a href="{{ route('new_bill',$b) }}">Create New Bill</a>
                 </div>
                 <div class="row p-2 justify-content-center">
-                    <ul class="nav nav-tabs" style="width: 10rem;">
+                    <ul class="nav nav-tabs" style="width: 10rem;" id="mytabs">
                         @foreach ($bills as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
-                                <a class="btn btn-primary btn-block" style="width: 10rem; marg" href="#item{{ $item->id }}" data-toggle="tab">Bill: {{ $item->bill_no }}</a>
+                                <a class="btn btn-primary btn-block" style="width: 10rem; " href="#item{{ $item->id }}" data-toggle="tab">Bill: {{ $item->bill_no }}</a>
                             </li>
                         @endforeach
                     </ul>
                 </div>
             </div>
             <div class="col-lg-9">
-                <div class="tab-content">
+                <div class="tab-content" id="bootstrap_tabs">
                     @foreach ($bills as $item)
                         <div class="tab-pane {{ $item->id == 1 ? 'active' : ''  }}" id="item{{ $item->id }}" class="active">
                             @php
@@ -94,14 +94,14 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ route('add_items') }}" method="POST">
+                                        <form>
                                             @csrf
                                             <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
                                             <input type="hidden" name="bill_id" id="bill_id" value="{{ $item_id }}">
                                             <div class="form-row">
                                                 <div class="col-md-12 mb-3">
                                                     <label for="validationDefault04">Select item</label>
-                                                    <select id="myselect" name="item_id" class="form-control" id="item" required>
+                                                    <select id="myselect" name="item_id" class="form-control" id="item_id" required>
                                                         <option selected disabled value="">Choose...</option>
                                                         @foreach ($stocks as $stock)
                                                             <option sale_rate="{{ $stock->sale_rate }}" value="{{ $stock->id }}" >{{ $stock->item_name }}</option>
@@ -113,11 +113,11 @@
                                                 
                                                 <div class="col-md-12 mb-3">
                                                   <label for="quantity">Quantity</label>
-                                                  <input type="text" name="quantity" class="form-control" id="validationDefault01" required>
+                                                  <input type="text" name="quantity" class="form-control" id="quantity" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                               <button class="btn btn-primary" type="submit">Save</button>
+                                               <button class="btn btn-primary" id="save" type="button">Save</button>
                                             </div>
                                          </form>
                                     </div>
@@ -131,7 +131,7 @@
         </div>
     </div>
     <!-- Modal Quantity In -->
-    <div class="modal fade" id="create_new_bill" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="create_new_bill" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -173,9 +173,77 @@
             </div>
         </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+          $('#add').click(function(event) {
+            event.preventDefault();
+            
+            var business_id = $('#business_id').val();
+            var bill_id = $('#bill_id').val();
+            var item_id = $('#item_id').val();
+            var rate = $('#rate').val();
+            var quantity = $('#quantity').val();
+            var route = $('{{ route('add_items') }}');
+            if (business_id != '' && bill_id != '' &&  item_id != '' && rate != '' && quantity != '') {
+              $('.successmsg').html('');
+              $('.successmsg').removeAttr('style');
+              $.ajax({
+                url: route,
+                type: 'POST',
+                'headers': {
+                  'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: {
+                    business_id: business_id,
+                    bill_id: bill_id,
+                    item_id: item_id,
+                    rate:rate,
+                    quantity:quantity
+                },
+                success: function(response) {
+                var res = JSON.parse(response); 
+                if (res.bill_detail == true) {
+                    $('.successmsg').html('Values updated!').show();
+                        setTimeout(function() {
+                        $('#updatesubmodel').modal('hide');
+                        }, 2000);
+                    } else {
+                        $('.successmsg').html(res.msg).show();
+                    }
+                }
+              });
+            } else {
+              $('.successmsg').html('Required fields are missing.').show();
+            }
+    });
+</script>
+<script>
+    $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+    localStorage.setItem('currentTab', $(e.target).attr('href'));
+    });
+
+    var currentTab = localStorage.getItem('currentTab');
+
+    console.log(currentTab);
+
+    if (currentTab) {
+    $('a[href="' + currentTab + '"]').tab('show');
+    }
+</script>
+{{-- <script>
+$(document).ready(function(){
+    $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+        localStorage.setItem('activeTab', $(e.target).attr('href'));
+    });
+    var activeTab = localStorage.getItem('activeTab');
+    if(activeTab){
+        $('#bootstrap_tabs a[href="' + activeTab + '"]').tab('show');
+    }
+});
+</script> --}}
 <script>
     // the selector will match all input controls of type :checkbox
     // and attach a click event handler
@@ -203,33 +271,7 @@
         console.log(sale_rate);
         console.log(value);
         console.log(test);
-        // for(i=0; i<value; i++){
-        //     document.getElementById(`rate.${i}`).value = sale_rate;
-        // }
-        
-        $('a[data-toggle="tab"]').click(function(e) {
-            var hash = $(this).attr('href');
-            location.hash = hash;
-        });
-
-        $(function() {
-            var hash = window.location.hash;
-            var $nav = $('.nav a[href="' + hash + '"]');
-            hash && $nav.trigger('click');
-        });
-        // $('a[data-toggle="tab"]').on('shown.bs.tab', function(event) {
-        //     let activeTab = $(event.target), // activated tab
-        //         id = activeTab.attr('href'); // active tab href
-
-        //         // set id in html5 localstorage for later usage      
-        //         localStorage.setItem('activeTab', id);
-
-        // });
-        // window.onload = function() {
-        //     let tabID = localStorage.getItem('activeTab');
-        //     $(tabID).tab('show');
-        // };
-
     });
 </script>
+
 @endsection
