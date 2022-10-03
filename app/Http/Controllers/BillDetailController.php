@@ -35,7 +35,11 @@ class BillDetailController extends Controller
         // return $item;
         $item->save();
         $bill_detail->save();
-        return redirect()->back()->with('success','Item has been added in bill'); 
+        return json_encode($item); exit();
+        // return redirect()->back()->with('success','Item has been added in bill'); 
+        // return redirect(route('bb',['id#item'=>$b.$bill_detail->bill_id]))->with('message','sucessfull');
+        // return redirect()->route('bill_book', $b,'#item'); 
+        
 
     }
 }

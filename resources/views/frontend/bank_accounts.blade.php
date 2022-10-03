@@ -153,4 +153,28 @@
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{-- <script>
+    $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+        localStorage.setItem('activeTab', $(e.target).attr('href'));
+    });
+    var activeTab = localStorage.getItem('activeTab');
+    if(activeTab){
+        $('#mytabs a[href="' + activeTab + '"]').tab('show');
+    }
+</script> --}}
+<script>
+    $(function() {
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    localStorage.setItem('lastTab', $(this).attr('href'));
+    });
+    var lastTab = localStorage.getItem('lastTab');
+
+    if (lastTab) {
+    $('[href="' + lastTab + '"]').tab('show');
+    }
+
+    });
+</script>
 @endsection
