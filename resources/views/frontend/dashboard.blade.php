@@ -29,7 +29,7 @@
             <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
                 <a href="../backend/index.html" class="header-logo">
                     <img src="{{ asset('dashboard/assets/images/logo.png') }}" class="img-fluid rounded-normal light-logo" alt="logo">
-                    <h5 class="logo-title light-logo ml-3">POSDash</h5>
+                    <h5 class="logo-title light-logo ml-3">NSS Retail</h5>
                 </a>
                 <div class="iq-menu-bt-sidebar ml-0">
                     <i class="las la-bars wrapper-menu"></i>
@@ -336,8 +336,8 @@
                     <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
                         <i class="ri-menu-line wrapper-menu"></i>
                         <a href="../backend/index.html" class="header-logo">
-                            <img src="{{asset('assets/images/logo.png')}}" class="img-fluid rounded-normal" alt="logo">
-                            <h5 class="logo-title ml-3">POSDash</h5>
+                            <img src="{{asset('dashboard/assets/images/logo.png')}}" class="img-fluid rounded-normal" alt="logo">
+                            <h5 class="logo-title ml-3">NSS Retail</h5>
         
                         </a>
                     </div>
@@ -353,7 +353,7 @@
                       </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ml-auto navbar-list align-items-center">
-                                <li class="nav-item nav-icon dropdown">
+                                {{-- <li class="nav-item nav-icon dropdown">
                                     <a href="#" class="search-toggle dropdown-toggle btn border add-btn" id="dropdownMenuButton02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <img src="{{ asset('dashboard/assets/images/small/flag-01.png') }}" alt="img-flag" class="img-fluid image-flag mr-2">En
                                     </a>
@@ -385,8 +385,8 @@
                                             </div>
                                         </form>
                                     </div>
-                                </li>
-                                <li class="nav-item nav-icon dropdown">
+                                </li> --}}
+                                {{-- <li class="nav-item nav-icon dropdown">
                                     <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
                                           <path
@@ -523,7 +523,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item nav-icon dropdown caption-content">
                                     <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <img src="{{ asset('dashboard/assets/images/user/1.png') }}" class="img-fluid rounded" alt="user">
@@ -536,15 +536,14 @@
                                                     <img src="{{ asset('dashboard/assets/images/user/1.png') }}" alt="profile-img" class="rounded profile-img img-fluid avatar-70">
                                                 </div>
                                                 <div class="p-3">
-                                                    <h5 class="mb-1">JoanDuo@property.com</h5>
-                                                    <p class="mb-0">Since 10 march, 2020</p>
+                                                    <h5 class="mb-1">{{ Auth::user()->name }}</h5>
+                                                    <p class="mb-0">{{ Auth::user()->email }}</p>
                                                     <div class="d-flex align-items-center justify-content-center mt-3">
-                                                        <a href="../app/user-profile.html" class="btn border mr-2">Profile</a>
                                                         <a class="btn border" href="{{ route('logout') }}"
                                                             onclick="event.preventDefault();
                                                                             document.getElementById('logout-form').submit();">
                                                                 {{ __('Logout') }}
-                                                            </a>
+                                                        </a>
         
                                                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                                                 @csrf
@@ -1293,7 +1292,7 @@
                             </ul>
                         </div>
                         <div class="col-lg-6 text-right">
-                            <span class="mr-1"><script>document.write(new Date().getFullYear())</script>©</span> <a href="#" class="">POS Dash</a>.
+                            <span class="mr-1"><script>document.write(new Date().getFullYear())</script>©</span> <a href="#" class="">NSS Retail</a>.
                         </div>
                     </div>
                 </div>

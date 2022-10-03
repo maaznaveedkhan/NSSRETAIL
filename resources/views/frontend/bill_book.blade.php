@@ -207,28 +207,17 @@
         //     document.getElementById(`rate.${i}`).value = sale_rate;
         // }
         
-        $('a[data-toggle="tab"]').click(function(e) {
-            var hash = $(this).attr('href');
-            location.hash = hash;
-        });
-
-        $(function() {
+        $(function(){
             var hash = window.location.hash;
-            var $nav = $('.nav a[href="' + hash + '"]');
-            hash && $nav.trigger('click');
+            hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+
+            $('.nav-tabs a').click(function (e) {
+                $(this).tab('show');
+                var scrollmem = $('body').scrollTop();
+                window.location.hash = this.hash;
+                $('html,body').scrollTop(scrollmem);
+            });
         });
-        // $('a[data-toggle="tab"]').on('shown.bs.tab', function(event) {
-        //     let activeTab = $(event.target), // activated tab
-        //         id = activeTab.attr('href'); // active tab href
-
-        //         // set id in html5 localstorage for later usage      
-        //         localStorage.setItem('activeTab', id);
-
-        // });
-        // window.onload = function() {
-        //     let tabID = localStorage.getItem('activeTab');
-        //     $(tabID).tab('show');
-        // };
 
     });
 </script>
