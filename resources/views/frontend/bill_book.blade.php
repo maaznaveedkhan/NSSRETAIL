@@ -16,14 +16,8 @@
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
                     <h2>Bil Book</h2>
                 </div>
-                {{-- <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <h4>Total Sale for - {{ $stocks->count() }}</h4>
-                </div> --}}
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
                     <a href="{{ route('new_bill',$b) }}">Create New Bill</a>
-                    {{-- <button type="button" class="btn btn-block btn-primary mt-2" data-toggle="modal" data-target="#create_new_bill">
-                        Create New Bill
-                    </button> --}}
                 </div>
                 <div class="row p-2 justify-content-center">
                     <ul class="nav nav-tabs" style="width: 10rem;">
