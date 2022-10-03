@@ -25,13 +25,15 @@
                     </button>
                 </div>
                 {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
-                    <ul class="nav nav-tabs" style="width: 5rem; margin-left:2rem; ">
+                <div class="row p-2 justify-content-center">
+                    <ul class="nav nav-tabs" style="width: 10rem;">
                         @foreach ($stocks as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
                                 <a class="btn btn-primary btn-block" style="width: 10rem" href="#item{{ $item->id }}" data-toggle="tab">{{ $item->item_name }}</a>
                             </li>
                         @endforeach
                     </ul> 
+                </div>
                 {{-- </div> --}}
             </div>
             <div class="col-lg-9">
@@ -46,7 +48,7 @@
                                 $qty_out = $stock_detail->sum('qty_out');
                                 $qty_in = $stock_detail->sum('qty_in');                                
                             @endphp
-                            <div class="card" style="height: 30rem; overflow: auto;">
+                            <div class="card" style="">
                                 <div class="card-header">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -60,8 +62,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                   <table class="table" >
+                                <div class="card-body" style="height:20rem; overflow: auto;">
+                                   <table class="table">
                                       <thead>
                                          <tr class="ligth">
                                             <th scope="col">Enteries <br> ({{ sizeof($stock_detail) }})</th>
@@ -110,7 +112,7 @@
                             <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#qty_in{{ $item->id }}">
                                 Quantity IN
                             </button>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#qty_out{{ $item_id }}">
+                            <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#qty_out{{ $item_id }}">
                                 Quantity OUT
                             </button>
                             <!-- Modal Quantity In -->

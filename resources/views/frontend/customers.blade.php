@@ -4,7 +4,7 @@
     use Illuminate\Support\Facades\Session;
     use Carbon\Carbon;
     use App\Models\CashBook;
-    use App\Models\CashDetail;
+    use App\Models\CustomerDetail;
     use App\Models\StockQuantity;
     use App\Models\BillDetail;
     use App\Models\BankAccount;
@@ -33,7 +33,7 @@
                         Add Customer
                     </button>
                 </div>
-                <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
+                <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black; height: 18rem; overflow: auto;">
                     <ul class="nav nav-tabs" style="width: 10rem;">
                         @forelse($all_customers as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2">
@@ -60,8 +60,8 @@
                         <div class="tab-pane {{ $item->id == 1 ? 'active' : ''  }}" id="customer{{ $item->id }}" class="active">
                             @php
                                 $customer_id = $item->id;
-                                $customer_detail = CashDetail::where('customer_id',$item->id)->get();
-                                $balance = CashDetail::where('customer_id',$item->id)->orderby('id', 'DESC')->first();
+                                $customer_detail = CustomerDetail::where('customer_id',$item->id)->get();
+                                $balance = CustomerDetail::where('customer_id',$item->id)->orderby('id', 'DESC')->first();
                                 $given_amount = $customer_detail->sum('given_amount');
                                 $got_amount = $customer_detail->sum('got_amount');                                
                             @endphp
@@ -76,7 +76,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body" style="height: 20rem; overflow: auto;">
                                    <table class="table">
                                       <thead>
                                         @if (sizeof($payment) != 0)
@@ -106,10 +106,10 @@
                                    </table>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#you_gave{{ $item->id }}">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#you_gave{{ $item->id }}">
                                 You Gave
                             </button>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#you_got{{ $customer_id }}">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#you_got{{ $customer_id }}">
                                 You Got
                             </button>
                             <!-- Modal Quantity In -->

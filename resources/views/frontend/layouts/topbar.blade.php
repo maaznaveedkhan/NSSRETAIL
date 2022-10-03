@@ -21,7 +21,7 @@
               </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-list align-items-center">
-                        <li class="nav-item nav-icon dropdown">
+                        {{-- <li class="nav-item nav-icon dropdown">
                             <a href="#" class="search-toggle dropdown-toggle btn border add-btn" id="dropdownMenuButton02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="{{ asset('dashboard/assets/images/small/flag-01.png') }}" alt="img-flag" class="img-fluid image-flag mr-2">En
                             </a>
@@ -53,7 +53,7 @@
                                     </div>
                                 </form>
                             </div>
-                        </li>
+                        </li> --}}
                         {{-- <li class="nav-item nav-icon dropdown">
                             <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
@@ -204,10 +204,10 @@
                                             <img src="{{ asset('dashboard/assets/images/user/1.png') }}" alt="profile-img" class="rounded profile-img img-fluid avatar-70">
                                         </div>
                                         <div class="p-3">
-                                            <h5 class="mb-1">JoanDuo@property.com</h5>
-                                            <p class="mb-0">Since 10 march, 2020</p>
+                                            <h5 class="mb-1">{{ Auth::user()->name }}</h5>
+                                            <p class="mb-0">{{ Auth::user()->email }}</p>
                                             <div class="d-flex align-items-center justify-content-center mt-3">
-                                                <a href="../app/user-profile.html" class="btn border mr-2">Profile</a>
+                                                {{-- <a href="../app/user-profile.html" class="btn border mr-2">Profile</a> --}}
                                                 <a class="btn border" href="{{ route('logout') }}"
                                                     onclick="event.preventDefault();
                                                                     document.getElementById('logout-form').submit();">

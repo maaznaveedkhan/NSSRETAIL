@@ -20,17 +20,17 @@
                     <a href="{{ route('new_bill',$b) }}">Create New Bill</a>
                 </div>
                 <div class="row p-2 justify-content-center">
-                    <ul class="nav nav-tabs" style="width: 10rem;">
+                    <ul class="nav nav-tabs" style="width: 10rem;" id="mytabs">
                         @foreach ($bills as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
-                                <a class="btn btn-primary btn-block" style="width: 10rem; marg" href="#item{{ $item->id }}" data-toggle="tab">Bill: {{ $item->bill_no }}</a>
+                                <a class="btn btn-primary btn-block" style="width: 10rem; " href="#item{{ $item->id }}" data-toggle="tab">Bill: {{ $item->bill_no }}</a>
                             </li>
                         @endforeach
                     </ul>
                 </div>
             </div>
             <div class="col-lg-9">
-                <div class="tab-content">
+                <div class="tab-content" id="mytabs">
                     @foreach ($bills as $item)
                         <div class="tab-pane {{ $item->id == 1 ? 'active' : ''  }}" id="item{{ $item->id }}" class="active">
                             @php
@@ -105,15 +105,16 @@
                                                         <option selected disabled value="">Choose...</option>
                                                         @foreach ($stocks as $stock)
                                                             <option sale_rate="{{ $stock->sale_rate }}" value="{{ $stock->id }}" >{{ $stock->item_name }}</option>
+                                                        
                                                         @endforeach
                                                     </select>
+                                                    <input type="hidden" name="rate" id="rate" value="">
                                                 </div>
-                                                <input type="hidden" name="rate" id="rate" value="">
+                                                
                                                 <div class="col-md-12 mb-3">
                                                   <label for="quantity">Quantity</label>
                                                   <input type="text" name="quantity" class="form-control" id="validationDefault01" required>
                                                 </div>
-
                                             </div>
                                             <div class="form-group">
                                                <button class="btn btn-primary" type="submit">Save</button>
@@ -194,20 +195,26 @@
     }
     });
 
-    // function getVal(sel){
-    //     var value = $('option:selected', this).attr('value');
-    //     var sale_rate = $('option:selected', this).attr('sale_rate');
-    //     // alert(sel.value);
-    //     alert(sale_rate);
-    //     console.log(sel.value);
-    // }
     $("select").on("change", function() {
         var value = $('option:selected', this).attr('value');
         var sale_rate = $('option:selected', this).attr('sale_rate');
-        // alert(sel.value);
-        document.getElementById("rate").value = sale_rate;
+        // var counter = $('option:selected', this).attr('sale_rate');
+        var test = $("input[name=rate]:hidden").val(sale_rate);
         console.log(sale_rate);
         console.log(value);
+        console.log(test);
+    });
+
+    $(function() {
+        $('a[data-toggle="tab"]').on('shown.tab', function (e) {
+            localStorage.setItem('lastTab', $(this).attr('href'));
+        });
+        var lastTab = localStorage.getItem('lastTab');
+        
+        if (lastTab) {
+            $('[href="' + lastTab + '"]').tab('show');
+        }
+        
     });
 </script>
 @endsection

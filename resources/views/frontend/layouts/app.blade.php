@@ -31,7 +31,7 @@
 
 </div>
 <!-- Wrapper End-->
-<footer class="iq-footer">
+{{-- <footer class="iq-footer">
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
@@ -49,7 +49,7 @@
             </div>
         </div>
     </div>
-</footer>
+</footer> --}}
 <!-- Backend Bundle JavaScript -->
 <script src="{{ asset('dashboard/assets/js/backend-bundle.min.js')}}"></script>
 
