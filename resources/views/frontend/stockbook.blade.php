@@ -58,10 +58,6 @@
                                         </div>
                                         <div class="col-md-6 float-lg-right">
                                             <a href="{{ route('delete_stock',$item->id) }}" class="btn btn-danger">Delete Item</a>
-                                            {{-- @foreach ($balance as $value)
-                                                <h4 class="card-title">Stock in hand - {{ $value }}</h4>
-                                            @endforeach --}}
-                                            
                                         </div>
                                     </div>
                                 </div>
