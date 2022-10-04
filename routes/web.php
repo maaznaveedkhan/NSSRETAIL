@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return redirect()->route('home');
-});
+})->name('/');
 // Route::get('/', function () {
 //     return view('frontend.dashboard');
 // });

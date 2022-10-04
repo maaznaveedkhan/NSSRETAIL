@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-lg-3" style="border: 2px solid black;">
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <h2>{{ $customer['business_name'] }}</h2>
+                    <h2>Suppliers</h2>
                 </div>
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
                     <h4>Total Items - {{ $all_suppliers->count() }}</h4>

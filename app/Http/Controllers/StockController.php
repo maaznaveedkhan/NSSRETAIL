@@ -25,7 +25,7 @@ class StockController extends Controller
 
     public function delete_stock($id){
         $stock = Stock::find($id);
-        $stock->delte();
+        $stock->delete();
         return redirect()
             ->back()
             ->with('success', 'Item has been deleted!');

@@ -41,31 +41,36 @@
                                 $bill_detail = BillDetail::where('bill_id',$item->id)->get();
                             @endphp
                             <div class="card" >
-                                <div class="card-header">
-                                    <div class="row justify-content-center" >
-                                        <div class="col-md-4">
-                                            <h4 class="">NSS Retail </h4>
+                                <div class="card-header" style="color: white; background-color: #50508b;">
+                                    <div class="row justify-content-between p-2" >
+                                        <h6 class="" style="color: ">AL-Haj Muhammad Alam Muhammad Hussni</h6>
+                                        <div class="row">
+                                            <div class="col" style="color: ">
+                                                <h6 class="">Prop: Haji Izzatullah</h6>
+                                                <h6 class="">Prop: Habib ur Rehman</h6>
+                                            </div>    
                                         </div>
-                                        <div class="col-md-4">
-                                            <h6 class="">Prop: {{ Auth::user()->name }}</h6>
-                                            <h6 class="">Ph#03000000000</h6>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <h6 class="">Ph#03000000000</h6>
-                                            <h6 class="">Ph#03000000000</h6>
+                                        <div class="row">
+                                            <div class="col" style="color: white;">
+                                                <h6 class="">Ph#03118008892</h6>
+                                                <h6 class="">Ph#03009387531</h6>
+                                            </div>    
                                         </div>
                                     </div>
+                                </div>
+                                <div class="card-header pb-2 pt-1" style="background-color: #50508b; color: white; height: 2rem; ">
+                                    <h6 class="">Address: Shop # 155-156 Barrich Market, Muhammad Husni Plaza, Sarki Road, Quetta</h6>
                                 </div>
                                 <div class="card-header">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <h4 class="">Bill No # {{ $item->bill_no }}</h4>
+                                            <h6 class="">Bill No # {{ $item->bill_no }}</h6>
                                         </div>
                                         <div class="col-md-4">
-                                            <h4 class="">{{ $item->party }}</h4>
+                                            <h6 class="">{{ $item->party }}</h6>
                                         </div>
                                         <div class="col-md-4">
-                                            <h4 class="">{{ $item->date }}</h4>
+                                            <h6 class="">{{ $item->date }}</h6>
                                         </div>
                                     </div>
                                 </div>
