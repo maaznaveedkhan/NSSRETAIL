@@ -32,18 +32,20 @@
                     <h4>Total Items - {{ $all_suppliers->count() }}</h4>
                 </div>
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black;">
-                    <button type="button" class="btn btn-block btn-primary mt-2" data-toggle="modal" data-target="#add_item">
-                        Add Items
+                    <button type="button" class="btn btn-block btn-primary mt-2" data-toggle="modal" data-target="#add_supplier">
+                        Add Suppliers
                     </button>
                 </div>
                 {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
-                    <ul class="nav nav-tabs" id="myTab">
+                <div class="row p-2 justify-content-center">
+                    <ul class="nav nav-tabs" style="width: 10rem" id="tabMenu">
                         @foreach ($all_suppliers as $item)
-                            <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2">
-                                <a class="btn btn-primary btn-block" href="#supplier{{ $item->id }}" data-toggle="tab">{{ $item->name }}</a>
+                            <li class="{{ $item->id == 1 ? 'active' : ''  }}">
+                                <a class="btn btn-primary btn-block mt-2" style="width: 10rem;" href="#supplier{{ $item->id }}" data-toggle="tab">{{ $item->name }}</a>
                             </li>
                         @endforeach
                     </ul>
+                </div>
                 {{-- </div> --}}
             </div>
             <div class="col-lg-9">
@@ -192,16 +194,35 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-                localStorage.setItem('activeTab', $(e.target).attr('href'));
-            });
-            var activeTab = localStorage.getItem('activeTab');
-            if(activeTab){
-                $('#myTab a[href="' + activeTab + '"]').tab('show');
-            }
+    <div class="modal fade" id="add_supplier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form action="{{ route('add_supplier') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="amount" class="">Name</label>
+                            <input type="text" class="form-control" name="name_supplier" id="name_supplier" placeholder="Enter Name ">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="detail" class="">Phone</label>
+                            <input type="text" class="form-control" name="phone_number" id="phone_number" placeholder="Enter Phone (Optional) ">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                       <button class="btn btn-primary" type="submit">Create Supplier</button>
+                    </div>
+                 </form>
+            </div>
+        </div>
+        </div>
+    </div>
+<script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE=" crossorigin="anonymous"></script>
+<script>    
+    $(document).ready(function () {
+            $('#tabMenu a[href="#{{ old('tab') }}"]').tab('show')
         });
-    </script>
+</script>
 @endsection

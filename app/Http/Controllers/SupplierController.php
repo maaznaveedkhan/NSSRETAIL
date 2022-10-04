@@ -103,7 +103,7 @@ class SupplierController extends Controller
 
         }
 
-        return Redirect::back();
+        return redirect()->back()->withInput(['tab' => 'supplier'. $request->supplier_id]);
 
     }
 
@@ -152,7 +152,7 @@ class SupplierController extends Controller
 
         }
 
-        return Redirect::back();
+        return redirect()->back()->withInput(['tab' => 'supplier'. $request->supplier_id]);
 
     }
 

@@ -20,10 +20,10 @@
                     <a href="{{ route('new_bill',$b) }}">Create New Bill</a>
                 </div>
                 <div class="row p-2 justify-content-center">
-                    <ul class="nav nav-tabs" style="width: 10rem;">
+                    <ul class="nav nav-tabs" style="width: 10rem;" id="tabMenu">
                         @foreach ($bills as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
-                                <a class="btn btn-primary btn-block" style="width: 10rem; marg" href="#item{{ $item->id }}" data-toggle="tab">Bill: {{ $item->bill_no }}</a>
+                                <a class="btn btn-primary btn-block" style="width: 10rem;" href="#item{{ $item->id }}" data-toggle="tab">Bill: {{ $item->bill_no }}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -175,7 +175,16 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> --}}
+
+<script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE=" crossorigin="anonymous"></script>
+
+<script>    
+// $.noConflict();
+$(document).ready(function () {
+        $('#tabMenu a[href="#{{ old('tab') }}"]').tab('show')
+    });
+</script>
 <script>
     // the selector will match all input controls of type :checkbox
     // and attach a click event handler
@@ -203,22 +212,20 @@
         console.log(sale_rate);
         console.log(value);
         console.log(test);
-        // for(i=0; i<value; i++){
-        //     document.getElementById(`rate.${i}`).value = sale_rate;
-        // }
-        
-        $(function(){
-            var hash = window.location.hash;
-            hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-
-            $('.nav-tabs a').click(function (e) {
-                $(this).tab('show');
-                var scrollmem = $('body').scrollTop();
-                window.location.hash = this.hash;
-                $('html,body').scrollTop(scrollmem);
-            });
-        });
 
     });
 </script>
+    
+
 @endsection
+
+{{-- <script>
+    var url = document.location.toString();
+    if (url.match('#')) {
+        $('#tabMenu a[href=#'+url.split('#')[1]+']').tab('show') ;
+    }
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        window.location.hash = e.target.hash;
+    });
+</script> --}}

@@ -14,6 +14,7 @@ use App\Models\Stock;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Carbon\Carbon;
 use Storage;
 use Illuminate\Support\Facades\Redirect;
 
@@ -84,7 +85,7 @@ class CustomerController extends Controller
     }
 
     public function GivenAmount(Request $request){
-
+        // return $request;
         $adds = DB::table('bussinesses_customers')->select('*')->where('customer_id', '=', $request->customer_id)->orderby('id', 'DESC')->get();
         $balance_total = DB::table('bussinesses_customers')->select('*')->where('customer_id', '=', $request->customer_id)->orderby('id', 'DESC')->first();
 
@@ -112,8 +113,10 @@ class CustomerController extends Controller
                 'date'=>$request->date,
                 'bill'=>$request->bill,
                 'balance' => abs($total),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             );
-
+            // return $data_array;
             $result = DB::table('bussinesses_customers')->insert($data_array);
 
         }else{
@@ -124,13 +127,16 @@ class CustomerController extends Controller
             'date'=>$request->date,
             'bill'=>$request->bill,
             'balance' => $request->amount,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         );
-
+            
             $result = DB::table('bussinesses_customers')->insert($data_array);
 
         }
 
-        return Redirect::back();
+        // return Redirect::back();
+        return redirect()->back()->withInput(['tab' => 'customer'. $request->customer_id]);
 
     }
 
@@ -162,7 +168,7 @@ class CustomerController extends Controller
                 'bill'=>$request->bill,
                 'balance' => abs($total),
             );
-
+            // return $data_array;
             $result = DB::table('bussinesses_customers')->insert($data_array);
 
         }else{
@@ -179,7 +185,7 @@ class CustomerController extends Controller
 
         }
 
-        return Redirect::back();
+        return redirect()->back()->withInput(['tab' => 'customer'. $request->customer_id]);
 
     }
 
@@ -287,7 +293,7 @@ class CustomerController extends Controller
 
         }
 
-        return Redirect::back();
+        return redirect()->back()->withInput(['tab' => 'customer'. 'customer_id']);
     }
 
     public function DeleteAmount(Request $request){

@@ -34,7 +34,7 @@
                     </button>
                 </div>
                 <div class="row p-2 justify-content-center" style="border-bottom: 1px solid black; height: 18rem; overflow: auto;">
-                    <ul class="nav nav-tabs" style="width: 10rem;">
+                    <ul class="nav nav-tabs" style="width: 10rem;" id="tabMenu">
                         @forelse($all_customers as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2">
                                 <a class="btn btn-primary btn-block" style="width: 10rem;" href="#customer{{ $item->id }}" data-toggle="tab">{{ $item->name }}</a>
@@ -117,16 +117,17 @@
                                 <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Quantity In</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                                        <h5 class="modal-title" id="exampleModalLabel"><span style="color:red">You gave to
+                                            </span>{{ $item['name'] }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <form action="{{ route('given_amount') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
-                                            <input type="hidden" name="item_id" id="item_id" value="{{ $item->id}}">
+                                            <input type="hidden" name="customer_id" id="customer_id" class="form-control"
+                                                        value="{{ $item->id}}">
+                                            {{-- <input type="hidden" name="item_id" id="item_id" value="{{ $item->id}}"> --}}
                                             <div class="form-row">
                                                 <div class="col-md-6 mb-3">
                                                     <label for="amount">Amount</label>
@@ -144,8 +145,7 @@
                                                 <div class="col-md-6 mb-3">
                                                     <label for="bill" >Bill No</label>
                                                     <input type="text" name="bill" id="bill" class="form-control">
-                                                    <input type="hidden" name="customer_id" id="customer_id" class="form-control"
-                                                        value="{{ $customer['id'] }}">
+                                                    
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -174,26 +174,25 @@
                                         <form action="{{ route('got_amount') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
-                                            <input type="hidden" name="item_id" id="item_id" value="{{ $customer_id}}">
+                                            <input type="hidden" name="customer_id" id="customer_id" class="form-control" value="{{ $customer_id }}">
                                             <div class="form-row">
                                                 <div class="col-md-6 mb-3">
                                                     <label for="amount">Amount</label>
                                                     <input type="text" name="amount" id="amount"
-                                                        class="from-control" value="">
+                                                        class="form-control" value="">
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                    <label for="detail" class="col-sm-2 col-form-label">Detail</label>
+                                                    <label for="detail" >Detail</label>
                                                     <input type="text" name="detail" id="detail" class="form-control">
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                    <label for="date" class="col-sm-2 col-form-label">Date</label>
+                                                    <label for="date" >Date</label>
                                                     <input type="date" name="date" id="date" class="form-control">
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                    <label for="bill" class="col-sm-2 col-form-label">Bill No</label>
+                                                    <label for="bill" >Bill No</label>
                                                     <input type="text" name="bill" id="bill" class="form-control">
-                                                    <input type="hidden" name="customer_id" id="customer_id" class="form-control"
-                                                        value="{{ $customer['id'] }}">
+                                                    
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -244,4 +243,12 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE=" crossorigin="anonymous"></script>
+
+<script>    
+// $.noConflict();
+$(document).ready(function () {
+        $('#tabMenu a[href="#{{ old('tab') }}"]').tab('show')
+    });
+</script>
 @endsection

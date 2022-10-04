@@ -26,7 +26,7 @@
                     </button>
                 </div>
                 {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
-                    <ul class="nav nav-tabs" style="width: 5rem; margin-left:2rem; ">
+                    <ul class="nav nav-tabs" style="width: 5rem; margin-left:2rem;" id="">
                         @foreach ($cashes as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" style="width: 5rem; margin-left:2rem;">
                                 <a class="btn btn-primary btn-block" href="#item{{ $item->id }}" data-toggle="tab">{{ $item->party }}</a>
@@ -100,7 +100,7 @@
                                 <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Quantity In</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Cash In</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -115,22 +115,13 @@
                                                   <label for="cash_in">Amount</label>
                                                   <input type="text" name="cash_in" class="form-control" id="validationDefault01" required>
                                                 </div>
-                                                <div class="col-md-12 mb-3">
-                                                  <label for="detail">Detail</label>
-                                                  <input type="text" name="detail" class="form-control" id="validationDefault03" required>
-                                                </div>
                                                 <div class="col-md-6 mb-3">
                                                     <label for="date">Date</label>
                                                     <input type="date" name="date" value="" class="form-control" id="validationDefault03" required>
                                                 </div>
                                                 <div class="col-md-12 mb-3">
-                                                  <label for="validationDefault04">Select Party</label>
-                                                  <select name="party" class="form-control" id="party" required>
-                                                     <option selected disabled value="">Choose...</option>
-                                                        @foreach ($suppliers as $item)
-                                                            <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                                        @endforeach
-                                                  </select>
+                                                  <label for="detail">Detail</label>
+                                                  <input type="text" name="detail" class="form-control" id="validationDefault03" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -165,15 +156,16 @@
                                                   <label for="qty_in">Amount</label>
                                                   <input type="text" name="cash_out" class="form-control" id="validationDefault01" required>
                                                 </div>
-                                                <div class="col-md-12 mb-3">
-                                                  <label for="detail">Detail</label>
-                                                  <input type="text" name="detail" class="form-control" id="validationDefault03" required>
-                                                </div>
                                                 <div class="col-md-6 mb-3">
                                                     <label for="date">Date</label>
                                                     <input type="date" name="date" class="form-control" id="validationDefault03" required>
                                                 </div>
                                                 <div class="col-md-12 mb-3">
+                                                  <label for="detail">Detail</label>
+                                                  <input type="text" name="detail" class="form-control" id="validationDefault03" required>
+                                                </div>
+                                                
+                                                {{-- <div class="col-md-12 mb-3">
                                                   <label for="validationDefault04">Select Party</label>
                                                   <select name="party" class="form-control" id="party" required>
                                                      <option selected disabled value="">Choose...</option>
@@ -181,7 +173,7 @@
                                                             <option value="{{ $item->name }}">{{ $item->name }}</option>
                                                         @endforeach
                                                   </select>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                             <div class="form-group">
                                                <button class="btn btn-primary" type="submit">Save</button>
