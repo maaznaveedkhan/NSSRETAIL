@@ -19,8 +19,8 @@
                     </button>
                 </div>
                 {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
-                <div class="row p-2 justify-content-center">
-                    <ul class="nav nav-tabs" style="width: 12rem;" id="tabMenu">
+                <div class="row p-2 justify-content-center" style="height: 10rem; overflow: auto;">
+                    <ul class="nav nav-tabs" style="width: 12rem; " id="tabMenu">
                         @foreach ($bank_accounts as $item)
                             <li class="{{ $item->account == 1 ? 'active' : ''  }} mt-2">
                                 <a class="btn btn-primary btn-block" style="width: 12rem;" href="#bank_ac{{ $item->account }}" data-toggle="tab">{{ $item->account }}</a>

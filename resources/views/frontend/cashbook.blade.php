@@ -25,15 +25,15 @@
                         Add Cash Entery
                     </button>
                 </div>
-                {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
-                    <ul class="nav nav-tabs" style="width: 5rem; margin-left:2rem;" id="tabMenu">
+                <div class="row p-2 justify-content-center" style="height: 18rem; overflow: auto;">
+                    <ul class="nav nav-tabs" style="width: 10rem;" id="tabMenu">
                         @foreach ($cashes as $item)
-                            <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" style="width: 5rem; margin-left:2rem;">
+                            <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" style="width: 10rem;">
                                 <a class="btn btn-primary btn-block" href="#item{{ $item->id }}" data-toggle="tab">{{ $item->party }}</a>
                             </li>
                         @endforeach
                     </ul>
-                {{-- </div> --}}
+                </div>
             </div>
             <div class="col-lg-9">
                 <div class="tab-content">
@@ -92,7 +92,7 @@
                             <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#cash_in{{ $item->id }}">
                                 Cash IN
                             </button>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#cash_out{{ $cash_id }}">
+                            <button type="button" class="btn btn-danger mt-2" data-toggle="modal" data-target="#cash_out{{ $cash_id }}">
                                 Cash OUT
                             </button>
                             <!-- Modal Quantity In -->

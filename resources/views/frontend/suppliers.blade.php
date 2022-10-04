@@ -37,11 +37,11 @@
                     </button>
                 </div>
                 {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
-                <div class="row p-2 justify-content-center">
-                    <ul class="nav nav-tabs" style="width: 10rem" id="tabMenu">
+                <div class="row p-2 justify-content-center" style="height: 15rem; overflow: auto;">
+                    <ul class="nav nav-tabs" id="tabMenu">
                         @foreach ($all_suppliers as $item)
-                            <li class="{{ $item->id == 1 ? 'active' : ''  }}">
-                                <a class="btn btn-primary btn-block mt-2" style="width: 10rem;" href="#supplier{{ $item->id }}" data-toggle="tab">{{ $item->name }}</a>
+                            <li class="{{ $item->id == 1 ? 'active' : ''  }}" style="display: block !important; width: 100% !important;">
+                                <a class="btn btn-primary btn-block mt-2" href="#supplier{{ $item->id }}" data-toggle="tab">{{ $item->name }}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -72,8 +72,8 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                   <table class="table">
+                                <div class="card-body" style="height: 21rem; overflow: auto;">
+                                   <table class="table" >
                                       <thead>
                                          <tr class="ligth">
                                             <th scope="col">Enteries <br> {{ $payment }}</th>
@@ -98,10 +98,10 @@
                                    </table>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#purchase{{ $item->id }}">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#purchase{{ $item->id }}">
                                 Purchase
                             </button>
-                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#payment{{ $supplier_id }}">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#payment{{ $supplier_id }}">
                                 Payment
                             </button>
                             <!-- Modal Quantity In -->
