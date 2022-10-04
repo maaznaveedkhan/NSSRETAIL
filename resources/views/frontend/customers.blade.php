@@ -40,6 +40,7 @@
                                 <a class="btn btn-primary btn-block" style="width: 10rem;" href="#customer{{ $item->id }}" data-toggle="tab">{{ $item->name }}</a>
                             </li>
                         @empty
+                            <p>No Record Present</p>
                         @endforelse
                     </ul> 
                 </div>

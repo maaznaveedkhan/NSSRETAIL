@@ -27,11 +27,13 @@
                 </div>
                 <div class="row p-2 justify-content-center" style="height: 18rem; overflow: auto;">
                     <ul class="nav nav-tabs" style="width: 10rem;" id="tabMenu">
-                        @foreach ($cashes as $item)
+                        @forelse ($cashes as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" style="width: 10rem;">
                                 <a class="btn btn-primary btn-block" href="#item{{ $item->id }}" data-toggle="tab">{{ $item->party }}</a>
                             </li>
-                        @endforeach
+                        @empty
+                            <p>No Record Present</p>
+                        @endforelse
                     </ul>
                 </div>
             </div>
@@ -54,6 +56,7 @@
                                             <h4 class="card-title">{{ $item->date }}</h4>
                                         </div>
                                         <div class="col-md-6">
+                                            <h4 class="card-title">{{ $item->party  }}</h4>
                                             {{-- @foreach ($balance as $value)
                                                 <h4 class="card-title">Stock in hand - {{ $value }}</h4>
                                             @endforeach --}}
@@ -61,7 +64,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body" style="height: 20rem; overflow: auto;">
                                    <table class="table">
                                       <thead>
                                          <tr class="ligth">

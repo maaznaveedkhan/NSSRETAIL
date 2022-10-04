@@ -27,11 +27,13 @@
                 {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
                 <div class="row p-2 justify-content-center">
                     <ul class="nav nav-tabs" style="width: 10rem;">
-                        @foreach ($stocks as $item)
+                        @forelse ($stocks as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" id="tabMenu">
                                 <a class="btn btn-primary btn-block" style="width: 10rem" href="#item{{ $item->id }}" data-toggle="tab">{{ $item->item_name }}</a>
                             </li>
-                        @endforeach
+                        @empty
+                            <p>No Record Present</p>
+                        @endforelse
                     </ul> 
                 </div>
                 {{-- </div> --}}
@@ -50,11 +52,12 @@
                             @endphp
                             <div class="card" style="">
                                 <div class="card-header">
-                                    <div class="row">
+                                    <div class="row justify-content-between">
                                         <div class="col-md-6">
                                             <h4 class="card-title">{{ $item->item_name }}</h4>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 float-lg-right">
+                                            <a href="{{ route('delete_stock',$item->id) }}" class="btn btn-danger">Delete Item</a>
                                             {{-- @foreach ($balance as $value)
                                                 <h4 class="card-title">Stock in hand - {{ $value }}</h4>
                                             @endforeach --}}

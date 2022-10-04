@@ -39,11 +39,13 @@
                 {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
                 <div class="row p-2 justify-content-center" style="height: 15rem; overflow: auto;">
                     <ul class="nav nav-tabs" id="tabMenu">
-                        @foreach ($all_suppliers as $item)
+                        @forelse ($all_suppliers as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }}" style="display: block !important; width: 100% !important;">
                                 <a class="btn btn-primary btn-block mt-2" href="#supplier{{ $item->id }}" data-toggle="tab">{{ $item->name }}</a>
                             </li>
-                        @endforeach
+                        @empty
+                            <p>No Record Present</p>
+                        @endforelse
                     </ul>
                 </div>
                 {{-- </div> --}}

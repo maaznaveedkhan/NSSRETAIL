@@ -40,6 +40,7 @@ Route::group(['middleware' => ['user', 'auth']], function () {
     Route::get('business_page/{id}' , [BusinessController::class, 'BusinessPage'])->name('business_page');
     // Stock Book
     Route::get('stock_book/{id}',[App\Http\Controllers\StockController::class,'stock_book'])->name('stock_book');
+    Route::get('delete_stock/{id}',[App\Http\Controllers\StockController::class,'delete_stock'])->name('delete_stock');
     Route::post('add_item', [StockController::class, 'add_item'])->name('add_item');
     Route::get('stock_page/{id}' , [StockController::class, 'stock_page'])->name('stock_page');
     Route::post('qty_in', [App\Http\Controllers\StockQuantityController::class, 'qty_in'])->name('qty_in');
@@ -51,7 +52,7 @@ Route::group(['middleware' => ['user', 'auth']], function () {
     Route::post('add_items', [App\Http\Controllers\BillDetailController::class, 'bill_detail'])->name('add_items');
     Route::get('edit_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'edit_bill'])->name('edit_bill');
     Route::get('update_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'update_bill'])->name('update_bill');
-    Route::get('delete_bill/{id}' , [App\Http\Controllers\BillBookController::class, 'delete_bill'])->name('delete_bill');
+    Route::get('delete_bill/{id}' , [App\Http\Controllers\BillController::class, 'delete_bill'])->name('delete_bill');
     // Bank Account
     Route::get('bank_accounts/{id}',[App\Http\Controllers\BankAccountController::class,'bank_accounts'])->name('bank_accounts');
     Route::post('add_bank_ac',[App\Http\Controllers\BankAccountController::class,'add_bank_ac'])->name('add_bank_ac');

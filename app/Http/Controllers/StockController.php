@@ -23,6 +23,14 @@ class StockController extends Controller
         return view('frontend.stockbook',compact('stocks','stock_details','b','suppliers','customers'));
     }   
 
+    public function delete_stock($id){
+        $stock = Stock::find($id);
+        $stock->delte();
+        return redirect()
+            ->back()
+            ->with('success', 'Item has been deleted!');
+    }
+
     public function index($id){
 
         $stocks = Stock::where('business_id', $id)->get();

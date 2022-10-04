@@ -21,11 +21,13 @@
                 </div>
                 <div class="row p-2 justify-content-center">
                     <ul class="nav nav-tabs" style="width: 10rem;" id="tabMenu">
-                        @foreach ($bills as $item)
+                        @forelse ($bills as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
                                 <a class="btn btn-primary btn-block" style="width: 10rem;" href="#item{{ $item->id }}" data-toggle="tab">Bill: {{ $item->bill_no }}</a>
                             </li>
-                        @endforeach
+                        @empty
+                            <p>No Record Present</p>
+                        @endforelse
                     </ul>
                 </div>
             </div>
@@ -40,16 +42,34 @@
                             @endphp
                             <div class="card" >
                                 <div class="card-header">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h4 class="card-title">Bill No # {{ $item->bill_no }}</h4>
+                                    <div class="row justify-content-center" >
+                                        <div class="col-md-4">
+                                            <h4 class="">NSS Retail </h4>
                                         </div>
-                                        <div class="col-md-6">
-                                            <h4 class="card-title">{{ $item->party }}</h4>
+                                        <div class="col-md-4">
+                                            <h6 class="">Prop: {{ Auth::user()->name }}</h6>
+                                            <h6 class="">Ph#03000000000</h6>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6 class="">Ph#03000000000</h6>
+                                            <h6 class="">Ph#03000000000</h6>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body" style="height:20rem; overflow: auto;">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h4 class="">Bill No # {{ $item->bill_no }}</h4>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h4 class="">{{ $item->party }}</h4>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h4 class="">{{ $item->date }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body" style="height:15rem; overflow: auto;">
                                    <table class="table">
                                       <thead>
                                          <tr class="ligth">
@@ -83,6 +103,7 @@
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_items{{ $item_id }}">
                                 Add Items
                             </button>
+                            <a href="{{ route('delete_bill',$item->id) }}" class="btn btn-danger">Delete Bill</a>
                             <!-- Modal Quantity In -->
                             <div class="modal fade" id="add_items{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">

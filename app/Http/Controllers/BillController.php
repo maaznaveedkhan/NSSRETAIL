@@ -40,6 +40,16 @@ class BillController extends Controller
         return redirect()->route('bill_book',$b)->with('success','Bill has been created!');
     }
 
+    public function delete_bill($id)
+    {
+        $bill = Bill::find($id);
+        $bill->delete();
+        
+        return redirect()
+            ->back()
+            ->with('success', 'Bill has been deleted!');
+    }
+
     public function bill_book($id){
         $b = $id;
         $bills = Bill::where('business_id',$b)->get();
@@ -49,7 +59,6 @@ class BillController extends Controller
         $customers = Customer::where('business_id',$b)->get();
         return view('frontend.bill_book',compact('b','bills','stocks','stock_details','suppliers','customers'));
     }
-
     // public function create_bill(Request $request){
 
     //     $b = $request->business_id;
