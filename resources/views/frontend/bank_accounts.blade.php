@@ -20,7 +20,7 @@
                 </div>
                 {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
                 <div class="row p-2 justify-content-center">
-                    <ul class="nav nav-tabs" style="width: 12rem;" id="mytabs">
+                    <ul class="nav nav-tabs" style="width: 12rem;" id="tabMenu">
                         @foreach ($bank_accounts as $item)
                             <li class="{{ $item->account == 1 ? 'active' : ''  }} mt-2">
                                 <a class="btn btn-primary btn-block" style="width: 12rem;" href="#bank_ac{{ $item->account }}" data-toggle="tab">{{ $item->account }}</a>
@@ -28,16 +28,6 @@
                         @endforeach
                     </ul>
                 </div>
-                    {{-- <div class="row p-2 justify-content-center " style="height: 15rem; overflow: auto;">
-                        <ul class="nav nav-tabs" style="width: 12rem;">
-                            @foreach ($bank_accounts as $item)
-                                <li class="{{ $item->account == 1 ? 'active' : ''  }} mt-2">
-                                    <a class="btn btn-primary btn-block" style="width: 12rem;" href="#bank_ac{{ $item->account }}" data-toggle="tab">{{ $item->account }}</a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div> --}}
-                {{-- </div> --}}
             </div>
             <div class="col-lg-9">
                 <div class="tab-content">
@@ -153,28 +143,12 @@
         </div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-{{-- <script>
-    $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-        localStorage.setItem('activeTab', $(e.target).attr('href'));
-    });
-    var activeTab = localStorage.getItem('activeTab');
-    if(activeTab){
-        $('#mytabs a[href="' + activeTab + '"]').tab('show');
-    }
-</script> --}}
-<script>
-    $(function() {
+<script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE=" crossorigin="anonymous"></script>
 
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    localStorage.setItem('lastTab', $(this).attr('href'));
-    });
-    var lastTab = localStorage.getItem('lastTab');
-
-    if (lastTab) {
-    $('[href="' + lastTab + '"]').tab('show');
-    }
-
+<script>    
+// $.noConflict();
+$(document).ready(function () {
+        $('#tabMenu a[href="#{{ old('tab') }}"]').tab('show')
     });
 </script>
 @endsection

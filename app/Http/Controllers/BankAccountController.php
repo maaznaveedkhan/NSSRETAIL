@@ -37,6 +37,6 @@ class BankAccountController extends Controller
 
         $bank_ac->save();
 
-        return redirect()->back()->with('success','Bank Account has been added!');
+        return redirect()->back()->withInput(['tab' => 'bank_ac'. $request->account]);
     }
 }
