@@ -26,7 +26,7 @@
                     </button>
                 </div>
                 {{-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> --}}
-                    <ul class="nav nav-tabs" style="width: 5rem; margin-left:2rem;" id="">
+                    <ul class="nav nav-tabs" style="width: 5rem; margin-left:2rem;" id="tabMenu">
                         @foreach ($cashes as $item)
                             <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" style="width: 5rem; margin-left:2rem;">
                                 <a class="btn btn-primary btn-block" href="#item{{ $item->id }}" data-toggle="tab">{{ $item->party }}</a>
@@ -164,16 +164,6 @@
                                                   <label for="detail">Detail</label>
                                                   <input type="text" name="detail" class="form-control" id="validationDefault03" required>
                                                 </div>
-                                                
-                                                {{-- <div class="col-md-12 mb-3">
-                                                  <label for="validationDefault04">Select Party</label>
-                                                  <select name="party" class="form-control" id="party" required>
-                                                     <option selected disabled value="">Choose...</option>
-                                                        @foreach ($customers as $item)
-                                                            <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                                        @endforeach
-                                                  </select>
-                                                </div> --}}
                                             </div>
                                             <div class="form-group">
                                                <button class="btn btn-primary" type="submit">Save</button>
@@ -191,50 +181,6 @@
 
                     @endforeach
                 </div>
-                {{-- <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4 class="card-title">Sugar</h4>
-                            </div>
-                            <div class="col-md-6">
-                                <h4 class="card-title">Stock in hand - 1</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                       <table class="table">
-                          <thead>
-                             <tr class="ligth">
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                             </tr>
-                          </thead>
-                          <tbody>
-                             <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                             </tr>
-                             <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                             </tr>
-                             <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                             </tr>
-                          </tbody>
-                       </table>
-                    </div>
-                </div> --}}
             </div>
         </div>
     </div>
@@ -271,4 +217,12 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE=" crossorigin="anonymous"></script>
+
+<script>    
+// $.noConflict();
+$(document).ready(function () {
+        $('#tabMenu a[href="#{{ old('tab') }}"]').tab('show')
+    });
+</script>
 @endsection

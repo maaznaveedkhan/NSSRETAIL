@@ -84,7 +84,7 @@ class CashController extends Controller
 
         }
 
-        return redirect()->back()->with('success','Data Entered!');
+        return redirect()->back()->withInput(['tab' => 'item'. $request->cash_id]);
     }
 
     public function cash_out(Request $request){
@@ -138,7 +138,7 @@ class CashController extends Controller
 
         }
 
-        return redirect()->back()->with('success','Data Entered!');
+        return redirect()->back()->withInput(['tab' => 'item'. $request->cash_id]);
     }
 
     public function allCash(Request $request){
