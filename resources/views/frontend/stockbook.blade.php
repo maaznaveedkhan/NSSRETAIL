@@ -28,7 +28,7 @@
                 <div class="row p-2 justify-content-center">
                     <ul class="nav nav-tabs" style="width: 10rem;">
                         @foreach ($stocks as $item)
-                            <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" >
+                            <li class="{{ $item->id == 1 ? 'active' : ''  }} mt-2" id="tabMenu">
                                 <a class="btn btn-primary btn-block" style="width: 10rem" href="#item{{ $item->id }}" data-toggle="tab">{{ $item->item_name }}</a>
                             </li>
                         @endforeach
@@ -82,26 +82,7 @@
                                                     <td>{{ $element->qty_in }} </td>
                                                     <td>{{ $element->qty_out }}</td>
                                                     <td>{{ $element->balance }}</td>
-                                                    {{-- <div class="col div-one" data-label="Balance">
-                                                                <small>
-                                                                    {{ $amount_remaning_balance }}
-                                                                </small>
-                                                            </div> --}}
                                                 </tr>
-                                                {{-- <a href="" data-bs-toggle="modal" data-bs-target="#id{{ $element->id }} ">
-                                                    <li class="table-row">
-                                                        <div class="col div-one" data-label="Entries"><small>{{ $element->created_at }}</small>
-                                                        </div>
-                                                        <div class="col div-one" data-label="Detail"><small>{{ $element->detail }}</small>
-                                                        </div>
-                                                        <div class="col div-three" data-label="You Got">
-                                                            <small>{{ $element->qty_in }}</small>
-                                                        </div>
-                                                        <div class="col div-two" data-label="You Give">
-                                                            <small>{{ $element->qty_out }}</small>
-                                                        </div>
-                                                    </li>
-                                                </a> --}}
                                             @empty
                                             @endforelse
                                         @endif
@@ -235,50 +216,6 @@
                         
                     @endforeach
                 </div>
-                {{-- <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4 class="card-title">Sugar</h4>
-                            </div>
-                            <div class="col-md-6">
-                                <h4 class="card-title">Stock in hand - 1</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                       <table class="table">
-                          <thead>
-                             <tr class="ligth">
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                             </tr>
-                          </thead>
-                          <tbody>
-                             <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                             </tr>
-                             <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                             </tr>
-                             <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                             </tr>
-                          </tbody>
-                       </table>
-                    </div>
-                </div> --}}
             </div>
         </div>
     </div>
@@ -323,4 +260,12 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE=" crossorigin="anonymous"></script>
+
+<script>    
+// $.noConflict();
+$(document).ready(function () {
+        $('#tabMenu a[href="#{{ old('tab') }}"]').tab('show')
+    });
+</script>
 @endsection
