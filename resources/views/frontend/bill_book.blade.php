@@ -58,7 +58,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-header pb-2 pt-1" style="background-color: #50508b; color: white; height: 2rem; ">
+                                <div class="card-header pb-2 pt-1" style="background-color: #50508b; color: white; height: 2rem;">
                                     <h6 class="">Address: Shop # 155-156 Barrich Market, Muhammad Husni Plaza, Sarki Road, Quetta</h6>
                                 </div>
                                 <div class="card-header">
@@ -91,7 +91,9 @@
                                                     $item_name = Stock::where('id',$element->item_name)->first();
                                                 @endphp
                                                 <tr>
+                                                    @if(!empty($item_name))
                                                     <th scope="row">{{ $item_name['item_name'] }}</th>
+                                                    @endif
                                                     <td>{{ $element->quantity }} {{ $item_name['item_unit'] }}</td>
                                                     <td>Rs. {{ $element->rate }} </td>
                                                     <td>{{ $element->amount }}</td>

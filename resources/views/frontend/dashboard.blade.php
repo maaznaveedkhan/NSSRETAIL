@@ -98,8 +98,10 @@
                     <div class="card border-none">
                         <div class="card-body p-0">
                             <div class="sidebarbottom-content">
-                                
-                                <button type="button" class="btn sidebar-bottom-btn mt-4">Add Business</button>
+                                <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#add_business">
+                                    Add Business
+                                </button>
+                                {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#new_order" class="btn sidebar-bottom-btn mt-4">Add Business</button> --}}
                             </div>
                         </div>
                     </div>
@@ -561,12 +563,46 @@
                 </nav>
             </div>
         </div>
-        <div class="modal fade" id="new-order" tabindex="-1" role="dialog" aria-hidden="true">
+        <!-- Modal Quantity In -->
+        <div class="modal fade" id="add_business" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">You gave to {{ $item['name'] }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('new_business') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="user_id" id="user_id" class="form-control"
+                                    value="{{ Auth::user()->id }}">
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="amount">New Business</label>
+                                <input type="text" name="business_name" id="business_name"
+                                    class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                           <button class="btn btn-primary" type="submit">Save</button>
+                        </div>
+                     </form>
+                </div>
+                {{-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div> --}}
+            </div>
+            </div>
+        </div>
+        <div class="modal fade" id="" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="popup text-left">
-                            <h4 class="mb-3">New Order</h4>
+                            <h4 class="mb-3">Add New Busniness</h4>
                             <div class="content create-workform bg-body">
                                 <div class="pb-3">
                                     <label class="mb-2">Email</label>
@@ -715,12 +751,11 @@
                     <div class="col-lg-12">
                         <div class="card card-transparent card-block card-stretch card-height border-none">
                             <div class="card-body p-0 mt-lg-2 mt-0">
-                                <h3 class="mb-3">Hi Test, Good Morning</h3>
-                                <p class="mb-0 mr-4">Select a Business to view details</p>
+                                <h3 class="mb-3">Hi {{ Auth::user()->name }}, Good Morning</h3>
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-4 col-md-4">
                                 <div class="card card-block card-stretch card-height">
@@ -730,18 +765,18 @@
                                                 <img src="{{ asset('dashboard/assets/images/product/1.png') }}" class="img-fluid" alt="image">
                                             </div>
                                             <div>
-                                                <p class="mb-2">Total Sales</p>
-                                                <h4>31.50</h4>
+                                                <p class="mb-2">Total Businesses</p>
+                                                <h4>{{ $all_businesses->count() }}</h4>
                                             </div>
                                         </div>
                                         <div class="iq-progress-bar mt-2">
-                                            <span class="bg-info iq-progress progress-1" data-percent="85">
+                                            <span class="bg-info iq-progress progress-1" data-percent="{{ $all_businesses->count() }}">
                                     </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4">
+                            {{-- <div class="col-lg-4 col-md-4">
                                 <div class="card card-block card-stretch card-height">
                                     <div class="card-body">
                                         <div class="d-flex align-items-center mb-4 card-total-sale">
@@ -778,9 +813,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
-                    </div> --}}
+                    </div>
                     {{-- <div class="col-lg-6">
                         <div class="card card-block card-stretch card-height">
                             <div class="card-header d-flex justify-content-between">
