@@ -63,6 +63,13 @@ Route::group(['middleware' => ['user', 'auth']], function () {
     Route::post('add_cash',[App\Http\Controllers\CashController::class,'addCash'])->name('new-cash');
     Route::post('cash_in',[App\Http\Controllers\CashController::class,'cash_in'])->name('cash_in');
     Route::post('cash_out',[App\Http\Controllers\CashController::class,'cash_out'])->name('cash_out');
+    // Money Receive Book
+    Route::get('money_receive_book/{id}',[App\Http\Controllers\MoneyReceiveBookController::class,'money_receive_book'])->name('money_receive_book');
+    Route::post('add_party',[App\Http\Controllers\MoneyReceiveBookController::class,'add_party'])->name('add_party');
+    Route::post('money_in',[App\Http\Controllers\MoneyReceiveBookController::class,'money_in'])->name('money_in');
+    Route::post('money_out',[App\Http\Controllers\MoneyReceiveBookController::class,'money_out'])->name('money_out');
+    // Invoice / Order
+    Route::get('all_invoices/{id}',[App\Http\Controllers\InvoiceController::class,'all_invoices'])->name('all_invoices');
     // Customers
     Route::get('all_customers/{id}',[App\Http\Controllers\CustomerController::class, 'all_customers'])->name('all_customers');
     Route::post('add_customer' , [App\Http\Controllers\CustomerController::class, 'AddCustomer'])->name('add_customer');

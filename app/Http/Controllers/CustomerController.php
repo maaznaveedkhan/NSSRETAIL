@@ -38,8 +38,8 @@ class CustomerController extends Controller
         $cash = CashBook::where('business_id',$id)->select('date')->distinct()->get();
         $stock = Stock::where('business_id',$id)->get();
         // $items = Stock::with('quantity')->where('business_id',$id)->get();
-    //   return  $items = Stock::with('quantity')->where('business_id',$id)->get();
-    //   dd($items);
+        //   return  $items = Stock::with('quantity')->where('business_id',$id)->get();
+        //   dd($items);
         $bank_accounts = BankAccount::where('business_id',$id)->select('account')->distinct()->get();
         foreach($cash as $item){
             $cash_detail = CashBook::where('date',$item->date)->get();
