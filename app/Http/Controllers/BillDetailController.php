@@ -13,8 +13,6 @@ class BillDetailController extends Controller
     public function bill_detail(Request $request){
         // return $request;
         $b = $request->business_id;
-        // $amount = BillDetail::where('bill_id',$request->bill_id)->first();
-        
         $bill_detail = new BillDetail();
         $bill_detail->bill_id = $request->bill_id;
         $bill_detail->business_id = $b;
