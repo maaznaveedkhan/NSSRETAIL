@@ -9,6 +9,17 @@
     use App\Models\InvoiceDetail;
     use App\Models\BankAccount;
 @endphp
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #content,
+        #content * {
+            visibility: visible;
+        }
+    }
+</style>
 <div class="content-page">
     <div class="container-fluid">
         <div class="row">
@@ -31,14 +42,13 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-9" >
                 <div class="tab-content">
                     @foreach ($invoices as $item)
                         <div class="tab-pane {{ $item->id == 1 ? 'active' : ''  }}" id="item{{ $item->id }}" class="active">
-                            
-                            <div class="card" id="pdf">
-                                <div class="card-body">
-                                  <div class="container mb-5 mt-3">
+                            <div class="card" >
+                                <div class="card-body" id="content">
+                                  <div class="container mb-5 mt-3" >
                                     <div class="row justify-content-between p-3" style="background-color:#50508b; color: white; ">
                                         <h6 class="" style="color: ">AL-Haj Muhammad Alam Muhammad Hussni</h6>
                                         <div class="row">
@@ -54,15 +64,7 @@
                                             </div>    
                                         </div>
                                     </div>
-                                    {{-- <div class="row d-flex align-items-baseline" style="background-color: #50508b; color: white;">
-                                      <div class="col-xl-9">
-                                        <p style="font-size: 20px;"><strong>AL-Haj Muhammad Alam Muhammad Hussni</strong></p>
-                                      </div>
-                                      
-                                      </div>
-                                      <hr>
-                                    </div> --}}
-                                    <div class="container">
+                                    <div class="container"  >
                                         <div class="row pt-1" style="">
                                             <div class="col-xl-6">
                                             <ul class="list-unstyled">
@@ -77,108 +79,106 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                      <div class="row my-2 mx-1 justify-content-center">
-                                        <table class="table table-striped table-borderless">
-                                          <thead style="background-color:#50508b ;" class="text-white">
-                                            <tr>
-                                              <th scope="col">#</th>
-                                              <th scope="col">Item</th>
-                                              <th scope="col">Qty</th>
-                                              <th scope="col">Unit Price</th>
-                                              <th scope="col">Amount</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            @php
-                                                $item_id = $item->id;
-                                                $sale_rate = $item->sale_rate;
-                                                $invoice_detail = InvoiceDetail::where('invoice_id',$item->id)->get();
-                                                $sum = 0;
-                                            @endphp
-                                            @if (sizeof($invoice_detail) != 0)
-                                            @forelse ($invoice_detail  as $element)
-                                                @php
-                                                    $sum = $sum + $element->amount; 
-                                                @endphp
+                                        <div class="row my-2 mx-1 justify-content-center">
+                                            <table class="table table-striped table-borderless">
+                                            <thead style="background-color:#50508b ;" class="text-white">
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    @if(!empty($invoice_detail))
-                                                    <td>{{ $element['item_name'] }}</td>
-                                                    @endif
-                                                    <td>{{ $element['quantity'] }}</td>
-                                                    <td>Rs. {{ $element->rate }} </td>
-                                                    <td>{{ $element->amount }}</td>
-                                                    {{-- <td>{{ $element->balance }}</td> --}}
+                                                <th scope="col">#</th>
+                                                <th scope="col">Item</th>
+                                                <th scope="col">Qty</th>
+                                                <th scope="col">Unit Price</th>
+                                                <th scope="col">Amount</th>
                                                 </tr>
-                                            @empty
-                                            @endforelse
-                                        @endif
-                                          </tbody>
-                              
-                                        </table>
-                                      </div>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $item_id = $item->id;
+                                                    $sale_rate = $item->sale_rate;
+                                                    $invoice_detail = InvoiceDetail::where('invoice_id',$item->id)->get();
+                                                    $sum = 0;
+                                                @endphp
+                                                @if (sizeof($invoice_detail) != 0)
+                                                @forelse ($invoice_detail  as $element)
+                                                    @php
+                                                        $sum = $sum + $element->amount; 
+                                                    @endphp
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        @if(!empty($invoice_detail))
+                                                        <td>{{ $element['item_name'] }}</td>
+                                                        @endif
+                                                        <td>{{ $element['quantity'] }}</td>
+                                                        <td>Rs. {{ $element->rate }} </td>
+                                                        <td>{{ $element->amount }}</td>
+                                                        {{-- <td>{{ $element->balance }}</td> --}}
+                                                    </tr>
+                                                @empty
+                                                @endforelse
+                                            @endif
+                                            </tbody>
+                                
+                                            </table>
+                                        </div>
                                         <div class="row">
                                             <div class="col-xl-8">
                                             {{-- <p class="ms-3">Add additional notes and payment information</p> --}}
                                             </div>
                                             <div class="col-xl-4">
-                                            <ul class="list-unstyled">
-                                                <li class="text-muted ms-3"><span class="text-black me-4">SubTotal</span> {{ $sum }}</li>
-                                            </ul>
-                                            <p class="text-black float-start"><span class="text-black me-3"> Total Amount</span><span
-                                                style="font-size: 25px;">{{ $sum }}</span></p>
+                                                <ul class="list-unstyled">
+                                                    <li class="text-black "><h6>SubTotal: {{ $sum }}</h6></li>
+                                                    <li class="text-black font-weight-bold"><h3>Total: {{ $sum }}</h3></li>
+                                                </ul>
                                             </div>
                                         </div>
-                              
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_items{{ $item_id }}">
-                                Add Items
-                        </button>
-                        <!-- Modal Quantity In -->
-                        <div class="modal fade" id="add_items{{ $item_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
                                 </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('add_invoice_items') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
-                                        <input type="hidden" name="invoice_id" id="invoice_id" value="{{ $item_id }}">
-                                        <input type="hidden" name="party" id="party" value="{{ $item->supplier }}">
-                                        <div class="form-row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="item">Item Name</label>
-                                                <input type="text" name="item_name" class="form-control" id="validationDefault01" required>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="item">Item Unit</label>
-                                                <input type="text" name="item_unit" class="form-control" id="validationDefault01" required>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                              <label for="quantity">Quantity</label>
-                                              <input type="text" name="quantity" class="form-control" id="validationDefault01" required>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="rate">Rate</label>
-                                                <input type="text" name="rate" class="form-control" id="validationDefault01" required>
-                                              </div>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_items{{ $item_id }}">
+                                    Add Items
+                                </button>
+                                <!-- Modal Quantity In -->
+                                <div class="modal fade" id="add_items{{ $item_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
-                                        <div class="form-group">
-                                           <button class="btn btn-primary" type="submit">Save</button>
+                                        <div class="modal-body">
+                                            <form action="{{ route('add_invoice_items') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="business_id" id="business_id" value="{{ $b }}">
+                                                <input type="hidden" name="invoice_id" id="invoice_id" value="{{ $item_id }}">
+                                                <input type="hidden" name="party" id="party" value="{{ $item->supplier }}">
+                                                <div class="form-row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="item">Item Name</label>
+                                                        <input type="text" name="item_name" class="form-control" id="validationDefault01" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="item">Item Unit</label>
+                                                        <input type="text" name="item_unit" class="form-control" id="validationDefault01" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                    <label for="quantity">Quantity</label>
+                                                    <input type="text" name="quantity" class="form-control" id="validationDefault01" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="rate">Rate</label>
+                                                        <input type="text" name="rate" class="form-control" id="validationDefault01" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                <button class="btn btn-primary" type="submit">Save</button>
+                                                </div>
+                                            </form>
                                         </div>
-                                     </form>
+                                    </div>
+                                    </div>
                                 </div>
-                            </div>
-                            </div>
-                        </div>
                         </div>
                     @endforeach
                 </div>
@@ -189,13 +189,12 @@
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> --}}
 
 <script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE=" crossorigin="anonymous"></script>
-
-<script>    
-// $.noConflict();
-$(document).ready(function () {
+<script> 
+    $(document).ready(function () {
         $('#tabMenu a[href="#{{ old('tab') }}"]').tab('show')
     });
 </script>
+
 <script>
     // the selector will match all input controls of type :checkbox
     // and attach a click event handler
@@ -226,23 +225,37 @@ $(document).ready(function () {
 
     });
 </script>
-<script src= "https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js">
-</script>
+<script src= "https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+
 <script>
-    function generatePDF() {
-    var doc = new jsPDF();  //create jsPDF object
-    doc.fromHTML(document.getElementById("pdf"), // page element which you want to print as PDF
-    15,
-    15, 
-    {
-        'width': 170  //set width
-    },
-    function(a) 
-    {
-        doc.save("HTML2PDF.pdf"); // save file name as HTML2PDF.pdf
+    var form = $('#pdf'),cache_width=form.width();
+    a4=[595.28,841.89];
+    // a4=[595.28,841.89];
+    $('#create_pdf').on('click', function () {
+        $('body').scrollTop(0);
+        createPDF();
     });
+    function createPDF(){
+        getCanvas().then(function(canvas){
+            var img = canvas.toDataURL("image/png"),
+            doc=new jsPDF({
+                unit:'px',
+                format:'a4'
+            });
+            doc.addImage(img,'JPEG',20,20);
+            doc.save('new.pdf');
+            form.width(cache_width);
+        });
+    }
+    function getCanvas(){
+        form.width((a4[0]*1.33333)-80).css('max-width','none');
+        return html2canvas(form,{
+            imageTimeout: 2000,
+            removeContainer: true
+        });
     }
 </script>
+
 {{-- <script>
     var button = document.getElementById("pdfButton{{ $item->id }}");
     button.addEventListener("click", function () {

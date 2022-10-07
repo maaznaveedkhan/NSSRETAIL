@@ -1,0 +1,12 @@
+/* @import "dashboard/assets/css/backend.css?v=1.0.0"; */
+
+@import url("{{ asset('dashboard/assets/css/backend.css?v=1.0.0')}}") print;
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #content,
+    #content * {
+        visibility: visible;
+    }
+}
