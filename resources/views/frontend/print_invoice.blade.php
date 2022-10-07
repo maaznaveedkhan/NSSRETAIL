@@ -17,7 +17,15 @@
     <link rel="stylesheet" href="{{ asset('dashboard/assets/css/backend.css?v=1.0.0')}}" media="print">
     <link href="{{ asset('dashboard/assets/print.css')}}" media="print" rel="stylesheet">
 </head>
-
+@php
+    use Illuminate\Support\Facades\Session;
+    use Carbon\Carbon;
+    use App\Models\CashBook;
+    use App\Models\Stock;
+    use App\Models\StockQuantity;
+    use App\Models\InvoiceDetail;
+    use App\Models\BankAccount;
+@endphp
 <body class="  ">
     <!-- loader Start -->
     <div id="loading">
@@ -28,32 +36,104 @@
     <!-- Wrapper Start -->
     <div class="wrapper">
 
-    @include('frontend.layouts.sidebar')
-    @include('frontend.layouts.topbar')
+    {{-- @include('frontend.layouts.sidebar')
+    @include('frontend.layouts.topbar') --}}
 
-    @yield('content')
-
-</div>
-<!-- Wrapper End-->
-{{-- <footer class="iq-footer">
+    {{-- @yield('content') --}}
     <div class="container-fluid">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <ul class="list-inline mb-0">
-                            <li class="list-inline-item"><a href="../backend/privacy-policy.html">Privacy Policy</a></li>
-                            <li class="list-inline-item"><a href="../backend/terms-of-service.html">Terms of Use</a></li>
-                        </ul>
+        <div class="" >
+            <div class="" id="content">
+                <div class="container mb-5 mt-3" >
+                <div class="row justify-content-between p-3" style="background-color:#50508b; color: white; border:2px solid black;">
+                    <h6 class="" style="color: ">AL-Haj Muhammad Alam Muhammad Hussni</h6>
+                    <div class="row">
+                        <div class="col" style="color: ">
+                            <h6 class="">Prop: Haji Izzatullah</h6>
+                            <h6 class="">Prop: Habib ur Rehman</h6>
+                        </div>    
                     </div>
-                    <div class="col-lg-6 text-right">
-                        <span class="mr-1"><script>document.write(new Date().getFullYear())</script>©</span> <a href="#" class="">POS Dash</a>.
+                    <div class="row">
+                        <div class="col" style="color: white;">
+                            <h6 class=""><i class="fa fa-whatsapp" style="color: white;"></i>03134000039</h6>
+                            <h6 class="">Tel#0182450576</h6>
+                        </div>    
+                    </div>
+                </div>
+                <div class="container"  >
+                    <div class="row pt-1" style="">
+                        <div class="col-md-4">
+                        <ul class="list-unstyled">
+                            <li class="">From: {{ $id->supplier }}</li>
+                            <li class="">Invoice No: {{ $id->invoice_no }}</li>
+                        </ul>
+                        </div>
+                        <div class="offset-2 col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="">Date: {{ $id->date }}</li>
+                                <li>Address: Shop # 155-156 Barrich Market, Muhammad Husni Plaza, Sarki Road, Quetta</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row my-2 mx-1 justify-content-center">
+                        <table class="table table-bordered" style="border: 2px solid black;">
+                        <thead style="background-color:#50508b ; color: white;" class="text-white">
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Item</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Unit Price</th>
+                            <th scope="col">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $item_id = $id->id;
+                                $invoice_detail = InvoiceDetail::where('invoice_id',$id->id)->get();
+                                $sum = 0;
+                            @endphp
+                            @if (sizeof($invoice_detail) != 0)
+                            @forelse ($invoice_detail  as $element)
+                                @php
+                                    $sum = $sum + $element->amount; 
+                                @endphp
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    @if(!empty($invoice_detail))
+                                    <td>{{ $element['item_name'] }}</td>
+                                    @endif
+                                    <td>{{ $element['quantity'] }}</td>
+                                    <td>Rs. {{ $element->rate }} </td>
+                                    <td>{{ $element->amount }}</td>
+                                    {{-- <td>{{ $element->balance }}</td> --}}
+                                </tr>
+                                @empty
+                                @endforelse
+                            @endif
+                            </tbody>
+                
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-8">
+                            {{-- <p class="ms-3">Add additional notes and payment information</p> --}}
+                            </div>
+                            <div class="col-xl-4">
+                                <ul class="list-unstyled">
+                                    <li class="text-black "><h6>SubTotal: {{ $sum }}</h6></li>
+                                    <li class="text-black font-weight-bold"><h3>Total: {{ $sum }}</h3></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</footer> --}}
+</div>
+<!-- Wrapper End-->
+ <footer class="iq-footer">
+
+</footer> 
 <!-- Backend Bundle JavaScript -->
 <script src="{{ asset('dashboard/assets/js/backend-bundle.min.js')}}"></script>
 

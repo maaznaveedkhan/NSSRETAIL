@@ -73,6 +73,7 @@ Route::group(['middleware' => ['user', 'auth']], function () {
     Route::post('create_invoice',[App\Http\Controllers\InvoiceController::class,'create_invoice'])->name('create_invoice');
     Route::get('new_invoice/{id}',[App\Http\Controllers\InvoiceController::class,'new_invoice'])->name('new_invoice');
     Route::post('add_invoice_items', [App\Http\Controllers\InvoiceController::class, 'invoice_detail'])->name('add_invoice_items');
+    Route::get('print_invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'print_invoice'])->name('print_invoice');
     // Customers
     Route::get('all_customers/{id}',[App\Http\Controllers\CustomerController::class, 'all_customers'])->name('all_customers');
     Route::post('add_customer' , [App\Http\Controllers\CustomerController::class, 'AddCustomer'])->name('add_customer');

@@ -48,6 +48,7 @@
                         <div class="tab-pane {{ $item->id == 1 ? 'active' : ''  }}" id="item{{ $item->id }}" class="active">
                             <div class="card" >
                                 <div class="card-body" id="content">
+                                    <a href="{{ route('print_invoice',$item->id) }}">Print</a>
                                   <div class="container mb-5 mt-3" >
                                     <div class="row justify-content-between p-3" style="background-color:#50508b; color: white; ">
                                         <h6 class="" style="color: ">AL-Haj Muhammad Alam Muhammad Hussni</h6>

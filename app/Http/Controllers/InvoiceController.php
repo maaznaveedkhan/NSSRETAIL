@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bill;
+use App\Models\Business;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\InvoiceDetail;
@@ -23,6 +24,12 @@ class InvoiceController extends Controller
         $customers = Customer::where('business_id',$b)->get();
         // return view('frontend.bill_book',compact('b','bills','stocks','stock_details','suppliers','customers'));
         return view('frontend.invoice',compact('b','invoices','stocks','stock_details','suppliers','customers'));
+    }
+
+    public function print_invoice($id){
+        $b = Business::find($id);
+        $id = Invoice::find($id);
+        return view('frontend.print_invoice',compact('id','b' ));
     }
 
     public function new_invoice($id){
